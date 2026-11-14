@@ -26,3 +26,10 @@ data/derived/
 *.gpkg
 *.sqlite
 *.db
+
+# Next.js generated files
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Vercel linkage (never commit)
+.vercel/
