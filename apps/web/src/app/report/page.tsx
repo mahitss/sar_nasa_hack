@@ -125,7 +125,8 @@ export default function ReportPage() {
         </section>
 
         <p className="text-xs text-gray-600">
-          Stored only in this browser. Not an institutional review and not a scientific acceptance. No confirmed water detection.
+          This report is generated client-side in the browser. No backend persistence or institutional review is implemented.
+          Exported JSON and printed output are local artifacts. No confirmed water detection.
         </p>
       </article>
     </div>

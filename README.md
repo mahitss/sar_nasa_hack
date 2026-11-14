@@ -4,7 +4,7 @@ River Incident Verification & Evidence Twin.
 
 RIVET is a repository foundation for an evidence-backed geospatial record of the historical Kuwari landslide-dammed lake in Bageshwar, Uttarakhand, India. The case is a research record. This repository does not operate an emergency response system.
 
-The application is not implemented, not deployed, not validated, and not operational.
+A Next.js investigation prototype is implemented in `apps/web` (five routes: `/`, `/spatial`, `/acquisitions`, `/evidence`, `/report`). It is not production-deployed and is not scientifically validated. The Go API, Python worker, and Supabase are not implemented.
 
 ## Problem
 
@@ -39,7 +39,7 @@ Claim levels used throughout the project:
 
 Go owns business logic. Python owns scientific processing. Next.js owns the interface. FastAPI, Kafka, and Kubernetes are not part of this architecture. Supabase is the only database. Docker Compose does not run a second PostgreSQL.
 
-The web application, Go API, and scientific worker are not implemented. No third-party packages are installed. `tools/catalogue_audit.py` is a standard-library catalogue audit, not the processing pipeline.
+The Go API and scientific worker are not implemented. The Next.js web application is implemented in `apps/web` and uses Next.js 16, React 19, TypeScript, Tailwind CSS v4, and MapLibre GL JS. Supabase is not implemented. `tools/catalogue_audit.py` is a standard-library catalogue audit, not the processing pipeline.
 
 ## Scientific limits of the first slice
 
@@ -80,8 +80,8 @@ The L-band scenes proposed for the first comparison were processed as provisiona
 | Working directory | `C:\Projects\RIVET` |
 | Git | Foundation commit `98a00e6f3d619ee2446f1fabc41a6837dd7ec455` on `main`, published to `origin/main`. |
 | Remote | `origin` = `https://github.com/mahitss/sar_nasa_hack.git` |
-| Application code | Not created |
-| Dependencies | Not installed |
+| Application code | Implemented in `apps/web` (five routes) |
+| Dependencies | Installed in `apps/web` (package-lock.json present) |
 | Supabase project | Not created |
 | Database migrations | Not created |
 | Docker services | Not defined and not started |
@@ -92,7 +92,7 @@ Local setup for later missions is documented in `.env.example`. That file contai
 ## Layout
 
 ```text
-apps/web/                 Next.js application (not created yet)
+apps/web/                 Next.js application (implemented; not deployed)
 services/api/             Go API (not created yet)
 services/worker/          Python worker (not created yet)
 data/manifests/           Versioned catalogue metadata

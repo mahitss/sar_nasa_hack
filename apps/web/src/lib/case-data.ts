@@ -25,9 +25,9 @@ export const ACRONYMS = {
   GSLC: "Geocoded Single Look Complex",
   SCL: "Scene Classification Layer",
   DEM: "Digital Elevation Model",
-  MOE: "Modified Orbit Ephemeris (observed)",
-  NOE: "Nominal Orbit Ephemeris (expected by filename token N)",
-  NRP: "Nominal Radar Pointing (expected by filename token N)",
+  MOE: "Medium precision Orbit Ephemeris (observed)",
+  NOE: "Near real-time Orbit Ephemeris (expected by filename token N)",
+  NRP: "Near real-time Radar Pointing (expected by filename token N)",
 } as const;
 
 export type EvidenceStatus = "Observation" | "Provisional" | "Gap" | "Unresolved";
@@ -56,7 +56,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "SAR",
     date: "2026-09-06",
     status: "Observation",
-    kind: "observation",
+    kind: "measurement",
     summary:
       "Both Frequency A crops share EPSG:32644, 1171 x 1343 pixels, 10 m posting. The GCOV mask is a valid-samples subswath mask.",
     details: [
@@ -77,7 +77,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "SAR",
     date: "2026-09-06",
     status: "Observation",
-    kind: "observation",
+    kind: "measurement",
     summary:
       "Both native GSLC masks are constant code 1 on a 5 m grid. That code is a valid sample, not water, shadow, or layover.",
     details: [
@@ -96,7 +96,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "SAR",
     date: "2026-09-06",
     status: "Provisional",
-    kind: "measurement",
+    kind: "observation",
     summary:
       "Group D40, descending track 5, frame 73, Frequency A 40 MHz, HH+HV. CRID P05023 stays provisional.",
     details: [
@@ -197,7 +197,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "Terrain",
     date: "2026-11-14",
     status: "Unresolved",
-    kind: "hypothesis",
+    kind: "interpretation",
     summary:
       "A shadow model was not run. Filename N expects NOE while the recorded orbit type was MOE.",
     details: [
@@ -239,7 +239,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "Metadata",
     date: "2026-09-30",
     status: "Observation",
-    kind: "measurement",
+    kind: "observation",
     summary:
       "Both products were opened by authenticated HTTPS streaming. Neither complete HDF5 file was stored.",
     details: [
