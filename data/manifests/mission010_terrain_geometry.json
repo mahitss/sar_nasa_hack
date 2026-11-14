@@ -1,0 +1,203 @@
+{
+  "mission": "010",
+  "discovery_window": {
+    "crs": "EPSG:4326",
+    "bbox": [
+      79.75,
+      30.03,
+      79.87,
+      30.15
+    ],
+    "role": "catalogue discovery window, not a lake boundary"
+  },
+  "dem_downloaded": false,
+  "nisar_product_downloaded": false,
+  "nisar_product_opened": false,
+  "terrain_model_run": false,
+  "shadow_or_layover_mask_created": false,
+  "mission006_thresholds_changed": false,
+  "candidate_patches_used_as_geometry_truth": false,
+  "gslc_mask_used_as_terrain": false,
+  "copernicus_dem": {
+    "dataset_id": "COP-DEM_GLO-30-DGED",
+    "product_level": "DSM",
+    "handbook": "geo1988-copernicusdem-spe-002, version 6.1, 09 October 2026",
+    "provider": "Copernicus DEM, edited WorldDEM DSM distributed through the Copernicus Data Space",
+    "horizontal_crs": "WGS84-G1150, EPSG:4326",
+    "vertical_datum": "EGM2008, EPSG:3855",
+    "vertical_unit": "meters",
+    "grid_spacing": "1.0 arc second",
+    "delivery_unit": "1 degree by 1 degree",
+    "data_type": "32-bit float GeoTIFF in the DGED profile",
+    "stated_accuracy": {
+      "absolute_vertical": "< 4 m LE90",
+      "relative_vertical": "< 2 m LE90 where slope is at most 20 percent; < 4 m LE90 where slope is greater than 20 percent, within a 1 degree cell",
+      "absolute_horizontal": "< 6 m CE90"
+    },
+    "access_url": "https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM",
+    "handbook_url": "https://dataspace.copernicus.eu/sites/default/files/media/files/2026-10/geo1988-copernicusdem-spe-002_producthandbook_i6.1.pdf"
+  },
+  "nasadem": {
+    "dataset_id": "NASADEM_HGT.001",
+    "user_guide": "NASADEM User Guide V1.3, January 2025",
+    "horizontal_crs": "WGS84",
+    "vertical_datum": "EGM96 geoid for the merged integer hgt product",
+    "grid_spacing": "1 arc second",
+    "data_type": "2-byte signed integer heights",
+    "acquisition_period": "SRTM 2000-02-11 to 2000-02-21, later reprocessed and void-filled",
+    "collection_extent": "about 56 S to 60 N",
+    "interchangeable_with_copernicus_dem": false,
+    "access_url": "https://www.earthdata.nasa.gov/data/catalog/lpcloud-nasadem-hgt-001",
+    "user_guide_url": "https://lpdaac.usgs.gov/documents/2237/NASADEM_User_Guide_V13.pdf"
+  },
+  "cartodem": {
+    "provider": "NRSC / ISRO",
+    "open_default": false,
+    "access": "Bhuvan login, with a stated limit of 10 DEM tiles per day",
+    "posting": "30 m or coarser described as a free download; finer than 30 m and the 10 m posting have separate clearance rules",
+    "vertical_datum": "not established from the pages retrieved in this mission",
+    "licence_limits": "single-user licence, no redistribution, and no internet hosting of the original product",
+    "access_url": "https://bhuvan-app3.nrsc.gov.in/data/download/help/source/html/steps_to_download_data.htm"
+  },
+  "crop_plan": {
+    "discovery_bbox": [
+      79.75,
+      30.03,
+      79.87,
+      30.15
+    ],
+    "planning_buffer_deg": 0.05,
+    "buffered_bbox": [
+      79.7,
+      29.98,
+      79.92,
+      30.2
+    ],
+    "geocells_lower_left": [
+      {
+        "latitude": 29,
+        "longitude": 79,
+        "dged_stem": "Copernicus_DSM_10_N29_00_E079_00",
+        "nasadem_zip": "NASADEM_HGT_n29e079.zip"
+      },
+      {
+        "latitude": 30,
+        "longitude": 79,
+        "dged_stem": "Copernicus_DSM_10_N30_00_E079_00",
+        "nasadem_zip": "NASADEM_HGT_n30e079.zip"
+      }
+    ],
+    "crop_postings": {
+      "east_west": 793,
+      "north_south": 793
+    },
+    "uncompressed_elevation_bytes": 2515396,
+    "full_geocell_uncompressed_elevation_bytes": 51868804,
+    "bytes_are_uncompressed_float32_elevation_only": true,
+    "compressed_object_size": "not measured; no DEM object was requested",
+    "downloaded": false
+  },
+  "approximate_glo30_ground_posting_m": {
+    "north_south_m": 30.87,
+    "east_west_m": 26.75511070156725,
+    "latitude_deg": 30.09
+  },
+  "nisar_geometry": {
+    "product_format": "NISAR L and S Band Level-1 and Level-2 Data Product Format Document, version 1.2.1",
+    "paths_are_lsar_forms_of_the_ssar_tables": true,
+    "datasets": [
+      {
+        "path": "/science/LSAR/identification/lookDirection",
+        "role": "scene-level label, not a per-pixel incidence angle"
+      },
+      {
+        "path": "/science/LSAR/identification/orbitPassDirection",
+        "role": "scene-level label, not a per-pixel incidence angle"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/orbit/orbitType",
+        "role": "orbit-product label, unresolved against filename fidelity code N"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/orbit/position",
+        "role": "orbit state vector, not a per-pixel geometry raster"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/orbit/velocity",
+        "role": "orbit state vector, not a per-pixel geometry raster"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/radarGrid/incidenceAngle",
+        "role": "ellipsoid incidence cube at target height, not local slope incidence and not the 10 m image grid"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/radarGrid/slantRange",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/radarGrid/losUnitVectorX",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/radarGrid/losUnitVectorY",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/radarGrid/elevationAngle",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GCOV/metadata/processingInformation/parameters/shadowMaskingApplied",
+        "role": "scalar processing flag, not a per-pixel shadow mask"
+      },
+      {
+        "path": "/science/LSAR/GSLC/metadata/radarGrid/incidenceAngle",
+        "role": "ellipsoid incidence cube at target height, not local slope incidence and not the 10 m image grid"
+      },
+      {
+        "path": "/science/LSAR/GSLC/metadata/radarGrid/slantRange",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GSLC/metadata/radarGrid/losUnitVectorX",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      },
+      {
+        "path": "/science/LSAR/GSLC/metadata/radarGrid/losUnitVectorY",
+        "role": "radar-grid geometry cube, not the 10 m GCOV image grid"
+      }
+    ],
+    "not_terrain_masks": [
+      "/science/LSAR/GSLC/grids/frequencyA/mask",
+      "/science/LSAR/GCOV/grids/frequencyA/mask"
+    ],
+    "present_in_mission003_crops": [
+      "/science/LSAR/GCOV/grids/frequencyA/HHHH",
+      "/science/LSAR/GCOV/grids/frequencyA/HVHV",
+      "/science/LSAR/GCOV/grids/frequencyA/numberOfLooks",
+      "/science/LSAR/GCOV/grids/frequencyA/mask",
+      "/science/LSAR/GSLC/grids/frequencyA/mask"
+    ],
+    "orbit_labels": {
+      "filename_fidelity_code": "N",
+      "internal_orbit_type": "MOE",
+      "resolved": false,
+      "reason": "Product Format Document 1.2.1 section 2.2.4 defines N as Near Real-Time fidelity. MOE is a separate orbit-type value."
+    },
+    "source_hdf5_opened_in_this_mission": false
+  },
+  "missing_inputs": [
+    "A Copernicus DEM elevation array for the buffered window",
+    "The GCOV radarGrid incidence, slant-range, and line-of-sight cubes from the source HDF5",
+    "The scalar shadowMaskingApplied flag from the source HDF5",
+    "A measured geolocation error while filename code N and orbitType MOE remain unresolved",
+    "An independent non-water target for a later geometry test"
+  ],
+  "validation_requirements": [
+    "A reference target that is not a Mission 006 candidate patch",
+    "Published sensor metadata for look direction, orbit pass, and the radar-grid cubes",
+    "A DEM whose vertical datum and posting are stated",
+    "A test that a known radar-facing slope and a known radar-away slope receive different geometry labels",
+    "No fitting of a shadow rule to the candidate rasters"
+  ]
+}
