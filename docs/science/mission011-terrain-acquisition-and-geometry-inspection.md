@@ -37,7 +37,11 @@ The elevation bands have no nodata value. All 12,960,000 samples in each geocell
 
 The GeoTIFF coordinate system is horizontal WGS 84 only. The geocell XML identifies the vertical CRS as EGM2008, `gml:id="ogp-crs-3855"`, and also contains the text `vertical: "WGS 84 Geoid EGM08"`. A separate `tsxx:verticalDatumCode` element says `WGS84-G1150`. The handbook Table 1 says the vertical datum is EGM2008, EPSG:3855. Those XML fields were not forced into one value. No height transformation was applied.
 
-The buffered window, west 79.70, south 29.98, east 79.92, north 30.20, selects 793 by 793 sample centers: 720 rows from the northern geocell and 73 from the southern geocell. That matches the Mission 010 uncompressed Float32 estimate of 2,515,396 bytes. The stored crop is DEFLATE compressed and is 2,131,504 bytes. Its sample centers run from 79.70° E to 79.92° E and from 30.20° N to 29.98° N.
+The buffered window, west 79.70, south 29.98, east 79.92, north 30.20, selects 793 by 793 sample centers: 720 rows from the northern geocell and 73 from the southern geocell. Rebuilding that stack from the source grids matches the stored crop value for value. The crop file is 2,131,504 bytes, SHA-256 `ee20119719b07c9207037c30c037c1e70942f185af1b828775a65c8e2599fbbf`. Its sample centers run from 79.70° E to 79.92° E and from 30.20° N to 29.98° N.
+
+The northern geocell's southernmost center is 30.000277777777775° N. The southern geocell's northernmost center is 30.0° N. The separation is one arc-second sample spacing, 0.00027777777777515666°. There is no shared center, and the source values were not interpolated or averaged.
+
+Mission 011.1 measured these grids, checksums, and the crop from the files on disk. It did not download anything. The retrieval timestamp remains 2026-11-14T18:38:43Z. The file inventory against the previous manifest has no missing, extra, or checksum-mismatched paths. The height relation, which was not applied, is ellipsoidal height = orthometric height + geoid undulation, with undulation defined as ellipsoid minus geoid.
 
 ## NISAR geometry
 
@@ -57,7 +61,7 @@ No slope, aspect, shadow mask, layover mask, terrain correction, water reclassif
 
 ## Tests
 
-`python -m unittest tests.scientific.test_mission011_acquisition` on uv CPython 3.12.13 ran 7 tests. All passed. None were skipped.
+`python -m unittest tests.scientific.test_mission011_acquisition` on uv CPython 3.12.13 ran 14 tests. All passed. None were skipped. The OSGeo4W Python 3.12.16 run of the catalogue through Mission 011 modules ran 123 tests. All passed. None were skipped. The second local manifest rebuild produced the same crop checksum and did not download data.
 
 ## Recommendation
 

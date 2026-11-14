@@ -219,32 +219,13 @@
   ],
   "dem_grids": [
     {
-      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_DEM.tif",
+      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_EDM.tif",
       "width": 3600,
       "height": 3600,
-      "dtype": "Float32",
-      "area_or_point": "Point",
-      "geotransform": [
-        78.99986111111112,
-        0.0002777777777777778,
-        0.0,
-        31.000138888888888,
-        0.0,
-        -0.0002777777777777778
-      ],
-      "horizontal_crs": "EPSG:4326",
+      "bands": 1,
+      "dtype": "Byte",
       "nodata": null,
-      "valid_count": 12960000,
-      "nodata_count": 0,
-      "minimum": 626.0,
-      "maximum": 7804.015625
-    },
-    {
-      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_DEM.tif",
-      "width": 3600,
-      "height": 3600,
-      "dtype": "Float32",
-      "area_or_point": "Point",
+      "horizontal_crs": "EPSG:4326",
       "geotransform": [
         78.99986111111112,
         0.0002777777777777778,
@@ -253,33 +234,240 @@
         0.0,
         -0.0002777777777777778
       ],
-      "horizontal_crs": "EPSG:4326",
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 1.0,
+      "maximum": 11.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_FLM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Byte",
       "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        30.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 1.0,
+      "maximum": 7.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_HEM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Float32",
+      "nodata": -32767.0,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        30.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12311537,
+      "nodata_count": 648463,
+      "minimum": 0.027702009305357933,
+      "maximum": 15.582335472106934
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_WBM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Byte",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        30.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 0.0,
+      "maximum": 3.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N29_00_E079_00_DEM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Float32",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        30.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
       "valid_count": 12960000,
       "nodata_count": 0,
       "minimum": 196.6738739013672,
       "maximum": 2765.322998046875
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_EDM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Byte",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        31.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 1.0,
+      "maximum": 11.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_FLM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Byte",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        31.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 1.0,
+      "maximum": 9.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_HEM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Float32",
+      "nodata": -32767.0,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        31.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 7844692,
+      "nodata_count": 5115308,
+      "minimum": 0.13372452557086945,
+      "maximum": 26.236740112304688
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_WBM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Byte",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        31.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 0.0,
+      "maximum": 3.0
+    },
+    {
+      "name": "Copernicus_DSM_COG_10_N30_00_E079_00_DEM.tif",
+      "width": 3600,
+      "height": 3600,
+      "bands": 1,
+      "dtype": "Float32",
+      "nodata": null,
+      "horizontal_crs": "EPSG:4326",
+      "geotransform": [
+        78.99986111111112,
+        0.0002777777777777778,
+        0.0,
+        31.000138888888888,
+        0.0,
+        -0.0002777777777777778
+      ],
+      "area_or_point": "Point",
+      "valid_count": 12960000,
+      "nodata_count": 0,
+      "minimum": 626.0,
+      "maximum": 7804.015625
     }
   ],
   "crop": {
     "path": "data/derived/mission011/glo30_buffered_window_elevation.tif",
-    "width": 793,
-    "height": 793,
+    "present": true,
+    "bytes": 2131504,
+    "sha256": "ee20119719b07c9207037c30c037c1e70942f185af1b828775a65c8e2599fbbf",
+    "recomputed_width": 793,
+    "recomputed_height": 793,
     "sample_centers": {
       "west": 79.7,
       "east": 79.92,
       "north": 30.2,
       "south": 29.98
     },
+    "matches_recomputed_shape": true,
+    "matches_recomputed_values": true,
     "shared_boundary_posting": false,
-    "adjacent_center_spacing_deg": 0.0002777777777777778
+    "adjacent_center_spacing_deg": 0.00027777777777515666,
+    "source_values_altered": false
   },
   "nisar": {
     "opened": false,
     "blocker": "Earthdata range reads redirected repeatedly and ended at HTTP 302 with content type application/json. GDAL /vsicurl/ did not return an HDF5 signature. The complete products were not downloaded.",
     "range_bytes_requested": 1024,
     "hdf5_signature_received": false,
-    "orbit_type_read": false
+    "orbit_type_read": false,
+    "geometry_datasets_read": false,
+    "attitude_type_read": false,
+    "dem_source_read": false,
+    "radar_grid_spacing_read": false
   },
   "vertical_reference": {
     "dem_vertical_datum": "EGM2008 orthometric height",
@@ -287,8 +475,36 @@
     "transformation_applied": false,
     "required_model": "An EGM2008 geoid-undulation grid. Orthometric height plus geoid undulation equals ellipsoidal height when the undulation is the ellipsoid-minus-geoid separation.",
     "horizontal_crs_is_not_a_vertical_datum": true,
-    "geometric_accuracy_does_not_resolve_the_vertical_datum": true
+    "geometric_accuracy_does_not_resolve_the_vertical_datum": true,
+    "xml_statements": {
+      "gml_vertical_names": [
+        "EGM2008 geoid"
+      ],
+      "geoid_notes": [
+        "WGS 84 Geoid EGM08"
+      ],
+      "vertical_datum_codes": [
+        "WGS84-G1150"
+      ],
+      "reconciled": false
+    },
+    "height_formula": "ellipsoidal height = orthometric height + geoid undulation, where undulation is ellipsoid minus geoid"
   },
   "retrieval_timestamp_utc": "2026-11-14T18:38:43Z",
-  "written_at_utc": "2026-11-14T18:45:13Z"
+  "downloaded_during_this_run": false,
+  "record_source": "local files already stored by Mission 011",
+  "file_inventory_check": {
+    "missing": [],
+    "extra": [],
+    "mismatches": []
+  },
+  "seam": {
+    "north_southernmost_center_deg": 30.000277777777775,
+    "south_northernmost_center_deg": 30.0,
+    "center_separation_deg": 0.00027777777777515666,
+    "sample_spacing_deg": 0.0002777777777787094,
+    "shared_sample_center": false,
+    "values_averaged": false,
+    "values_interpolated": false
+  }
 }
