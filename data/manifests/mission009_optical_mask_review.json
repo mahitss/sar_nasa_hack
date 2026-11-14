@@ -1,0 +1,228 @@
+{
+  "mission": "009",
+  "review_timestamp_utc": "2026-11-14T18:04:43Z",
+  "discovery_window": {
+    "crs": "EPSG:4326",
+    "bbox": [
+      79.75,
+      30.03,
+      79.87,
+      30.15
+    ],
+    "role": "catalogue discovery window, not a lake boundary"
+  },
+  "same_date_ground_truth": false,
+  "reflectance_downloaded": false,
+  "water_classified": false,
+  "area_calculated": false,
+  "shoreline_calculated": false,
+  "mission006_thresholds_changed": false,
+  "candidate_patches_projected": false,
+  "sentinel2": {
+    "product": "S2B_MSIL2A_20261002T051649_N0513_R062_T44RLU_20261002T091142",
+    "item_id": "S2B_T44RLU_20261002T052420_L2A",
+    "collection": "sentinel-2-c1-l2a",
+    "processing_level": "L2A",
+    "processing_baseline": "05.13",
+    "acquisition_datetime_utc": "2026-10-02T05:30:31.932000Z",
+    "hours_after_nisar_20260930": 40.13220333333334,
+    "downloads": {
+      "SCL.tif": {
+        "status": 200,
+        "content_type": "image/tiff; application=geotiff; profile=cloud-optimized",
+        "bytes": 1869617,
+        "final_url": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/44/R/LU/2026/10/S2B_T44RLU_20261002T052420_L2A/SCL.tif",
+        "sha256": "a2f03f7ef2c8c0da9f6073af3ec0bafd714b21c6b868a660144f5c7c9c4ae8c7",
+        "url": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/44/R/LU/2026/10/S2B_T44RLU_20261002T052420_L2A/SCL.tif",
+        "catalogue_bytes": 1869617
+      },
+      "CLD_20m.tif": {
+        "status": 200,
+        "content_type": "image/tiff; application=geotiff; profile=cloud-optimized",
+        "bytes": 1660814,
+        "final_url": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/44/R/LU/2026/10/S2B_T44RLU_20261002T052420_L2A/CLD_20m.tif",
+        "sha256": "347c287b93e228e894223f2f3f41e9db0a6260b4b986f4e139e64c980dd86946",
+        "url": "https://e84-earth-search-sentinel-data.s3.us-west-2.amazonaws.com/sentinel-2-c1-l2a/44/R/LU/2026/10/S2B_T44RLU_20261002T052420_L2A/CLD_20m.tif",
+        "catalogue_bytes": 1660814
+      }
+    },
+    "grids": {
+      "SCL.tif": {
+        "path": "data/raw/mission009/SCL.tif",
+        "sha256": "a2f03f7ef2c8c0da9f6073af3ec0bafd714b21c6b868a660144f5c7c9c4ae8c7",
+        "bytes": 1869617,
+        "width": 5490,
+        "height": 5490,
+        "crs": "EPSG:32644",
+        "geotransform": [
+          300000.0,
+          20.0,
+          0.0,
+          3400020.0,
+          0.0,
+          -20.0
+        ],
+        "data_type": "Byte",
+        "nodata": 0.0,
+        "window": {
+          "read_window": {
+            "row_off": 3197,
+            "rows": 672,
+            "col_off": 3973,
+            "cols": 586
+          },
+          "corners_inside_raster": true,
+          "pixel_width_m": 20.0,
+          "pixel_height_m": 20.0,
+          "selected_pixel_footprint_m2": 153804000.0
+        }
+      },
+      "CLD_20m.tif": {
+        "path": "data/raw/mission009/CLD_20m.tif",
+        "sha256": "347c287b93e228e894223f2f3f41e9db0a6260b4b986f4e139e64c980dd86946",
+        "bytes": 1660814,
+        "width": 5490,
+        "height": 5490,
+        "crs": "EPSG:32644",
+        "geotransform": [
+          300000.0,
+          20.0,
+          0.0,
+          3400020.0,
+          0.0,
+          -20.0
+        ],
+        "data_type": "Byte",
+        "nodata": 0.0,
+        "window": {
+          "read_window": {
+            "row_off": 3197,
+            "rows": 672,
+            "col_off": 3973,
+            "cols": 586
+          },
+          "corners_inside_raster": true,
+          "pixel_width_m": 20.0,
+          "pixel_height_m": 20.0,
+          "selected_pixel_footprint_m2": 153804000.0
+        }
+      }
+    },
+    "scl": {
+      "pixel_count": 384510,
+      "class_counts": {
+        "NO_DATA": 0,
+        "SATURATED_OR_DEFECTIVE": 0,
+        "CAST_SHADOWS": 4164,
+        "CLOUD_SHADOWS": 34462,
+        "VEGETATION": 271355,
+        "NOT_VEGETATED": 5706,
+        "WATER": 19,
+        "UNCLASSIFIED": 1212,
+        "CLOUD_MEDIUM_PROBABILITY": 24536,
+        "CLOUD_HIGH_PROBABILITY": 42974,
+        "THIN_CIRRUS": 0,
+        "SNOW_OR_ICE": 82
+      },
+      "unspecified_counts": {},
+      "invalid_nodata_or_defective": 0,
+      "cast_shadow": 4164,
+      "cloud_shadow": 34462,
+      "cloud": 67510,
+      "thin_cirrus": 0,
+      "cloud_or_cirrus": 67510,
+      "snow_or_ice": 82,
+      "other_recorded_classes": 278292,
+      "percent_of_window_pixels": {
+        "invalid_nodata_or_defective": 0.0,
+        "cast_shadow": 1.0829367246625576,
+        "cloud_shadow": 8.962575745754338,
+        "cloud_or_cirrus": 17.55741073054017,
+        "snow_or_ice": 0.02132584328105901,
+        "other_recorded_classes": 72.37575095576187
+      },
+      "water_class_is_validation": false
+    },
+    "cld": {
+      "pixel_count": 384510,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "median": 0.0,
+      "percentile_5": 0.0,
+      "percentile_25": 0.0,
+      "percentile_75": 0.0,
+      "percentile_95": 100.0,
+      "percentile_99": 100.0,
+      "percentile_method": "inclusive linear rank (n-1)*p/100",
+      "histogram_width_10": {
+        "0_9": 333031,
+        "10_19": 1609,
+        "20_29": 1380,
+        "30_39": 1252,
+        "40_49": 1164,
+        "60_69": 962,
+        "50_59": 1064,
+        "70_79": 1033,
+        "80_89": 965,
+        "100_109": 41111,
+        "90_99": 939
+      },
+      "numeric_unit": "stored sample value; PSD 15.1 names this a cloud probability map and the retrieved section does not state a percent encoding"
+    },
+    "overlap": {
+      "scl_cloud_or_cirrus_and_cld_above_zero": 53611,
+      "scl_cloud_or_cirrus_and_cld_zero": 13899,
+      "other_scl_and_cld_above_zero": 1680,
+      "other_scl_and_cld_zero": 315320,
+      "cld_above_zero_is_not_a_tuned_threshold": true,
+      "cld_median_by_scl_class": {
+        "CAST_SHADOWS": 0.0,
+        "CLOUD_HIGH_PROBABILITY": 100.0,
+        "CLOUD_MEDIUM_PROBABILITY": 0.0,
+        "CLOUD_SHADOWS": 0.0,
+        "NOT_VEGETATED": 0.0,
+        "SNOW_OR_ICE": 0.0,
+        "UNCLASSIFIED": 3.0,
+        "VEGETATION": 0.0,
+        "WATER": 0.0
+      }
+    },
+    "mask_coverage_m2_is_not_water_area": true
+  },
+  "landsat": {
+    "product": "LC08_L2SP_145039_20261001_20261009_02_T1_SR",
+    "collection": "landsat-c2l2-sr",
+    "acquisition_datetime_utc": "2026-10-01T05:12:17.380114Z",
+    "hours_after_nisar_20260930": 15.828161142777777,
+    "qa_pixel_url": "https://landsatlook.usgs.gov/data/collection02/level-2/standard/oli-tirs/2026/145/039/LC08_L2SP_145039_20261001_20261009_02_T1/LC08_L2SP_145039_20261001_20261009_02_T1_QA_PIXEL.TIF",
+    "downloaded": false,
+    "access_decision": {
+      "download": false,
+      "qa_pixel_size_bytes": null,
+      "response_body_bytes": 33066,
+      "reasons": [
+        "the response left the LandsatLook object URL",
+        "the response is not a TIFF",
+        "QA_PIXEL object size is unknown"
+      ],
+      "head": {
+        "status": 200,
+        "url": "https://ers.cr.usgs.gov/login?redirectUrl=https://ers.cr.usgs.gov/?redirect_url%3Dhttps%253A%252F%252Flandsatlook.usgs.gov%252Fdata%252Fcollection02%252Flevel-2%252Fstandard%252Foli-tirs%252F2026%252F145%252F039%252FLC08_L2SP_145039_20261001_20261009_02_T1%252FLC08_L2SP_145039_20261001_20261009_02_T1_QA_PIXEL.TIF",
+        "content_length": "33066",
+        "content_type": "text/html; charset=UTF-8",
+        "content_range": null,
+        "redirected": true
+      }
+    },
+    "statistics": null
+  },
+  "specifications": {
+    "sentinel2_scl": "S2-PDGS-CS-DI-PSD issue 15.1, 05/12/2025, Table 68",
+    "sentinel2_cld": "S2-PDGS-CS-DI-PSD issue 15.1, section 3.13.3.3, MSK_CLDPRB cloud probability map",
+    "landsat_qa_pixel": "LSDS-1619 version 6.0, Table 6-2"
+  },
+  "software": {
+    "python": "3.12.16",
+    "gdal": "3.13.3"
+  }
+}
