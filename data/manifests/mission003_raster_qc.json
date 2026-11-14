@@ -1,0 +1,2342 @@
+{
+  "alignment": {
+    "bounds_m": true,
+    "crs": true,
+    "dimensions": true,
+    "geotransform": true,
+    "nodata": false,
+    "pixel_spacing_m": true,
+    "spatial_grid": true
+  },
+  "alignment_note": "CRS, dimensions, pixel spacing, geotransform, and bounds match exactly across all eight crops. Float layers use NoData NaN. The mask uses NoData 255, and that value does not occur inside this crop.",
+  "crop": {
+    "east": 79.87,
+    "north": 30.15,
+    "preserved_crs": "EPSG:32644",
+    "projwin_srs": "EPSG:4326",
+    "resampled": false,
+    "south": 30.03,
+    "west": 79.75
+  },
+  "datasets": {
+    "20260906_HHHH": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4126088,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/HHHH",
+      "diagnostic_db_histogram": {
+        "bin_width_db": 2,
+        "bins": [
+          {
+            "count": 3,
+            "lower_db": -35.0,
+            "upper_db": -33.0
+          },
+          {
+            "count": 4,
+            "lower_db": -33.0,
+            "upper_db": -31.0
+          },
+          {
+            "count": 19,
+            "lower_db": -31.0,
+            "upper_db": -29.0
+          },
+          {
+            "count": 76,
+            "lower_db": -29.0,
+            "upper_db": -27.0
+          },
+          {
+            "count": 165,
+            "lower_db": -27.0,
+            "upper_db": -25.0
+          },
+          {
+            "count": 396,
+            "lower_db": -25.0,
+            "upper_db": -23.0
+          },
+          {
+            "count": 1067,
+            "lower_db": -23.0,
+            "upper_db": -21.0
+          },
+          {
+            "count": 2470,
+            "lower_db": -21.0,
+            "upper_db": -19.0
+          },
+          {
+            "count": 5470,
+            "lower_db": -19.0,
+            "upper_db": -17.0
+          },
+          {
+            "count": 11802,
+            "lower_db": -17.0,
+            "upper_db": -15.0
+          },
+          {
+            "count": 26012,
+            "lower_db": -15.0,
+            "upper_db": -13.0
+          },
+          {
+            "count": 57940,
+            "lower_db": -13.0,
+            "upper_db": -11.0
+          },
+          {
+            "count": 126722,
+            "lower_db": -11.0,
+            "upper_db": -9.0
+          },
+          {
+            "count": 240351,
+            "lower_db": -9.0,
+            "upper_db": -7.0
+          },
+          {
+            "count": 340329,
+            "lower_db": -7.0,
+            "upper_db": -5.0
+          },
+          {
+            "count": 337519,
+            "lower_db": -5.0,
+            "upper_db": -3.0
+          },
+          {
+            "count": 225602,
+            "lower_db": -3.0,
+            "upper_db": -1.0
+          },
+          {
+            "count": 107832,
+            "lower_db": -1.0,
+            "upper_db": 1.0
+          },
+          {
+            "count": 43892,
+            "lower_db": 1.0,
+            "upper_db": 3.0
+          },
+          {
+            "count": 19628,
+            "lower_db": 3.0,
+            "upper_db": 5.0
+          },
+          {
+            "count": 9870,
+            "lower_db": 5.0,
+            "upper_db": 7.0
+          },
+          {
+            "count": 4957,
+            "lower_db": 7.0,
+            "upper_db": 9.0
+          },
+          {
+            "count": 2344,
+            "lower_db": 9.0,
+            "upper_db": 11.0
+          },
+          {
+            "count": 1160,
+            "lower_db": 11.0,
+            "upper_db": 13.0
+          },
+          {
+            "count": 496,
+            "lower_db": 13.0,
+            "upper_db": 15.0
+          },
+          {
+            "count": 234,
+            "lower_db": 15.0,
+            "upper_db": 17.0
+          },
+          {
+            "count": 115,
+            "lower_db": 17.0,
+            "upper_db": 19.0
+          },
+          {
+            "count": 69,
+            "lower_db": 19.0,
+            "upper_db": 21.0
+          },
+          {
+            "count": 57,
+            "lower_db": 21.0,
+            "upper_db": 23.0
+          },
+          {
+            "count": 69,
+            "lower_db": 23.0,
+            "upper_db": 25.0
+          },
+          {
+            "count": 114,
+            "lower_db": 25.0,
+            "upper_db": 27.0
+          },
+          {
+            "count": 190,
+            "lower_db": 27.0,
+            "upper_db": 29.0
+          },
+          {
+            "count": 296,
+            "lower_db": 29.0,
+            "upper_db": 31.0
+          },
+          {
+            "count": 310,
+            "lower_db": 31.0,
+            "upper_db": 33.0
+          },
+          {
+            "count": 229,
+            "lower_db": 33.0,
+            "upper_db": 35.0
+          },
+          {
+            "count": 125,
+            "lower_db": 35.0,
+            "upper_db": 37.0
+          },
+          {
+            "count": 72,
+            "lower_db": 37.0,
+            "upper_db": 39.0
+          },
+          {
+            "count": 28,
+            "lower_db": 39.0,
+            "upper_db": 41.0
+          },
+          {
+            "count": 5,
+            "lower_db": 41.0,
+            "upper_db": 43.0
+          },
+          {
+            "count": 1,
+            "lower_db": 43.0,
+            "upper_db": 45.0
+          },
+          {
+            "count": 2,
+            "lower_db": 45.0,
+            "upper_db": 47.0
+          }
+        ],
+        "quantity": "10*log10(linear_power) for positive finite samples"
+      },
+      "diagnostic_db_profile": {
+        "column_means": {
+          "high_frequency_residual_std_db": 0.4232792578473731,
+          "largest_adjacent_step_db": 0.47461017066077993,
+          "profile_maximum_db": -4.049686452953368,
+          "profile_minimum_db": -6.559736605101065,
+          "profile_std_db": 0.38889573562515095
+        },
+        "row_means": {
+          "high_frequency_residual_std_db": 0.3564832041501606,
+          "largest_adjacent_step_db": 0.5343827302838235,
+          "profile_maximum_db": -3.806058615186033,
+          "profile_minimum_db": -6.143288638814741,
+          "profile_std_db": 0.3318801272621633
+        }
+      },
+      "diagnostic_png": "data/processed/mission003/20260906_gcov_frequencyA_HHHH_db_diagnostic.png",
+      "finite_count": 1568042,
+      "finite_statistics": {
+        "maximum": 37714.5,
+        "mean": 2.361770415919772,
+        "minimum": 0.0003533773124217987,
+        "percentiles": {
+          "1": 0.02634025812149048,
+          "25": 0.175140380859375,
+          "5": 0.06698613166809082,
+          "50": 0.30483245849609375,
+          "75": 0.5224761962890625,
+          "90": 0.8882057189941417,
+          "95": 1.313507080078125,
+          "99": 3.8544366455078176,
+          "99.9": 77.76036816428541,
+          "99.99": 4079.077237499325
+        },
+        "standard_deviation": 94.07237245534981
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "highest_pixels": [
+        {
+          "column": 663,
+          "neighbourhood_5x5": [
+            [
+              271.984375,
+              620.71875,
+              8.720947265625,
+              0.1555347442626953,
+              1.6974639892578125
+            ],
+            [
+              1173.71875,
+              634.1484375,
+              713.6796875,
+              184.01171875,
+              3.268157958984375
+            ],
+            [
+              2886.84375,
+              3183.25,
+              37714.5,
+              5756.125,
+              0.7208251953125
+            ],
+            [
+              8323.25,
+              6658.625,
+              null,
+              261.83203125,
+              16.107421875
+            ],
+            [
+              5915.625,
+              15081.5,
+              4588.8125,
+              543.8515625,
+              1.3613128662109375
+            ]
+          ],
+          "pixel_center_easting_m": 386105.0,
+          "pixel_center_northing_m": 3328265.0,
+          "row": 780,
+          "value": 37714.5
+        },
+        {
+          "column": 657,
+          "neighbourhood_5x5": [
+            [
+              936.3046875,
+              100.060546875,
+              1352.875,
+              null,
+              3045.28125
+            ],
+            [
+              3146.125,
+              4154.25,
+              5699.1875,
+              6877.3125,
+              5793.875
+            ],
+            [
+              371.5703125,
+              1857.65625,
+              33233.0,
+              8102.1875,
+              6469.4375
+            ],
+            [
+              344.53125,
+              1172.734375,
+              1952.21875,
+              4821.0625,
+              7088.3125
+            ],
+            [
+              0.32872772216796875,
+              73.904296875,
+              239.9609375,
+              286.109375,
+              296.70703125
+            ]
+          ],
+          "pixel_center_easting_m": 386045.0,
+          "pixel_center_northing_m": 3328255.0,
+          "row": 781,
+          "value": 33233.0
+        },
+        {
+          "column": 658,
+          "neighbourhood_5x5": [
+            [
+              2.148223876953125,
+              3.193206787109375,
+              1.955230712890625,
+              1.3853912353515625,
+              0.675445556640625
+            ],
+            [
+              0.69525146484375,
+              3.220123291015625,
+              9.908203125,
+              0.8629989624023438,
+              0.10406875610351562
+            ],
+            [
+              322.671875,
+              4493.75,
+              21143.0,
+              1753.859375,
+              530.7109375
+            ],
+            [
+              100.060546875,
+              1352.875,
+              null,
+              3045.28125,
+              2794.8125
+            ],
+            [
+              4154.25,
+              5699.1875,
+              6877.3125,
+              5793.875,
+              3315.5625
+            ]
+          ],
+          "pixel_center_easting_m": 386055.0,
+          "pixel_center_northing_m": 3328285.0,
+          "row": 778,
+          "value": 21143.0
+        },
+        {
+          "column": 619,
+          "neighbourhood_5x5": [
+            [
+              2987.9375,
+              1536.125,
+              3326.75,
+              8572.625,
+              3088.75
+            ],
+            [
+              8580.375,
+              7341.5625,
+              6080.625,
+              1773.484375,
+              4552.125
+            ],
+            [
+              11187.75,
+              12246.875,
+              16564.5,
+              6301.125,
+              3039.75
+            ],
+            [
+              944.78125,
+              5149.25,
+              483.81640625,
+              5860.0,
+              7533.3125
+            ],
+            [
+              1106.5,
+              2466.875,
+              2427.375,
+              null,
+              4462.5
+            ]
+          ],
+          "pixel_center_easting_m": 385665.0,
+          "pixel_center_northing_m": 3331535.0,
+          "row": 453,
+          "value": 16564.5
+        },
+        {
+          "column": 613,
+          "neighbourhood_5x5": [
+            [
+              10646.375,
+              2073.0,
+              7181.6875,
+              5864.0625,
+              1390.21875
+            ],
+            [
+              4363.0625,
+              1774.65625,
+              8461.375,
+              4428.1875,
+              1508.171875
+            ],
+            [
+              263.3828125,
+              3005.625,
+              15545.5,
+              9601.875,
+              7112.25
+            ],
+            [
+              1764.15625,
+              5051.0625,
+              2927.78125,
+              4712.5,
+              7252.75
+            ],
+            [
+              104.0341796875,
+              372.5078125,
+              915.265625,
+              953.3125,
+              3825.65625
+            ]
+          ],
+          "pixel_center_easting_m": 385605.0,
+          "pixel_center_northing_m": 3331555.0,
+          "row": 451,
+          "value": 15545.5
+        }
+      ],
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Covariance between HH and HH",
+        "grid_mapping": "projection",
+        "long_name": "Geocoded polarimetric covariance term HHHH",
+        "max_value": "1023334.1",
+        "mean_value": "2.4023845",
+        "min_value": "1.2244299e-16",
+        "sample_stddev": "190.8147",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:03:53Z",
+      "nodata": "nan",
+      "nonfinite_count": 4611,
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HHHH.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "4bb8d2751b70c8215004a9c60b8735998f669421791653691a3a82a388ef527b",
+      "values_at_or_above": {
+        "10": 4543,
+        "100": 1520,
+        "1000": 926,
+        "10000": 14
+      },
+      "width": 1171
+    },
+    "20260906_HVHV": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4116191,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/HVHV",
+      "diagnostic_db_histogram": {
+        "bin_width_db": 2,
+        "bins": [
+          {
+            "count": 3,
+            "lower_db": -40.0,
+            "upper_db": -38.0
+          },
+          {
+            "count": 2,
+            "lower_db": -38.0,
+            "upper_db": -36.0
+          },
+          {
+            "count": 20,
+            "lower_db": -36.0,
+            "upper_db": -34.0
+          },
+          {
+            "count": 64,
+            "lower_db": -34.0,
+            "upper_db": -32.0
+          },
+          {
+            "count": 160,
+            "lower_db": -32.0,
+            "upper_db": -30.0
+          },
+          {
+            "count": 493,
+            "lower_db": -30.0,
+            "upper_db": -28.0
+          },
+          {
+            "count": 1190,
+            "lower_db": -28.0,
+            "upper_db": -26.0
+          },
+          {
+            "count": 2878,
+            "lower_db": -26.0,
+            "upper_db": -24.0
+          },
+          {
+            "count": 6464,
+            "lower_db": -24.0,
+            "upper_db": -22.0
+          },
+          {
+            "count": 14676,
+            "lower_db": -22.0,
+            "upper_db": -20.0
+          },
+          {
+            "count": 32581,
+            "lower_db": -20.0,
+            "upper_db": -18.0
+          },
+          {
+            "count": 69890,
+            "lower_db": -18.0,
+            "upper_db": -16.0
+          },
+          {
+            "count": 143183,
+            "lower_db": -16.0,
+            "upper_db": -14.0
+          },
+          {
+            "count": 247678,
+            "lower_db": -14.0,
+            "upper_db": -12.0
+          },
+          {
+            "count": 333576,
+            "lower_db": -12.0,
+            "upper_db": -10.0
+          },
+          {
+            "count": 329316,
+            "lower_db": -10.0,
+            "upper_db": -8.0
+          },
+          {
+            "count": 221488,
+            "lower_db": -8.0,
+            "upper_db": -6.0
+          },
+          {
+            "count": 101085,
+            "lower_db": -6.0,
+            "upper_db": -4.0
+          },
+          {
+            "count": 36666,
+            "lower_db": -4.0,
+            "upper_db": -2.0
+          },
+          {
+            "count": 13480,
+            "lower_db": -2.0,
+            "upper_db": 0.0
+          },
+          {
+            "count": 6062,
+            "lower_db": 0.0,
+            "upper_db": 2.0
+          },
+          {
+            "count": 2842,
+            "lower_db": 2.0,
+            "upper_db": 4.0
+          },
+          {
+            "count": 1450,
+            "lower_db": 4.0,
+            "upper_db": 6.0
+          },
+          {
+            "count": 667,
+            "lower_db": 6.0,
+            "upper_db": 8.0
+          },
+          {
+            "count": 328,
+            "lower_db": 8.0,
+            "upper_db": 10.0
+          },
+          {
+            "count": 168,
+            "lower_db": 10.0,
+            "upper_db": 12.0
+          },
+          {
+            "count": 95,
+            "lower_db": 12.0,
+            "upper_db": 14.0
+          },
+          {
+            "count": 67,
+            "lower_db": 14.0,
+            "upper_db": 16.0
+          },
+          {
+            "count": 58,
+            "lower_db": 16.0,
+            "upper_db": 18.0
+          },
+          {
+            "count": 64,
+            "lower_db": 18.0,
+            "upper_db": 20.0
+          },
+          {
+            "count": 108,
+            "lower_db": 20.0,
+            "upper_db": 22.0
+          },
+          {
+            "count": 237,
+            "lower_db": 22.0,
+            "upper_db": 24.0
+          },
+          {
+            "count": 322,
+            "lower_db": 24.0,
+            "upper_db": 26.0
+          },
+          {
+            "count": 330,
+            "lower_db": 26.0,
+            "upper_db": 28.0
+          },
+          {
+            "count": 231,
+            "lower_db": 28.0,
+            "upper_db": 30.0
+          },
+          {
+            "count": 72,
+            "lower_db": 30.0,
+            "upper_db": 32.0
+          },
+          {
+            "count": 38,
+            "lower_db": 32.0,
+            "upper_db": 34.0
+          },
+          {
+            "count": 9,
+            "lower_db": 34.0,
+            "upper_db": 36.0
+          },
+          {
+            "count": 1,
+            "lower_db": 36.0,
+            "upper_db": 38.0
+          }
+        ],
+        "quantity": "10*log10(linear_power) for positive finite samples"
+      },
+      "diagnostic_db_profile": {
+        "column_means": {
+          "high_frequency_residual_std_db": 0.6812440243295033,
+          "largest_adjacent_step_db": 0.4595077903575131,
+          "profile_maximum_db": -9.197578025654895,
+          "profile_minimum_db": -12.053560264711203,
+          "profile_std_db": 0.4206302826007278
+        },
+        "row_means": {
+          "high_frequency_residual_std_db": 0.6113123854405412,
+          "largest_adjacent_step_db": 0.5546906509132103,
+          "profile_maximum_db": -9.14380945527442,
+          "profile_minimum_db": -11.619871668270658,
+          "profile_std_db": 0.35022277521899026
+        }
+      },
+      "diagnostic_png": "data/processed/mission003/20260906_gcov_frequencyA_HVHV_db_diagnostic.png",
+      "finite_count": 1568042,
+      "finite_statistics": {
+        "maximum": 4851.8125,
+        "mean": 0.5997237393322307,
+        "minimum": 0.000124320387840271,
+        "percentiles": {
+          "1": 0.00754673957824707,
+          "25": 0.05110025405883789,
+          "5": 0.01877623796463013,
+          "50": 0.09138822555541992,
+          "75": 0.15692520141601562,
+          "90": 0.2570343017578125,
+          "95": 0.35832939147949183,
+          "99": 0.8843550109863294,
+          "99.9": 21.401414794960942,
+          "99.99": 915.174224218712
+        },
+        "standard_deviation": 20.42437513537145
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "highest_pixels": [
+        {
+          "column": 669,
+          "neighbourhood_5x5": [
+            [
+              243.5234375,
+              340.49609375,
+              257.9140625,
+              561.75,
+              1440.75
+            ],
+            [
+              289.4921875,
+              1864.96875,
+              2710.1875,
+              2199.5625,
+              1681.515625
+            ],
+            [
+              284.34765625,
+              3257.59375,
+              4851.8125,
+              2395.75,
+              499.546875
+            ],
+            [
+              40.4599609375,
+              263.05859375,
+              591.5625,
+              518.5,
+              692.03125
+            ],
+            [
+              136.869140625,
+              5.42626953125,
+              0.04480600357055664,
+              43.37451171875,
+              33.2001953125
+            ]
+          ],
+          "pixel_center_easting_m": 386165.0,
+          "pixel_center_northing_m": 3331335.0,
+          "row": 473,
+          "value": 4851.8125
+        },
+        {
+          "column": 618,
+          "neighbourhood_5x5": [
+            [
+              752.2265625,
+              679.3046875,
+              572.7421875,
+              565.8515625,
+              1261.09375
+            ],
+            [
+              2073.59375,
+              947.8828125,
+              252.8984375,
+              358.38671875,
+              511.7890625
+            ],
+            [
+              1703.546875,
+              3514.0,
+              3796.0625,
+              672.3984375,
+              378.41015625
+            ],
+            [
+              263.79296875,
+              462.140625,
+              1564.578125,
+              783.9375,
+              818.3203125
+            ],
+            [
+              80.40625,
+              203.369140625,
+              726.921875,
+              735.78125,
+              null
+            ]
+          ],
+          "pixel_center_easting_m": 385655.0,
+          "pixel_center_northing_m": 3331535.0,
+          "row": 453,
+          "value": 3796.0625
+        },
+        {
+          "column": 617,
+          "neighbourhood_5x5": [
+            [
+              791.796875,
+              752.2265625,
+              679.3046875,
+              572.7421875,
+              565.8515625
+            ],
+            [
+              2058.9375,
+              2073.59375,
+              947.8828125,
+              252.8984375,
+              358.38671875
+            ],
+            [
+              149.599609375,
+              1703.546875,
+              3514.0,
+              3796.0625,
+              672.3984375
+            ],
+            [
+              290.7734375,
+              263.79296875,
+              462.140625,
+              1564.578125,
+              783.9375
+            ],
+            [
+              240.2109375,
+              80.40625,
+              203.369140625,
+              726.921875,
+              735.78125
+            ]
+          ],
+          "pixel_center_easting_m": 385645.0,
+          "pixel_center_northing_m": 3331535.0,
+          "row": 453,
+          "value": 3514.0
+        },
+        {
+          "column": 627,
+          "neighbourhood_5x5": [
+            [
+              1986.96875,
+              1549.578125,
+              1060.28125,
+              341.5703125,
+              431.61328125
+            ],
+            [
+              1325.375,
+              2255.25,
+              1631.515625,
+              551.0390625,
+              144.5078125
+            ],
+            [
+              null,
+              2584.46875,
+              3359.96875,
+              2924.96875,
+              1123.25
+            ],
+            [
+              647.90625,
+              1567.640625,
+              3119.375,
+              613.03125,
+              278.58203125
+            ],
+            [
+              36.1630859375,
+              41.52197265625,
+              381.33203125,
+              637.65625,
+              345.02734375
+            ]
+          ],
+          "pixel_center_easting_m": 385745.0,
+          "pixel_center_northing_m": 3331465.0,
+          "row": 460,
+          "value": 3359.96875
+        },
+        {
+          "column": 668,
+          "neighbourhood_5x5": [
+            [
+              250.6953125,
+              243.5234375,
+              340.49609375,
+              257.9140625,
+              561.75
+            ],
+            [
+              162.36328125,
+              289.4921875,
+              1864.96875,
+              2710.1875,
+              2199.5625
+            ],
+            [
+              397.2734375,
+              284.34765625,
+              3257.59375,
+              4851.8125,
+              2395.75
+            ],
+            [
+              115.0693359375,
+              40.4599609375,
+              263.05859375,
+              591.5625,
+              518.5
+            ],
+            [
+              589.1796875,
+              136.869140625,
+              5.42626953125,
+              0.04480600357055664,
+              43.37451171875
+            ]
+          ],
+          "pixel_center_easting_m": 386155.0,
+          "pixel_center_northing_m": 3331335.0,
+          "row": 473,
+          "value": 3257.59375
+        }
+      ],
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Covariance between HV and HV",
+        "grid_mapping": "projection",
+        "long_name": "Geocoded polarimetric covariance term HVHV",
+        "max_value": "30506.395",
+        "mean_value": "0.34886682",
+        "min_value": "1.4737113e-17",
+        "sample_stddev": "15.650733",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:15:26Z",
+      "nodata": "nan",
+      "nonfinite_count": 4611,
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HVHV.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "0ea1e7dcb3ab8e9e7af62e34c1b45d919a0254e7d3dee273addeb97a87f530b7",
+      "values_at_or_above": {
+        "10": 1800,
+        "100": 1348,
+        "1000": 120,
+        "10000": 0
+      },
+      "width": 1171
+    },
+    "20260906_mask": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 14888,
+      "crs": "EPSG:32644",
+      "data_type": "Byte",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/mask",
+      "finite_count": 1572653,
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "metadata": {
+        "_FillValue": "255",
+        "description": "Mask indicating the subswath number associated with valid GCOV samples. A GCOV sample is only considered valid if it is generated from fully-focused radar samples. If at least one radar sample in the averaging set is partially focused or invalid, the corresponding mask pixel will contain the value 0. GCOV pixels outside of the radar acquisition extent are filled with the value 255",
+        "grid_mapping": "projection",
+        "long_name": "Valid samples subswath mask",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:18:20Z",
+      "nodata": 255.0,
+      "nonfinite_count": 0,
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_mask.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "618cbd541b1543b861ad998c7d38b071c2ccab75e258fabf08d720b777ab2c73",
+      "value_counts": {
+        "0": 4611,
+        "1": 1568042
+      },
+      "width": 1171
+    },
+    "20260906_numberOfLooks": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4959182,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/numberOfLooks",
+      "finite_count": 1568042,
+      "finite_statistics": {
+        "maximum": 16.38661766052246,
+        "mean": 4.706461899978501,
+        "minimum": 4.670321462896254e-09,
+        "percentiles": {
+          "1": 0.10299076400697231,
+          "25": 2.1719542145729065,
+          "5": 0.39819024950265886,
+          "50": 4.90416693687439,
+          "75": 6.978619933128357,
+          "90": 8.362034606933594,
+          "95": 9.069948768615722,
+          "99": 10.331761169433594,
+          "99.9": 11.236777140617384,
+          "99.99": 11.54917113714217
+        },
+        "standard_deviation": 2.805295041587006
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Number of averaged radar-grid pixels for covariance estimation",
+        "grid_mapping": "projection",
+        "long_name": "Number of radar looks",
+        "max_value": "36.371593",
+        "mean_value": "4.6480899",
+        "min_value": "6.5434913e-13",
+        "sample_stddev": "1.9430472",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:16:38Z",
+      "nodata": "nan",
+      "nonfinite_count": 4611,
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_numberOfLooks.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "ebf8924c8af37ce4e10afef7f2bb8e719df4cf1847b883a69e25651f4b635e31",
+      "unique_finite_value_count": 1522439,
+      "width": 1171
+    },
+    "20260930_HHHH": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4129382,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/HHHH",
+      "diagnostic_db_histogram": {
+        "bin_width_db": 2,
+        "bins": [
+          {
+            "count": 4,
+            "lower_db": -33.0,
+            "upper_db": -31.0
+          },
+          {
+            "count": 20,
+            "lower_db": -31.0,
+            "upper_db": -29.0
+          },
+          {
+            "count": 54,
+            "lower_db": -29.0,
+            "upper_db": -27.0
+          },
+          {
+            "count": 158,
+            "lower_db": -27.0,
+            "upper_db": -25.0
+          },
+          {
+            "count": 437,
+            "lower_db": -25.0,
+            "upper_db": -23.0
+          },
+          {
+            "count": 1120,
+            "lower_db": -23.0,
+            "upper_db": -21.0
+          },
+          {
+            "count": 2704,
+            "lower_db": -21.0,
+            "upper_db": -19.0
+          },
+          {
+            "count": 5780,
+            "lower_db": -19.0,
+            "upper_db": -17.0
+          },
+          {
+            "count": 13115,
+            "lower_db": -17.0,
+            "upper_db": -15.0
+          },
+          {
+            "count": 29597,
+            "lower_db": -15.0,
+            "upper_db": -13.0
+          },
+          {
+            "count": 67763,
+            "lower_db": -13.0,
+            "upper_db": -11.0
+          },
+          {
+            "count": 146995,
+            "lower_db": -11.0,
+            "upper_db": -9.0
+          },
+          {
+            "count": 260878,
+            "lower_db": -9.0,
+            "upper_db": -7.0
+          },
+          {
+            "count": 344713,
+            "lower_db": -7.0,
+            "upper_db": -5.0
+          },
+          {
+            "count": 319030,
+            "lower_db": -5.0,
+            "upper_db": -3.0
+          },
+          {
+            "count": 200579,
+            "lower_db": -3.0,
+            "upper_db": -1.0
+          },
+          {
+            "count": 93357,
+            "lower_db": -1.0,
+            "upper_db": 1.0
+          },
+          {
+            "count": 40378,
+            "lower_db": 1.0,
+            "upper_db": 3.0
+          },
+          {
+            "count": 19507,
+            "lower_db": 3.0,
+            "upper_db": 5.0
+          },
+          {
+            "count": 10352,
+            "lower_db": 5.0,
+            "upper_db": 7.0
+          },
+          {
+            "count": 5301,
+            "lower_db": 7.0,
+            "upper_db": 9.0
+          },
+          {
+            "count": 2547,
+            "lower_db": 9.0,
+            "upper_db": 11.0
+          },
+          {
+            "count": 1255,
+            "lower_db": 11.0,
+            "upper_db": 13.0
+          },
+          {
+            "count": 519,
+            "lower_db": 13.0,
+            "upper_db": 15.0
+          },
+          {
+            "count": 214,
+            "lower_db": 15.0,
+            "upper_db": 17.0
+          },
+          {
+            "count": 129,
+            "lower_db": 17.0,
+            "upper_db": 19.0
+          },
+          {
+            "count": 60,
+            "lower_db": 19.0,
+            "upper_db": 21.0
+          },
+          {
+            "count": 56,
+            "lower_db": 21.0,
+            "upper_db": 23.0
+          },
+          {
+            "count": 94,
+            "lower_db": 23.0,
+            "upper_db": 25.0
+          },
+          {
+            "count": 136,
+            "lower_db": 25.0,
+            "upper_db": 27.0
+          },
+          {
+            "count": 234,
+            "lower_db": 27.0,
+            "upper_db": 29.0
+          },
+          {
+            "count": 281,
+            "lower_db": 29.0,
+            "upper_db": 31.0
+          },
+          {
+            "count": 273,
+            "lower_db": 31.0,
+            "upper_db": 33.0
+          },
+          {
+            "count": 197,
+            "lower_db": 33.0,
+            "upper_db": 35.0
+          },
+          {
+            "count": 119,
+            "lower_db": 35.0,
+            "upper_db": 37.0
+          },
+          {
+            "count": 58,
+            "lower_db": 37.0,
+            "upper_db": 39.0
+          },
+          {
+            "count": 28,
+            "lower_db": 39.0,
+            "upper_db": 41.0
+          },
+          {
+            "count": 9,
+            "lower_db": 41.0,
+            "upper_db": 43.0
+          },
+          {
+            "count": 3,
+            "lower_db": 43.0,
+            "upper_db": 45.0
+          }
+        ],
+        "quantity": "10*log10(linear_power) for positive finite samples"
+      },
+      "diagnostic_db_profile": {
+        "column_means": {
+          "high_frequency_residual_std_db": 0.43873976564135725,
+          "largest_adjacent_step_db": 0.46866235511703813,
+          "profile_maximum_db": -4.105210538539562,
+          "profile_minimum_db": -6.8555752006115025,
+          "profile_std_db": 0.3916907089850694
+        },
+        "row_means": {
+          "high_frequency_residual_std_db": 0.37039436292194655,
+          "largest_adjacent_step_db": 0.5043270075627566,
+          "profile_maximum_db": -3.9875812031271014,
+          "profile_minimum_db": -6.432060194308854,
+          "profile_std_db": 0.3647968335344506
+        }
+      },
+      "diagnostic_png": "data/processed/mission003/20260930_gcov_frequencyA_HHHH_db_diagnostic.png",
+      "finite_count": 1568054,
+      "finite_statistics": {
+        "maximum": 21008.25,
+        "mean": 2.234916078810628,
+        "minimum": 0.0006141439080238342,
+        "percentiles": {
+          "1": 0.025293869972229006,
+          "25": 0.16077852249145508,
+          "5": 0.06243784427642823,
+          "50": 0.28166961669921875,
+          "75": 0.487548828125,
+          "90": 0.8472976684570312,
+          "95": 1.2935386657714822,
+          "99": 4.0108642578125,
+          "99.9": 72.57415039065472,
+          "99.99": 3919.129496874084
+        },
+        "standard_deviation": 90.31322754010013
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "highest_pixels": [
+        {
+          "column": 673,
+          "neighbourhood_5x5": [
+            [
+              1324.96875,
+              1180.0625,
+              6806.6875,
+              3213.90625,
+              2.85687255859375
+            ],
+            [
+              1375.15625,
+              1815.171875,
+              2334.40625,
+              2762.875,
+              67.3671875
+            ],
+            [
+              4528.8125,
+              8388.5,
+              21008.25,
+              1691.984375,
+              813.4765625
+            ],
+            [
+              4725.4375,
+              2728.375,
+              689.65625,
+              1595.0,
+              2270.84375
+            ],
+            [
+              4482.375,
+              3301.34375,
+              689.65625,
+              463.34765625,
+              12.6578369140625
+            ]
+          ],
+          "pixel_center_easting_m": 386205.0,
+          "pixel_center_northing_m": 3331365.0,
+          "row": 470,
+          "value": 21008.25
+        },
+        {
+          "column": 621,
+          "neighbourhood_5x5": [
+            [
+              1924.59375,
+              1022.984375,
+              815.9609375,
+              838.8515625,
+              1468.8125
+            ],
+            [
+              1261.765625,
+              null,
+              2507.25,
+              1679.984375,
+              794.90625
+            ],
+            [
+              511.52734375,
+              null,
+              20681.25,
+              17880.5,
+              2287.3125
+            ],
+            [
+              714.296875,
+              689.65625,
+              null,
+              17558.0,
+              4269.5
+            ],
+            [
+              null,
+              null,
+              null,
+              1911.328125,
+              2265.875
+            ]
+          ],
+          "pixel_center_easting_m": 385685.0,
+          "pixel_center_northing_m": 3331515.0,
+          "row": 455,
+          "value": 20681.25
+        },
+        {
+          "column": 636,
+          "neighbourhood_5x5": [
+            [
+              2124.375,
+              1569.109375,
+              1597.109375,
+              898.6171875,
+              4506.5
+            ],
+            [
+              818.484375,
+              1136.125,
+              6872.5,
+              1973.84375,
+              1832.703125
+            ],
+            [
+              4721.8125,
+              9317.875,
+              20101.5,
+              8329.0,
+              425.5
+            ],
+            [
+              4082.28125,
+              2111.125,
+              2555.53125,
+              4512.125,
+              1239.078125
+            ],
+            [
+              2560.59375,
+              3194.71875,
+              740.5859375,
+              4337.9375,
+              1828.21875
+            ]
+          ],
+          "pixel_center_easting_m": 385835.0,
+          "pixel_center_northing_m": 3331355.0,
+          "row": 471,
+          "value": 20101.5
+        },
+        {
+          "column": 654,
+          "neighbourhood_5x5": [
+            [
+              1035.4375,
+              2612.46875,
+              3403.09375,
+              1792.140625,
+              721.8046875
+            ],
+            [
+              1403.15625,
+              3650.5,
+              1806.21875,
+              3274.65625,
+              1655.640625
+            ],
+            [
+              5857.9375,
+              16333.5,
+              18991.25,
+              4838.8125,
+              1526.3125
+            ],
+            [
+              1130.21875,
+              279.625,
+              6120.4375,
+              2813.46875,
+              399.8125
+            ],
+            [
+              810.15625,
+              1995.109375,
+              2433.375,
+              1483.828125,
+              443.27734375
+            ]
+          ],
+          "pixel_center_easting_m": 386015.0,
+          "pixel_center_northing_m": 3331305.0,
+          "row": 476,
+          "value": 18991.25
+        },
+        {
+          "column": 622,
+          "neighbourhood_5x5": [
+            [
+              1022.984375,
+              815.9609375,
+              838.8515625,
+              1468.8125,
+              3363.0625
+            ],
+            [
+              null,
+              2507.25,
+              1679.984375,
+              794.90625,
+              1403.140625
+            ],
+            [
+              null,
+              20681.25,
+              17880.5,
+              2287.3125,
+              1044.578125
+            ],
+            [
+              689.65625,
+              null,
+              17558.0,
+              4269.5,
+              3670.03125
+            ],
+            [
+              null,
+              null,
+              1911.328125,
+              2265.875,
+              2185.4375
+            ]
+          ],
+          "pixel_center_easting_m": 385695.0,
+          "pixel_center_northing_m": 3331515.0,
+          "row": 455,
+          "value": 17880.5
+        }
+      ],
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Covariance between HH and HH",
+        "grid_mapping": "projection",
+        "long_name": "Geocoded polarimetric covariance term HHHH",
+        "max_value": "303251.56",
+        "mean_value": "2.248806",
+        "min_value": "2.80853e-17",
+        "sample_stddev": "138.93245",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:14:51Z",
+      "nodata": "nan",
+      "nonfinite_count": 4599,
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HHHH.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "c0255a6e14d762a6a65c0de30976d4f943d750094ea1cee1c1c12b80147cc943",
+      "values_at_or_above": {
+        "10": 4722,
+        "100": 1521,
+        "1000": 829,
+        "10000": 21
+      },
+      "width": 1171
+    },
+    "20260930_HVHV": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4118103,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/HVHV",
+      "diagnostic_db_histogram": {
+        "bin_width_db": 2,
+        "bins": [
+          {
+            "count": 12,
+            "lower_db": -37.0,
+            "upper_db": -35.0
+          },
+          {
+            "count": 45,
+            "lower_db": -35.0,
+            "upper_db": -33.0
+          },
+          {
+            "count": 160,
+            "lower_db": -33.0,
+            "upper_db": -31.0
+          },
+          {
+            "count": 390,
+            "lower_db": -31.0,
+            "upper_db": -29.0
+          },
+          {
+            "count": 1036,
+            "lower_db": -29.0,
+            "upper_db": -27.0
+          },
+          {
+            "count": 2509,
+            "lower_db": -27.0,
+            "upper_db": -25.0
+          },
+          {
+            "count": 5750,
+            "lower_db": -25.0,
+            "upper_db": -23.0
+          },
+          {
+            "count": 13677,
+            "lower_db": -23.0,
+            "upper_db": -21.0
+          },
+          {
+            "count": 31205,
+            "lower_db": -21.0,
+            "upper_db": -19.0
+          },
+          {
+            "count": 69173,
+            "lower_db": -19.0,
+            "upper_db": -17.0
+          },
+          {
+            "count": 138867,
+            "lower_db": -17.0,
+            "upper_db": -15.0
+          },
+          {
+            "count": 232439,
+            "lower_db": -15.0,
+            "upper_db": -13.0
+          },
+          {
+            "count": 315578,
+            "lower_db": -13.0,
+            "upper_db": -11.0
+          },
+          {
+            "count": 330102,
+            "lower_db": -11.0,
+            "upper_db": -9.0
+          },
+          {
+            "count": 240301,
+            "lower_db": -9.0,
+            "upper_db": -7.0
+          },
+          {
+            "count": 116361,
+            "lower_db": -7.0,
+            "upper_db": -5.0
+          },
+          {
+            "count": 41581,
+            "lower_db": -5.0,
+            "upper_db": -3.0
+          },
+          {
+            "count": 14948,
+            "lower_db": -3.0,
+            "upper_db": -1.0
+          },
+          {
+            "count": 6665,
+            "lower_db": -1.0,
+            "upper_db": 1.0
+          },
+          {
+            "count": 2983,
+            "lower_db": 1.0,
+            "upper_db": 3.0
+          },
+          {
+            "count": 1434,
+            "lower_db": 3.0,
+            "upper_db": 5.0
+          },
+          {
+            "count": 710,
+            "lower_db": 5.0,
+            "upper_db": 7.0
+          },
+          {
+            "count": 340,
+            "lower_db": 7.0,
+            "upper_db": 9.0
+          },
+          {
+            "count": 161,
+            "lower_db": 9.0,
+            "upper_db": 11.0
+          },
+          {
+            "count": 91,
+            "lower_db": 11.0,
+            "upper_db": 13.0
+          },
+          {
+            "count": 50,
+            "lower_db": 13.0,
+            "upper_db": 15.0
+          },
+          {
+            "count": 63,
+            "lower_db": 15.0,
+            "upper_db": 17.0
+          },
+          {
+            "count": 75,
+            "lower_db": 17.0,
+            "upper_db": 19.0
+          },
+          {
+            "count": 134,
+            "lower_db": 19.0,
+            "upper_db": 21.0
+          },
+          {
+            "count": 246,
+            "lower_db": 21.0,
+            "upper_db": 23.0
+          },
+          {
+            "count": 298,
+            "lower_db": 23.0,
+            "upper_db": 25.0
+          },
+          {
+            "count": 286,
+            "lower_db": 25.0,
+            "upper_db": 27.0
+          },
+          {
+            "count": 204,
+            "lower_db": 27.0,
+            "upper_db": 29.0
+          },
+          {
+            "count": 125,
+            "lower_db": 29.0,
+            "upper_db": 31.0
+          },
+          {
+            "count": 38,
+            "lower_db": 31.0,
+            "upper_db": 33.0
+          },
+          {
+            "count": 15,
+            "lower_db": 33.0,
+            "upper_db": 35.0
+          },
+          {
+            "count": 2,
+            "lower_db": 35.0,
+            "upper_db": 37.0
+          }
+        ],
+        "quantity": "10*log10(linear_power) for positive finite samples"
+      },
+      "diagnostic_db_profile": {
+        "column_means": {
+          "high_frequency_residual_std_db": 0.7168244942440417,
+          "largest_adjacent_step_db": 0.48024171171970487,
+          "profile_maximum_db": -10.096679566229684,
+          "profile_minimum_db": -12.86336057699467,
+          "profile_std_db": 0.41990044801346105
+        },
+        "row_means": {
+          "high_frequency_residual_std_db": 0.6503807307627462,
+          "largest_adjacent_step_db": 0.5565401608866836,
+          "profile_maximum_db": -9.785479401175673,
+          "profile_minimum_db": -12.652758250715427,
+          "profile_std_db": 0.3627463492588164
+        }
+      },
+      "diagnostic_png": "data/processed/mission003/20260930_gcov_frequencyA_HVHV_db_diagnostic.png",
+      "finite_count": 1568054,
+      "finite_statistics": {
+        "maximum": 3790.15625,
+        "mean": 0.5007473065427528,
+        "minimum": 0.0002370830625295639,
+        "percentiles": {
+          "1": 0.006390308737754822,
+          "25": 0.041774868965148926,
+          "5": 0.015353202819824219,
+          "50": 0.0765848159790039,
+          "75": 0.13298988342285156,
+          "90": 0.21716060638427725,
+          "95": 0.3008575439453125,
+          "99": 0.7327619934082001,
+          "99.9": 16.475571289063282,
+          "99.99": 832.5647312497604
+        },
+        "standard_deviation": 17.449988623998816
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "highest_pixels": [
+        {
+          "column": 628,
+          "neighbourhood_5x5": [
+            [
+              512.1796875,
+              261.26953125,
+              128.037109375,
+              192.21484375,
+              628.140625
+            ],
+            [
+              1305.1875,
+              1409.25,
+              281.88671875,
+              94.0361328125,
+              151.919921875
+            ],
+            [
+              1597.1875,
+              2890.84375,
+              3790.15625,
+              1953.328125,
+              305.57421875
+            ],
+            [
+              291.49609375,
+              707.6953125,
+              1056.28125,
+              471.9765625,
+              235.87109375
+            ],
+            [
+              133.033203125,
+              368.02734375,
+              792.5078125,
+              1114.84375,
+              470.51953125
+            ]
+          ],
+          "pixel_center_easting_m": 385755.0,
+          "pixel_center_northing_m": 3331465.0,
+          "row": 460,
+          "value": 3790.15625
+        },
+        {
+          "column": 669,
+          "neighbourhood_5x5": [
+            [
+              99.552734375,
+              172.513671875,
+              161.330078125,
+              342.92578125,
+              1154.375
+            ],
+            [
+              163.431640625,
+              568.484375,
+              196.787109375,
+              192.74609375,
+              671.671875
+            ],
+            [
+              452.640625,
+              2224.96875,
+              3395.96875,
+              1876.75,
+              522.625
+            ],
+            [
+              832.1875,
+              637.453125,
+              1349.1875,
+              1362.53125,
+              2099.90625
+            ],
+            [
+              73.7802734375,
+              160.73046875,
+              312.21484375,
+              969.484375,
+              211.515625
+            ]
+          ],
+          "pixel_center_easting_m": 386165.0,
+          "pixel_center_northing_m": 3331345.0,
+          "row": 472,
+          "value": 3395.96875
+        },
+        {
+          "column": 627,
+          "neighbourhood_5x5": [
+            [
+              654.34375,
+              512.1796875,
+              261.26953125,
+              128.037109375,
+              192.21484375
+            ],
+            [
+              918.6796875,
+              1305.1875,
+              1409.25,
+              281.88671875,
+              94.0361328125
+            ],
+            [
+              null,
+              1597.1875,
+              2890.84375,
+              3790.15625,
+              1953.328125
+            ],
+            [
+              240.0703125,
+              291.49609375,
+              707.6953125,
+              1056.28125,
+              471.9765625
+            ],
+            [
+              21.8876953125,
+              133.033203125,
+              368.02734375,
+              792.5078125,
+              1114.84375
+            ]
+          ],
+          "pixel_center_easting_m": 385745.0,
+          "pixel_center_northing_m": 3331465.0,
+          "row": 460,
+          "value": 2890.84375
+        },
+        {
+          "column": 628,
+          "neighbourhood_5x5": [
+            [
+              70.8671875,
+              61.8466796875,
+              58.85400390625,
+              58.23291015625,
+              87.8203125
+            ],
+            [
+              1119.71875,
+              771.484375,
+              175.0078125,
+              63.05322265625,
+              195.4296875
+            ],
+            [
+              1304.03125,
+              2586.9375,
+              2664.625,
+              1227.9375,
+              66.9853515625
+            ],
+            [
+              480.78125,
+              772.84375,
+              1296.375,
+              1922.609375,
+              531.7109375
+            ],
+            [
+              792.7265625,
+              437.19921875,
+              861.453125,
+              831.078125,
+              246.78125
+            ]
+          ],
+          "pixel_center_easting_m": 385755.0,
+          "pixel_center_northing_m": 3331525.0,
+          "row": 454,
+          "value": 2664.625
+        },
+        {
+          "column": 627,
+          "neighbourhood_5x5": [
+            [
+              111.322265625,
+              70.8671875,
+              61.8466796875,
+              58.85400390625,
+              58.23291015625
+            ],
+            [
+              811.1015625,
+              1119.71875,
+              771.484375,
+              175.0078125,
+              63.05322265625
+            ],
+            [
+              1149.171875,
+              1304.03125,
+              2586.9375,
+              2664.625,
+              1227.9375
+            ],
+            [
+              329.578125,
+              480.78125,
+              772.84375,
+              1296.375,
+              1922.609375
+            ],
+            [
+              1189.9375,
+              792.7265625,
+              437.19921875,
+              861.453125,
+              831.078125
+            ]
+          ],
+          "pixel_center_easting_m": 385745.0,
+          "pixel_center_northing_m": 3331525.0,
+          "row": 454,
+          "value": 2586.9375
+        }
+      ],
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Covariance between HV and HV",
+        "grid_mapping": "projection",
+        "long_name": "Geocoded polarimetric covariance term HVHV",
+        "max_value": "19051.076",
+        "mean_value": "0.28060558",
+        "min_value": "2.8006692e-18",
+        "sample_stddev": "13.991141",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:16:01Z",
+      "nodata": "nan",
+      "nonfinite_count": 4599,
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HVHV.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "6b7176835dd986ab3d98aab7c884b863d0ab34b341857476fcc95dcc8bacb411",
+      "values_at_or_above": {
+        "10": 1694,
+        "100": 1291,
+        "1000": 100,
+        "10000": 0
+      },
+      "width": 1171
+    },
+    "20260930_mask": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 14863,
+      "crs": "EPSG:32644",
+      "data_type": "Byte",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/mask",
+      "finite_count": 1572653,
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "metadata": {
+        "_FillValue": "255",
+        "description": "Mask indicating the subswath number associated with valid GCOV samples. A GCOV sample is only considered valid if it is generated from fully-focused radar samples. If at least one radar sample in the averaging set is partially focused or invalid, the corresponding mask pixel will contain the value 0. GCOV pixels outside of the radar acquisition extent are filled with the value 255",
+        "grid_mapping": "projection",
+        "long_name": "Valid samples subswath mask",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:18:36Z",
+      "nodata": 255.0,
+      "nonfinite_count": 0,
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_mask.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "66ea8174f50f05086e2a5dbd6718a3f36984dc656e6fe0f90a9583730ec05d89",
+      "value_counts": {
+        "0": 4599,
+        "1": 1568054
+      },
+      "width": 1171
+    },
+    "20260930_numberOfLooks": {
+      "bounds_m": {
+        "east": 391180.0,
+        "north": 3336070.0,
+        "south": 3322640.0,
+        "west": 379470.0
+      },
+      "bytes": 4959222,
+      "crs": "EPSG:32644",
+      "data_type": "Float32",
+      "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/numberOfLooks",
+      "finite_count": 1568054,
+      "finite_statistics": {
+        "maximum": 16.39520835876465,
+        "mean": 4.706471470000759,
+        "minimum": 1.9322280664368918e-08,
+        "percentiles": {
+          "1": 0.10291423007845879,
+          "25": 2.1720492839813232,
+          "5": 0.3981386303901673,
+          "50": 4.904300212860107,
+          "75": 6.97856879234314,
+          "90": 8.361954975128173,
+          "95": 9.069505739212033,
+          "99": 10.330946464538574,
+          "99.9": 11.236072216987619,
+          "99.99": 11.549145758914932
+        },
+        "standard_deviation": 2.8052382590373477
+      },
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "height": 1343,
+      "metadata": {
+        "_FillValue": "nan",
+        "description": "Number of averaged radar-grid pixels for covariance estimation",
+        "grid_mapping": "projection",
+        "long_name": "Number of radar looks",
+        "max_value": "36.370613",
+        "mean_value": "4.6480865",
+        "min_value": "3.4347576e-15",
+        "sample_stddev": "1.9411114",
+        "units": "1",
+        "valid_min": "0"
+      },
+      "modified_utc": "2026-11-14T11:17:10Z",
+      "nodata": "nan",
+      "nonfinite_count": 4599,
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_numberOfLooks.tif",
+      "pixel_count": 1572653,
+      "pixel_spacing_m": [
+        10.0,
+        10.0
+      ],
+      "sha256": "f55607d8c027c06db6868e589bf0847483957e4266ce3a4b022027f505048f2d",
+      "unique_finite_value_count": 1522211,
+      "width": 1171
+    }
+  },
+  "finite_coverage_comparison": {
+    "mask_value_0_both_dates": 4385,
+    "mask_value_0_only_20260906": 226,
+    "mask_value_0_only_20260930": 214,
+    "mask_value_1_both_dates": 1567828,
+    "mask_value_255_count": {
+      "20260906": 0,
+      "20260930": 0
+    },
+    "note": "This is a valid-sample coverage count. It is not a change measurement.",
+    "power_nan_matches_mask_0": true
+  },
+  "gdal_version": "3.13.3",
+  "grids_exactly_aligned": false,
+  "grids_spatially_aligned": true,
+  "known_issue_observations": {
+    "diagnostic_image": "The 1st-to-99th percentile dB stretch shows terrain-scale texture and one compact bright cluster in both dates. It is a display stretch, not a classification.",
+    "extreme_tail": "September 6 HHHH reaches 37714.5 at one pixel inside a bright neighbourhood that also contains one NoData sample. Fourteen September 6 HHHH pixels are at or above 10000, spread over rows 449-782 and columns 611-663.",
+    "official_context": "Both scenes are provisional joint-mode 40 MHz products. The ASF guide says those products may retain residual radiometric bands, and provisional RFI filtering may leave interference or remove high-contrast features. This inspection does not assign a cause to the bright cluster.",
+    "row_and_column_mean_profiles": "HHHH diagnostic dB row and column means vary by about 2.5 dB across the window. The largest adjacent step is about 0.53 dB. A strong periodic band is not evident in those profiles."
+  },
+  "mask_attribute_definition": "Mask indicating the subswath number associated with valid GCOV samples. A GCOV sample is only considered valid if it is generated from fully-focused radar samples. If at least one radar sample in the averaging set is partially focused or invalid, the corresponding mask pixel will contain the value 0. GCOV pixels outside of the radar acquisition extent are filled with the value 255",
+  "mission": "003B",
+  "pixel_by_pixel_power_comparison": "not_performed",
+  "qc_timestamp_utc": "2026-11-14T11:19:28Z",
+  "retrieval_method": "Authenticated GDAL 3.13.3 HDF5 /vsicurl/ range reads from nisar.asf.earthdatacloud.nasa.gov. Complete HDF5 files were not stored.",
+  "rtcGammaToSigmaFactor": {
+    "dataset_path": "/science/LSAR/GCOV/grids/frequencyA/rtcGammaToSigmaFactor",
+    "extracted": false,
+    "reason": "Present on both Frequency A grids as Float32 at the full-scene dimensions. Not extracted because this QC does not convert gamma0 to sigma0."
+  },
+  "scientific_measurement": false,
+  "sources": [
+    {
+      "catalogue_hdf5_bytes": 7277117440,
+      "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+      "concept_id": "G4308353703-ASF",
+      "crid": "P05023",
+      "date": "2026-09-06",
+      "frame": 73,
+      "frequency_a_bandwidth_mhz": 40,
+      "granule_ur": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001",
+      "maturity": "PROVISIONAL",
+      "orbit_direction": "DESCENDING",
+      "polarizations": "HH+HV",
+      "product_version": "1.0.11",
+      "remote_content_range_total_bytes": 7277117440,
+      "track": 5
+    },
+    {
+      "catalogue_hdf5_bytes": 7277117440,
+      "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+      "concept_id": "G4333767987-ASF",
+      "crid": "P05023",
+      "date": "2026-09-30",
+      "frame": 73,
+      "frequency_a_bandwidth_mhz": 40,
+      "granule_ur": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001",
+      "maturity": "PROVISIONAL",
+      "orbit_direction": "DESCENDING",
+      "polarizations": "HH+HV",
+      "product_version": "1.0.11",
+      "remote_content_range_total_bytes": 7277117440,
+      "track": 5
+    }
+  ],
+  "status": "raster_quality_control_only"
+}

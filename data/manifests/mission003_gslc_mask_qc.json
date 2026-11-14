@@ -1,0 +1,579 @@
+{
+  "companion_checks": {
+    "acquisition_times_match_gcov_counterparts": true,
+    "crid_p05023_on_all_four": true,
+    "frame_73": true,
+    "frequency_a_40_mhz_hh_hv": true,
+    "orbit_direction_descending": true,
+    "september_30_gslc_counter": 1,
+    "september_6_gslc_counter": 2,
+    "track_5": true
+  },
+  "flag_documentation": {
+    "gslc_user_guide": {
+      "mask_flag_table_present": false,
+      "observed_posting_m": {
+        "easting": 5.0,
+        "northing": 5.0
+      },
+      "published_40_mhz_posting_m": {
+        "easting": 5,
+        "northing": 5
+      },
+      "source": "https://nisar-docs.asf.alaska.edu/gslc/"
+    },
+    "hdf5_attribute_verified": {
+      "description": "Mask indicating the subswath number representing valid GSLC samples. Each GSLC pixel is assumed valid if all the pixels in the interpolation window are fully focused in the input RSLC. A value of 0 indicates that at least one RSLC pixel in the interpolation window is partially focused or invalid. Pixels outside of the radar acquisition extent are filled with the value 255",
+      "fill_value": 255,
+      "long_name": "Valid samples subswath mask",
+      "source": "Band metadata copied from /science/LSAR/GSLC/grids/frequencyA/mask on both approved granules.",
+      "valid_min": 0,
+      "values_defined_by_attribute": {
+        "0": "At least one RSLC pixel in the interpolation window is partially focused or invalid.",
+        "255": "Outside the radar acquisition extent.",
+        "positive_integer": "Described as the subswath number for a valid GSLC sample. The attribute does not name subswath 1."
+      }
+    },
+    "observed_value_counts_each_crop": {
+      "1": 6285585
+    },
+    "product_overview_not_used_as_encoding": {
+      "numeric_flag_table_present": false,
+      "source": "https://nisar-docs.asf.alaska.edu/products-overview/",
+      "table": "Table 1, GSLC additional layers",
+      "wording": "mask layer indicating water bodies and shadow-layover"
+    },
+    "product_specification_identifier": {
+      "document_body_retrieved": false,
+      "identifier": "D-102269",
+      "title": "NISAR NASA SDS Product Specification Level-2 Geocoded Single Look Complex L2_GSLC"
+    },
+    "water_shadow_layover_encoding": "undecoded"
+  },
+  "grid_comparison": {
+    "full_scene_gslc_is_exact_double_of_gcov_frequency_a": true,
+    "gcov_full_scene": {
+      "dimensions": {
+        "height": 34344,
+        "width": 34920
+      },
+      "origin_m": [
+        298800.0,
+        3567600.0
+      ],
+      "pixel_spacing_m": {
+        "easting": 10.0,
+        "northing": -10.0
+      }
+    },
+    "pair_bounds_overlap": {
+      "bounds_m": {
+        "east": 391175.0,
+        "north": 3336070.0,
+        "south": 3322645.0,
+        "west": 379470.0
+      },
+      "overlaps": true
+    },
+    "per_date": {
+      "20260906": {
+        "bounds_intersection": {
+          "bounds_m": {
+            "east": 391175.0,
+            "north": 3336070.0,
+            "south": 3322645.0,
+            "west": 379470.0
+          },
+          "overlaps": true
+        },
+        "gcov_dimensions": [
+          1171,
+          1343
+        ],
+        "gcov_pixel_spacing_m": {
+          "easting": 10.0,
+          "northing": -10.0
+        },
+        "gslc_dimensions": [
+          2341,
+          2685
+        ],
+        "gslc_pixel_spacing_m": {
+          "easting": 5.0,
+          "northing": -5.0
+        },
+        "origin_offset_gslc_minus_gcov_m": {
+          "easting": 0.0,
+          "northing": 0.0
+        },
+        "pixel_value_comparison": "not_performed",
+        "resampled": false,
+        "same_crs": true
+      },
+      "20260930": {
+        "bounds_intersection": {
+          "bounds_m": {
+            "east": 391175.0,
+            "north": 3336070.0,
+            "south": 3322645.0,
+            "west": 379470.0
+          },
+          "overlaps": true
+        },
+        "gcov_dimensions": [
+          1171,
+          1343
+        ],
+        "gcov_pixel_spacing_m": {
+          "easting": 10.0,
+          "northing": -10.0
+        },
+        "gslc_dimensions": [
+          2341,
+          2685
+        ],
+        "gslc_pixel_spacing_m": {
+          "easting": 5.0,
+          "northing": -5.0
+        },
+        "origin_offset_gslc_minus_gcov_m": {
+          "easting": 0.0,
+          "northing": 0.0
+        },
+        "pixel_value_comparison": "not_performed",
+        "resampled": false,
+        "same_crs": true
+      }
+    },
+    "relationship": "Both crops use EPSG:32644. The GSLC and GCOV Frequency A grids share the full-scene origin 298800 E, 3567600 N. GSLC posting is 5 m and GCOV posting is 10 m, and the full-scene dimensions are exactly double. The diagnostic window snaps one 5 m pixel inside the GCOV crop on the east and south, so the GSLC crop is 2341 by 2685 rather than 2342 by 2686. The GSLC bounds sit inside the GCOV bounds and share the west and north edges. No resampling and no mask-value comparison were performed.",
+    "shared_crs": "EPSG:32644"
+  },
+  "mask": {
+    "crops": {
+      "20260906": {
+        "attributes": {
+          "_FillValue": "255",
+          "description": "Mask indicating the subswath number representing valid GSLC samples. Each GSLC pixel is assumed valid if all the pixels in the interpolation window are fully focused in the input RSLC. A value of 0 indicates that at least one RSLC pixel in the interpolation window is partially focused or invalid. Pixels outside of the radar acquisition extent are filled with the value 255",
+          "grid_mapping": "projection",
+          "long_name": "Valid samples subswath mask",
+          "valid_min": "0"
+        },
+        "bounds_lonlat": {
+          "lower_left": [
+            79.7499945650935,
+            30.028893269340415
+          ],
+          "lower_right": [
+            79.87136528120105,
+            30.02999050440585
+          ],
+          "upper_left": [
+            79.74846989760603,
+            30.150018045391125
+          ],
+          "upper_right": [
+            79.86998857219073,
+            30.151120613686114
+          ]
+        },
+        "bounds_m": {
+          "east": 391175.0,
+          "north": 3336070.0,
+          "south": 3322645.0,
+          "west": 379470.0
+        },
+        "bytes": 35071,
+        "covers_study_point": true,
+        "crs": "EPSG:32644",
+        "data_type": "Byte",
+        "fill_count_value_255": 0,
+        "geotransform": [
+          379470.0,
+          5.0,
+          0.0,
+          3336070.0,
+          0.0,
+          -5.0
+        ],
+        "height": 2685,
+        "invalid_count_value_0": 0,
+        "modified_utc": "2026-11-14T11:27:54Z",
+        "nodata": 255.0,
+        "other_value_count": 6285585,
+        "path": "data/processed/mission003/20260906_gslc_mask.tif",
+        "pixel_count": 6285585,
+        "pixel_spacing_m": {
+          "easting": 5.0,
+          "northing": -5.0
+        },
+        "sha256": "4e6cb7a293439e9de43704a580ac71c8a0da6010215e21adbb1fc63a0616da27",
+        "study_point_utm": {
+          "easting": 385198.1795272942,
+          "northing": 3329172.2713524103
+        },
+        "unique_value_counts": {
+          "1": 6285585
+        },
+        "width": 2341
+      },
+      "20260930": {
+        "attributes": {
+          "_FillValue": "255",
+          "description": "Mask indicating the subswath number representing valid GSLC samples. Each GSLC pixel is assumed valid if all the pixels in the interpolation window are fully focused in the input RSLC. A value of 0 indicates that at least one RSLC pixel in the interpolation window is partially focused or invalid. Pixels outside of the radar acquisition extent are filled with the value 255",
+          "grid_mapping": "projection",
+          "long_name": "Valid samples subswath mask",
+          "valid_min": "0"
+        },
+        "bounds_lonlat": {
+          "lower_left": [
+            79.7499945650935,
+            30.028893269340415
+          ],
+          "lower_right": [
+            79.87136528120105,
+            30.02999050440585
+          ],
+          "upper_left": [
+            79.74846989760603,
+            30.150018045391125
+          ],
+          "upper_right": [
+            79.86998857219073,
+            30.151120613686114
+          ]
+        },
+        "bounds_m": {
+          "east": 391175.0,
+          "north": 3336070.0,
+          "south": 3322645.0,
+          "west": 379470.0
+        },
+        "bytes": 35071,
+        "covers_study_point": true,
+        "crs": "EPSG:32644",
+        "data_type": "Byte",
+        "fill_count_value_255": 0,
+        "geotransform": [
+          379470.0,
+          5.0,
+          0.0,
+          3336070.0,
+          0.0,
+          -5.0
+        ],
+        "height": 2685,
+        "invalid_count_value_0": 0,
+        "modified_utc": "2026-11-14T11:28:40Z",
+        "nodata": 255.0,
+        "other_value_count": 6285585,
+        "path": "data/processed/mission003/20260930_gslc_mask.tif",
+        "pixel_count": 6285585,
+        "pixel_spacing_m": {
+          "easting": 5.0,
+          "northing": -5.0
+        },
+        "sha256": "4e6cb7a293439e9de43704a580ac71c8a0da6010215e21adbb1fc63a0616da27",
+        "study_point_utm": {
+          "easting": 385198.1795272942,
+          "northing": 3329172.2713524103
+        },
+        "unique_value_counts": {
+          "1": 6285585
+        },
+        "width": 2341
+      }
+    },
+    "dataset_path": "/science/LSAR/GSLC/grids/frequencyA/mask",
+    "description": "Mask indicating the subswath number representing valid GSLC samples. Each GSLC pixel is assumed valid if all the pixels in the interpolation window are fully focused in the input RSLC. A value of 0 indicates that at least one RSLC pixel in the interpolation window is partially focused or invalid. Pixels outside of the radar acquisition extent are filled with the value 255",
+    "full_scene": {
+      "crs": "EPSG:32644",
+      "data_type": "Byte",
+      "dimensions": {
+        "height": 68688,
+        "width": 69840
+      },
+      "fill_value": 255,
+      "geotransform": [
+        298800.0,
+        5.0,
+        0.0,
+        3567600.0,
+        0.0,
+        -5.0
+      ],
+      "nodata": 255,
+      "pixel_spacing_m": {
+        "easting": 5.0,
+        "northing": -5.0
+      }
+    },
+    "long_name": "Valid samples subswath mask",
+    "not_extracted": [
+      {
+        "dataset_path": "/science/LSAR/GSLC/grids/frequencyB/mask",
+        "reason": "Frequency B is outside the approved 40 MHz Frequency A comparability group."
+      },
+      {
+        "dataset_path": "/science/LSAR/GSLC/grids/frequencyA/inputDataExceptionMask",
+        "reason": "Separate exception layer. Its attribute defines bitwise input-data exception codes, not the mask inspected here."
+      },
+      {
+        "dataset_path": "/science/LSAR/GSLC/grids/frequencyA/HH",
+        "reason": "Complex signal data was not extracted."
+      },
+      {
+        "dataset_path": "/science/LSAR/GSLC/grids/frequencyA/HV",
+        "reason": "Complex signal data was not extracted."
+      }
+    ]
+  },
+  "mission": "003C",
+  "orbit_investigation": {
+    "cmr_orbit_type": "MOE",
+    "explanation": "The filename letter and the orbit product type are different fields. CMR ORBIT_TYPE and the HDF5 orbitType dataset both contain MOE. The HDF5 attribute defines MOE as Medium precision Orbit Ephemeris and NOE as Near real-time Orbit Ephemeris. The filename letter N was not found as an internal orbitType value. No pointing-fidelity dataset was found in the identification, orbit, or source-data groups that were read. The two labels are retained and were not merged.",
+    "filename_letter": "N",
+    "filename_letter_meaning_from_mission_002": "near_real_time",
+    "internal_dataset_path_gcov": "/science/LSAR/GCOV/metadata/orbit/orbitType",
+    "internal_dataset_path_gslc": "/science/LSAR/GSLC/metadata/orbit/orbitType",
+    "internal_description": "Orbit product type, either \"FOE\", \"NOE\", \"MOE\", \"POE\", or \"Custom\", where \"FOE\" stands for Forecast Orbit Ephemeris, \"NOE\" is Near real-time Orbit Ephemeris, \"MOE\" is Medium precision Orbit Ephemeris, and \"POE\" is Precise Orbit Ephemeris",
+    "internal_value_all_four_products": "MOE",
+    "noe_value_observed": false,
+    "numeric_decode": "GDAL returned trackNumber, frameNumber, and absoluteOrbitNumber as raw bytes. Little-endian decoding gives track 5 and frame 73, which match the granule identifiers. The same decoding gives absolute orbit number 5813 on both 6 September products and 6159 on both 30 September products.",
+    "pointing_fidelity_dataset_found": false
+  },
+  "outputs": {
+    "identical_checksum_reason": "Each crop contains only the value 1, and both crops have the same dimensions, geotransform, CRS, and compression. The matching SHA-256 is a property of those files. It is not a September 6 to September 30 change result.",
+    "limit_bytes": 104857600,
+    "mask_bytes": 70142,
+    "mask_sha256_both_files": "4e6cb7a293439e9de43704a580ac71c8a0da6010215e21adbb1fc63a0616da27",
+    "new_stage_c_bytes_before_manifest": 332944,
+    "processed_directory_bytes": 32953657
+  },
+  "processing_parameters": {
+    "compression": "DEFLATE",
+    "dataset_path": "/science/LSAR/GSLC/grids/frequencyA/mask",
+    "output_format": "GTiff",
+    "predictor": 2,
+    "projwin_epsg4326": {
+      "east": 79.87,
+      "north": 30.15,
+      "south": 30.03,
+      "west": 79.75
+    },
+    "projwin_srs": "EPSG:4326",
+    "resampled": false,
+    "tiled": true
+  },
+  "products": [
+    {
+      "acquisition_end": "2026-09-06T13:23:11.999342Z",
+      "acquisition_start": "2026-09-06T13:22:36.000000Z",
+      "catalogue_hdf5_md5": "9f4837b8f4af13ee7ea32aa37199b915",
+      "catalogue_hdf5_size_bytes": 7277117440,
+      "cmr_orbit_type": "MOE",
+      "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+      "comparability": {
+        "crid": "P05023",
+        "frame": 73,
+        "frequency_a_bandwidth_mhz": 40,
+        "frequency_a_polarization": "HH+HV",
+        "orbit_direction": "DESCENDING",
+        "track": 5
+      },
+      "concept_id": "G4308353703-ASF",
+      "contains_study_point_catalogue": true,
+      "crid": "P05023",
+      "filename_orbit_fidelity_letter": "N",
+      "granule_id": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001",
+      "internal_absolute_orbit_number_uint32_little_endian": 5813,
+      "internal_composite_release_id": "P05023",
+      "internal_frame_number_uint16_little_endian": 73,
+      "internal_look_direction": "Left",
+      "internal_orbit_pass_direction": "Descending",
+      "internal_orbit_type": "MOE",
+      "internal_processing_datetime": "2026-09-12T08:21:05",
+      "internal_processing_type": "Nominal",
+      "internal_product_type": "GCOV",
+      "internal_product_version": "1.0.11",
+      "internal_source_product_type": "RSLC",
+      "internal_track_number_uint32_little_endian": 5,
+      "internal_zero_doppler_end": "2026-09-06T13:23:11.999342105",
+      "internal_zero_doppler_start": "2026-09-06T13:22:36.000000000",
+      "orbit_interpolation_method": "Hermite",
+      "product_counter": 1,
+      "product_specification_version": "1.5.0",
+      "product_type": "GCOV",
+      "product_version": "1.0.11"
+    },
+    {
+      "acquisition_end": "2026-09-30T13:23:11.999342Z",
+      "acquisition_start": "2026-09-30T13:22:36.000000Z",
+      "catalogue_hdf5_md5": "2ab7cd32da2e70f39eb63bb4c1b19eae",
+      "catalogue_hdf5_size_bytes": 7277117440,
+      "cmr_orbit_type": "MOE",
+      "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+      "comparability": {
+        "crid": "P05023",
+        "frame": 73,
+        "frequency_a_bandwidth_mhz": 40,
+        "frequency_a_polarization": "HH+HV",
+        "orbit_direction": "DESCENDING",
+        "track": 5
+      },
+      "concept_id": "G4333767987-ASF",
+      "contains_study_point_catalogue": true,
+      "crid": "P05023",
+      "filename_orbit_fidelity_letter": "N",
+      "granule_id": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001",
+      "internal_absolute_orbit_number_uint32_little_endian": 6159,
+      "internal_composite_release_id": "P05023",
+      "internal_frame_number_uint16_little_endian": 73,
+      "internal_look_direction": "Left",
+      "internal_orbit_pass_direction": "Descending",
+      "internal_orbit_type": "MOE",
+      "internal_processing_datetime": "2026-10-02T09:53:11",
+      "internal_processing_type": "Nominal",
+      "internal_product_type": "GCOV",
+      "internal_product_version": "1.0.11",
+      "internal_source_product_type": "RSLC",
+      "internal_track_number_uint32_little_endian": 5,
+      "internal_zero_doppler_end": "2026-09-30T13:23:11.999342105",
+      "internal_zero_doppler_start": "2026-09-30T13:22:36.000000000",
+      "orbit_interpolation_method": "Hermite",
+      "product_counter": 1,
+      "product_specification_version": "1.5.0",
+      "product_type": "GCOV",
+      "product_version": "1.0.11"
+    },
+    {
+      "acquisition_end": "2026-09-06T13:23:11.999342Z",
+      "acquisition_start": "2026-09-06T13:22:36.000000Z",
+      "catalogue_hdf5_md5": "8ae7870d05d2764800feb808572759f6",
+      "catalogue_hdf5_size_bytes": 22917677056,
+      "cmr_orbit_type": "MOE",
+      "collection": "NISAR_L2_GSLC_PROVISIONAL_V1",
+      "comparability": {
+        "crid": "P05023",
+        "frame": 73,
+        "frequency_a_bandwidth_mhz": 40,
+        "frequency_a_polarization": "HH+HV",
+        "orbit_direction": "DESCENDING",
+        "track": 5
+      },
+      "concept_id": "G4308404259-ASF",
+      "contains_study_point_catalogue": true,
+      "crid": "P05023",
+      "filename_orbit_fidelity_letter": "N",
+      "granule_id": "NISAR_L2_PR_GSLC_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_002",
+      "internal_absolute_orbit_number_uint32_little_endian": 5813,
+      "internal_composite_release_id": "P05023",
+      "internal_frame_number_uint16_little_endian": 73,
+      "internal_look_direction": "Left",
+      "internal_orbit_pass_direction": "Descending",
+      "internal_orbit_type": "MOE",
+      "internal_processing_datetime": "2026-09-12T08:44:00",
+      "internal_processing_type": "Nominal",
+      "internal_product_type": "GSLC",
+      "internal_product_version": "1.0.11",
+      "internal_source_product_type": "RSLC",
+      "internal_track_number_uint32_little_endian": 5,
+      "internal_zero_doppler_end": "2026-09-06T13:23:11.999342105",
+      "internal_zero_doppler_start": "2026-09-06T13:22:36.000000000",
+      "orbit_interpolation_method": "Hermite",
+      "product_counter": 2,
+      "product_specification_version": "1.5.0",
+      "product_type": "GSLC",
+      "product_version": "1.0.11"
+    },
+    {
+      "acquisition_end": "2026-09-30T13:23:11.999342Z",
+      "acquisition_start": "2026-09-30T13:22:36.000000Z",
+      "catalogue_hdf5_md5": "5fc415b12e42f6ae5adc1c48a223e242",
+      "catalogue_hdf5_size_bytes": 22913482752,
+      "cmr_orbit_type": "MOE",
+      "collection": "NISAR_L2_GSLC_PROVISIONAL_V1",
+      "comparability": {
+        "crid": "P05023",
+        "frame": 73,
+        "frequency_a_bandwidth_mhz": 40,
+        "frequency_a_polarization": "HH+HV",
+        "orbit_direction": "DESCENDING",
+        "track": 5
+      },
+      "concept_id": "G4334230012-ASF",
+      "contains_study_point_catalogue": true,
+      "crid": "P05023",
+      "filename_orbit_fidelity_letter": "N",
+      "granule_id": "NISAR_L2_PR_GSLC_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001",
+      "internal_absolute_orbit_number_uint32_little_endian": 6159,
+      "internal_composite_release_id": "P05023",
+      "internal_frame_number_uint16_little_endian": 73,
+      "internal_look_direction": "Left",
+      "internal_orbit_pass_direction": "Descending",
+      "internal_orbit_type": "MOE",
+      "internal_processing_datetime": "2026-10-02T12:16:47",
+      "internal_processing_type": "Nominal",
+      "internal_product_type": "GSLC",
+      "internal_product_version": "1.0.11",
+      "internal_source_product_type": "RSLC",
+      "internal_track_number_uint32_little_endian": 5,
+      "internal_zero_doppler_end": "2026-09-30T13:23:11.999342105",
+      "internal_zero_doppler_start": "2026-09-30T13:22:36.000000000",
+      "orbit_interpolation_method": "Hermite",
+      "product_counter": 1,
+      "product_specification_version": "1.5.0",
+      "product_type": "GSLC",
+      "product_version": "1.0.11"
+    }
+  ],
+  "recommendation_for_measurement_design": "CONDITIONAL GO",
+  "retrieval": {
+    "catalogue_manifest": "data/manifests/nisar_kuwari_catalogue.json",
+    "catalogue_retrieval_timestamp": "2026-11-14T09:43:06Z",
+    "cookie_jar_retained": false,
+    "credentials_stored_in_outputs": false,
+    "crop_file_modified_utc": {
+      "20260906": "2026-11-14T11:27:54Z",
+      "20260930": "2026-11-14T11:28:40Z"
+    },
+    "full_hdf5_downloaded": false,
+    "method": "Authenticated GDAL HTTP range reads against the unsigned catalogue HTTPS links.",
+    "range_read": {
+      "20260906_gslc": {
+        "bytes_read": 512,
+        "catalogue_size_bytes": 22917677056,
+        "content_range_total_bytes": 22917677056,
+        "hdf5_magic": true,
+        "http_status": 206
+      },
+      "20260930_gslc": {
+        "bytes_read": 512,
+        "catalogue_size_bytes": 22913482752,
+        "content_range_total_bytes": 22913482752,
+        "hdf5_magic": true,
+        "http_status": 206
+      }
+    },
+    "signed_urls_stored": false
+  },
+  "scientific_measurement": false,
+  "software": {
+    "gdal": "3.13.3 \"Iowa City\", released 2026/08/13",
+    "hdf5_driver": "HDF5",
+    "hdf5_image_driver": "HDF5Image"
+  },
+  "statement": "This record documents a native-grid inspection of two approved GSLC Frequency A mask crops. It is not a water, area, or change measurement.",
+  "study_point": {
+    "latitude": 30.088337,
+    "longitude": 79.808685,
+    "source": "Mission 002 catalogue study point"
+  },
+  "unresolved_questions": [
+    "The product-overview sentence describes a water and shadow-layover mask, while the dataset attribute describes a valid-sample subswath mask. No numeric water, shadow, or layover flag table was present in the HDF5 attributes or on the fetched GSLC user-guide page.",
+    "The specification body D-102269 was not retrieved, so no additional flag table from that document is claimed.",
+    "The observed value 1 is not assigned a subswath name by the attribute.",
+    "The filename letter N remains a separate token. The ASF naming-convention page was not re-read in this mission because the request returned HTTP 500.",
+    "No internal radar-pointing fidelity value was found.",
+    "Geolocation error for the MOE ephemeris was not measured."
+  ]
+}
