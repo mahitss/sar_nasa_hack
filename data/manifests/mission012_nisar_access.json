@@ -1,0 +1,179 @@
+{
+  "mission": "012",
+  "earthaccess_version": "0.19.0",
+  "authentication": {
+    "method": "earthaccess.login(strategy='netrc')",
+    "netrc_environment_variable_set": true,
+    "windows_default_filename_checked": "_netrc",
+    "existing_file_is_dot_netrc": true,
+    "credential_file_modified": false,
+    "succeeded": true
+  },
+  "cmr_exact_granules": true,
+  "gdal_fallback_attempted": false,
+  "gdal_reason": "Earthaccess HTTPS streaming returned a valid HDF5 signature, so the GDAL fallback was not required.",
+  "direct_s3_attempted": false,
+  "products": {
+    "20260906": {
+      "filename": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001.h5",
+      "https_signature": true,
+      "metadata_inspection": true,
+      "complete_file_stored": false,
+      "look_direction": "Left",
+      "orbit_pass_direction": "Descending",
+      "orbit_type": "MOE",
+      "orbit_interp_method": "Hermite",
+      "attitude_type": "Custom",
+      "attitude_type_path": "/science/LSAR/GCOV/metadata/attitude/attitudeType",
+      "shadow_masking_applied": "False",
+      "shadow_masking_dtype": "fixed-length string",
+      "dem_files_present": false,
+      "dem_source_identity": "NISAR DEM version 1.2, Copernicus DEM 30 m release 2023_1, COP-DEM_GLO-30-DGED/2023_1, referenced to the WGS84 ellipsoid",
+      "dem_source_doi": "10.5067/NIDEM-1",
+      "geometric_accuracy_bias_x": "NaN",
+      "geometric_accuracy_bias_y": "NaN",
+      "geometric_accuracy_standard_deviation_x": "NaN",
+      "geometric_accuracy_standard_deviation_y": "NaN",
+      "orbit_time_count": 45,
+      "orbit_position_shape": [
+        45,
+        3
+      ],
+      "orbit_velocity_shape": [
+        45,
+        3
+      ],
+      "attitude_time_count": 126,
+      "quaternion_shape": [
+        126,
+        4
+      ],
+      "euler_shape": [
+        126,
+        3
+      ],
+      "radar_grid": {
+        "x_count": 710,
+        "y_count": 699,
+        "height_count": 21,
+        "x_minimum_m": 296250.0,
+        "x_maximum_m": 650750.0,
+        "y_minimum_m": 3221250.0,
+        "y_maximum_m": 3570250.0,
+        "height_minimum_m": -1000.0,
+        "height_maximum_m": 9000.0,
+        "x_step_m": 500.0,
+        "y_step_m": -500.0,
+        "height_step_m": 500.0,
+        "uniform_steps_verified_on": "20260906",
+        "incidence_shape": [
+          21,
+          699,
+          710
+        ],
+        "incidence_dtype": "float32",
+        "incidence_units": "degrees",
+        "incidence_valid_min": 0.0,
+        "incidence_valid_max": 90.0,
+        "cube_values_read": false
+      },
+      "wrapper_bytes_read": 68021,
+      "signature_probe_bytes": 8192,
+      "hdf5_signature_offset": 0,
+      "consistency": {
+        "expected_orbit_ephemeris": "NOE",
+        "observed_orbit_type": "MOE",
+        "orbit_consistency": "mismatch",
+        "expected_radar_pointing": "NRP",
+        "observed_attitude_type": "Custom",
+        "pointing_consistency": "mismatch",
+        "resolved": false,
+        "geolocation_error_inferred": false
+      }
+    },
+    "20260930": {
+      "filename": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001.h5",
+      "https_signature": true,
+      "metadata_inspection": true,
+      "complete_file_stored": false,
+      "look_direction": "Left",
+      "orbit_pass_direction": "Descending",
+      "orbit_type": "MOE",
+      "orbit_interp_method": "Hermite",
+      "attitude_type": "Custom",
+      "attitude_type_path": "/science/LSAR/GCOV/metadata/attitude/attitudeType",
+      "shadow_masking_applied": "False",
+      "shadow_masking_dtype": "fixed-length string",
+      "dem_files_present": false,
+      "dem_source_identity": "NISAR DEM version 1.2, Copernicus DEM 30 m release 2023_1, COP-DEM_GLO-30-DGED/2023_1, referenced to the WGS84 ellipsoid",
+      "dem_source_doi": "10.5067/NIDEM-1",
+      "geometric_accuracy_bias_x": "NaN",
+      "geometric_accuracy_bias_y": "NaN",
+      "geometric_accuracy_standard_deviation_x": "NaN",
+      "geometric_accuracy_standard_deviation_y": "NaN",
+      "orbit_time_count": 45,
+      "orbit_position_shape": [
+        45,
+        3
+      ],
+      "orbit_velocity_shape": [
+        45,
+        3
+      ],
+      "attitude_time_count": 126,
+      "quaternion_shape": [
+        126,
+        4
+      ],
+      "euler_shape": [
+        126,
+        3
+      ],
+      "radar_grid": {
+        "x_count": 710,
+        "y_count": 699,
+        "height_count": 21,
+        "x_minimum_m": 296250.0,
+        "x_maximum_m": 650750.0,
+        "y_minimum_m": 3221250.0,
+        "y_maximum_m": 3570250.0,
+        "height_minimum_m": -1000.0,
+        "height_maximum_m": 9000.0,
+        "x_step_m": 500.0,
+        "y_step_m": -500.0,
+        "height_step_m": 500.0,
+        "uniform_steps_verified_on": "20260906",
+        "incidence_shape": [
+          21,
+          699,
+          710
+        ],
+        "incidence_dtype": "float32",
+        "incidence_units": "degrees",
+        "incidence_valid_min": 0.0,
+        "incidence_valid_max": 90.0,
+        "cube_values_read": false
+      },
+      "wrapper_bytes_read": 68021,
+      "signature_probe_bytes": 8192,
+      "hdf5_signature_offset": 0,
+      "consistency": {
+        "expected_orbit_ephemeris": "NOE",
+        "observed_orbit_type": "MOE",
+        "orbit_consistency": "mismatch",
+        "expected_radar_pointing": "NRP",
+        "observed_attitude_type": "Custom",
+        "pointing_consistency": "mismatch",
+        "resolved": false,
+        "geolocation_error_inferred": false
+      }
+    }
+  },
+  "complete_hdf5_downloaded": false,
+  "shadow_mask_created": false,
+  "layover_mask_created": false,
+  "slope_or_aspect_created": false,
+  "water_reclassified": false,
+  "area_calculated": false,
+  "shoreline_calculated": false
+}
