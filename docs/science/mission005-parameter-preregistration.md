@@ -61,8 +61,8 @@ Turning the gate on requires one positive finite ratio. This audit did not compu
 
 Two settings:
 
-1. `min_looks = 0`. This admits every finite looks value. The parameter validator allows zero. It is the inclusive baseline.
-2. `min_looks = 2`. The 25th percentile of valid `numberOfLooks` is 2.172 on both dates, and the 10th percentile is 0.812. The value 2 is the integer at or just below that 25th percentile. It is a sensitivity setting. It is not a claim that fewer than two looks are bad data, and it is not a confidence score.
+1. `min_looks = 0`. The parameter adds no further floor. A sample is still valid only when `numberOfLooks` is finite and strictly greater than zero. A zero-look sample stays invalid. Mission 006 corrected this semantics before the sweep.
+2. `min_looks = 2`. The sample must be finite, strictly greater than zero, and at least 2. The 25th percentile of valid `numberOfLooks` is 2.172 on both dates, and the 10th percentile is 0.812. The value 2 is the integer at or just below that 25th percentile. It is a sensitivity setting. It is not a claim that fewer than two looks are bad data, and it is not a confidence score.
 
 ## Patch size
 
@@ -92,7 +92,7 @@ This timing is an extrapolation from a uniform synthetic array. The connected-co
 | Outward rounding to integer dB, including -22 dB and -28 dB | Assumption, one step past the observed percentile |
 | Ratio gate off in the core | Choice, because no joint ratio distribution was audited |
 | A numeric ratio for the on-state | Requires architect approval. Not proposed here |
-| `min_looks` of 0 and 2 | 0 is the inclusive baseline. 2 sits at the observed 25th percentile. Both need acceptance as the declared pair |
+| `min_looks` of 0 and 2 | 0 adds no further floor and still rejects non-positive looks. 2 sits at the observed 25th percentile. Both need acceptance as the declared pair |
 | Patch sizes 1, 4, and 9 | Declared by the mission, not estimated from a cluster |
 | Whether the 10th percentile is too far into the bulk | Requires architect approval before the sweep runs |
 

@@ -43,6 +43,10 @@ class CandidateParameters:
     All float parameters must be finite. Power limits and the optional ratio
     gate must be strictly positive. ``min_looks`` must be zero or positive.
     ``min_patch_pixels`` must be at least 1.
+
+    A sample still needs finite ``numberOfLooks`` strictly greater than zero.
+    ``min_looks=0`` adds no further floor. It does not make a zero-look sample
+    valid.
     """
 
     hh_max_linear: float
@@ -334,7 +338,9 @@ def _valid_sample(
         return False
     if not math.isfinite(hh) or not math.isfinite(hv) or hh <= 0 or hv <= 0:
         return False
-    if not math.isfinite(looks) or looks < min_looks:
+    # Zero and negative looks are invalid even when min_looks is 0.
+    # min_looks adds a floor; it does not accept a non-positive sample.
+    if not math.isfinite(looks) or looks <= 0 or looks < min_looks:
         return False
     return True
 

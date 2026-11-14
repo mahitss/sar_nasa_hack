@@ -306,5 +306,38 @@ class ScreenDetailedTests(unittest.TestCase):
         self.assertEqual(hvhv, before_hvhv)
 
 
+class LooksFloorTests(unittest.TestCase):
+    def _screen(self, looks_value: float, min_looks: float) -> int:
+        rules = Parameters(0.05, 0.02, min_looks, 1)
+        labels = screen_module.screen(
+            [[0.01]],
+            [[0.002]],
+            [[looks_value]],
+            [[1]],
+            rules,
+        )
+        return labels[0][0]
+
+    def test_zero_looks_invalid_when_min_looks_is_zero(self):
+        self.assertEqual(self._screen(0.0, 0.0), -1)
+
+    def test_negative_looks_are_invalid(self):
+        self.assertEqual(self._screen(-0.1, 0.0), -1)
+
+    def test_small_positive_looks_valid_when_min_looks_is_zero(self):
+        self.assertEqual(self._screen(0.01, 0.0), 1)
+
+    def test_same_small_positive_looks_invalid_when_min_looks_is_two(self):
+        self.assertEqual(self._screen(0.01, 2.0), -1)
+
+    def test_looks_equal_to_positive_floor_stay_valid(self):
+        self.assertEqual(self._screen(2.0, 2.0), 1)
+
+    def test_nan_and_infinite_looks_remain_invalid(self):
+        self.assertEqual(self._screen(math.nan, 0.0), -1)
+        self.assertEqual(self._screen(math.inf, 0.0), -1)
+        self.assertEqual(self._screen(-math.inf, 2.0), -1)
+
+
 if __name__ == "__main__":
     unittest.main()

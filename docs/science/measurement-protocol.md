@@ -26,7 +26,7 @@ On the GCOV grid, a pixel enters the screen only when:
 
 1. The GCOV mask is a positive subswath code. Codes 0 and 255 are invalid.
 2. HHHH and HVHV are finite and strictly positive.
-3. `numberOfLooks` is finite and at least the declared `min_looks`.
+3. `numberOfLooks` is finite and strictly greater than zero, and it is at least the declared `min_looks`. `min_looks=0` does not accept a zero-look sample.
 
 The real GSLC mask is not applied pixel by pixel. Its grid does not match the GCOV crop, and resampling is outside this protocol. The prototype accepts a same-grid GSLC mask only for a synthetic fixture. A later alignment method would be a separate mission.
 

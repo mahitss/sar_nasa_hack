@@ -68,7 +68,7 @@ A pixel is valid only when all of these hold:
 - The GCOV mask code is a positive subswath code. Codes 0 and 255 are invalid.
 - If a same-grid GSLC validity mask is supplied, its code is also a positive subswath code. The function does not resample. The real 5 m GSLC crop must not be passed to this function until a later mission approves an alignment method.
 - HHHH and HVHV are finite and strictly positive.
-- `numberOfLooks` is finite and at least `min_looks`.
+- `numberOfLooks` is finite and strictly greater than zero, and it is at least `min_looks`. `min_looks=0` does not accept a zero-look sample.
 
 A valid pixel is a raw candidate when HHHH is at most `hh_max_linear`, HVHV is at most `hv_max_linear`, and, if `max_hv_over_hh` is set, HVHV/HHHH is at most that ratio. Raw candidates are then grouped into four-connected patches. A patch smaller than `min_patch_pixels` is returned to the valid non-candidate class.
 
