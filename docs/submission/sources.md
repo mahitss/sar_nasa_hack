@@ -7,7 +7,8 @@ Mission 000 and Mission 001 source notes remain below. Mission 002 re-queried NA
 | Source | URL | Use |
 | --- | --- | --- |
 | ASF, available NISAR data | https://nisar-docs.asf.alaska.edu/availability-overview/ | Release dates, CRID P05023 and P05036, instrument gap, reprocessing plan |
-| ASF, product overview | https://nisar-docs.asf.alaska.edu/products-overview/ | Product roles. The GSLC additional mask indicates water bodies and shadow-layover. GCOV additional layers are mask, number of looks, and the RTC factor. |
+| ASF, product overview | https://nisar-docs.asf.alaska.edu/products-overview/ | Product roles. Its GSLC row says the additional mask indicates water bodies and shadow-layover. That wording conflicts with the product-format document and with the extracted dataset attributes. GCOV additional layers are mask, number of looks, and the RTC factor. |
+| NISAR L&S Band Level-1 and Level-2 Data Product Format Document, Version 1.2.1 | https://bhoonidhi.nrsc.gov.in/NISAR/NISAR_Data_Product_Format_Document_V1.2.1_digisigned.pdf | HDF5 dataset definitions. Document ISRO-SAC-PR-NISAR-2024-051. The GSLC mask long name is "Valid samples subswath mask." Section 2.2.4 defines filename code `N` as Near Real-Time fidelity. |
 | ASF, GCOV | https://nisar-docs.asf.alaska.edu/gcov/ | Pixel spacing by bandwidth. `numberOfLooks` and the GCOV `mask` describe adaptive multi-looking, not a water class. |
 | ASF, GOFF | https://nisar-docs.asf.alaska.edu/goff/ | 80 m posting and cryosphere intent |
 | ASF, access | https://nisar-docs.asf.alaska.edu/access-overview/ | L-band at ASF, S-band at Bhoonidhi |

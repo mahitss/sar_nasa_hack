@@ -43,14 +43,14 @@ The web application, Go API, and scientific worker are not implemented. No third
 
 ## Scientific limits of the first slice
 
-Group D40 is the primary comparison set: provisional NISAR L-band GCOV, descending track 5, frame 73, Frequency A 40 MHz, HH+HV, CRID P05023. A fresh CMR query on 2026-11-14 confirmed four acquisitions whose footprints contain the published study coordinate: 20 July, 13 August, 6 September, and 30 September 2026. The same query found only one validated P05036 scene in that mode, on 24 October 2026, so there is no validated pair in this window. The catalogue shortlist for the first pair is 6 September and 30 September. It is pending raster inspection and is not a completed measurement.
+Group D40 is the primary comparison set: provisional NISAR L-band GCOV, descending track 5, frame 73, Frequency A 40 MHz, HH+HV, CRID P05023. A fresh CMR query on 2026-11-14 confirmed four acquisitions whose footprints contain the published study coordinate: 20 July, 13 August, 6 September, and 30 September 2026. The same query found only one validated P05036 scene in that mode, on 24 October 2026, so there is no validated pair in this window. The catalogue shortlist for the first pair is 6 September and 30 September. Mission 003 recorded GCOV raster quality control and GSLC native-grid subswath-validity mask quality control for that pair. Those records are not a water measurement.
 
 The first vertical slice, when later missions implement it, is limited to:
 
 - NISAR L-band GCOV
 - Group D40, with provisional CRID P05023 labeled on every record
 - one measurement from two acquisitions
-- inspection of the GSLC water-body and shadow-layover mask, kept distinct from the GCOV multi-looking mask
+- GSLC native-grid subswath-validity mask quality control, kept distinct from the GCOV valid-samples subswath mask
 - a water-candidate evidence record
 - human review
 - one reproducible report

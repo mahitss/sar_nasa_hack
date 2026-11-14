@@ -67,3 +67,7 @@ The service-role key bypasses RLS. It is not the default connection for user req
 The Go module line, when the API mission creates `go.mod`, is `go 1.25`. The installed toolchain may be newer. The module target stays 1.25 unless the architect changes this decision.
 
 The worker interpreter is Python 3.12.13, including the copy already available through `uv` on the founder machine at Mission 000. The default `python` on PATH was 3.13.5 and is not the worker runtime.
+
+## Inspected layers
+
+Mission 003 stored quality-control manifests for the 6 September and 30 September 2026 Group D40 pair. The available raster inputs for a later measurement are GCOV HHHH, GCOV HVHV, GCOV `numberOfLooks`, the GCOV valid-samples subswath mask, and the GSLC valid-samples subswath mask. The GSLC dataset `/science/LSAR/GSLC/grids/frequencyA/mask` is that validity mask. The architecture does not treat it as a water, shadow, or layover classification. Full satellite products stay outside Git; `data/processed/` is ignored.

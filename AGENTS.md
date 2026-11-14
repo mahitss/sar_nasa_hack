@@ -41,7 +41,7 @@ These rules apply to every mission. A later task does not weaken them.
 ## Scope and missions
 
 - Implement the approved mission only. Do not expand into adjacent features.
-- The first vertical slice is Group D40 provisional GCOV, one two-acquisition water-candidate measurement, GSLC mask inspection, human review, and one report.
+- The first vertical slice is Group D40 provisional GCOV, one two-acquisition water-candidate measurement, GSLC native-grid subswath-validity mask quality control, human review, and one report. The water-candidate measurement must not treat the GSLC mask as a water, shadow, or layover classification.
 - S-band, GUNW, GOFF, deformation, breach simulation, and infrastructure exposure stay out of that slice.
 - Every mission states acceptance criteria before implementation and reports test or inspection evidence afterward.
 - Do not commit or push unless the founder explicitly asks.

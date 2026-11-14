@@ -29,10 +29,25 @@
       "source": "Band metadata copied from /science/LSAR/GSLC/grids/frequencyA/mask on both approved granules.",
       "valid_min": 0,
       "values_defined_by_attribute": {
-        "0": "At least one RSLC pixel in the interpolation window is partially focused or invalid.",
-        "255": "Outside the radar acquisition extent.",
-        "positive_integer": "Described as the subswath number for a valid GSLC sample. The attribute does not name subswath 1."
+        "0": "Invalid or partially focused input sample in the interpolation window.",
+        "1_to_N": "Valid samples associated with a subswath. The attribute and the format document do not name subswath 1.",
+        "255": "Outside the acquisition extent."
       }
+    },
+    "format_document_v1_2_1": {
+      "document_number": "ISRO-SAC-PR-NISAR-2024-051",
+      "inspected_product_path": "/science/LSAR/GSLC/grids/frequencyA/mask",
+      "long_name": "Valid samples subswath mask",
+      "note": "The format-document table prints the SSAR path. Section 6.3 says the same organization applies to L-band. The inspected granules use the LSAR path, and their copied attributes match the document description.",
+      "source": "https://bhoonidhi.nrsc.gov.in/NISAR/NISAR_Data_Product_Format_Document_V1.2.1_digisigned.pdf",
+      "table_path": "/science/SSAR/GSLC/grids/frequencyA/mask",
+      "title": "NISAR L&S Band Level-1 and Level-2 Data Product Format Document",
+      "values": {
+        "0": "Invalid or partially focused input sample in the interpolation window.",
+        "1_to_N": "Valid samples associated with a subswath.",
+        "255": "Outside the acquisition extent."
+      },
+      "version": "1.2.1"
     },
     "observed_value_counts_each_crop": {
       "1": 6285585
@@ -48,7 +63,8 @@
       "identifier": "D-102269",
       "title": "NISAR NASA SDS Product Specification Level-2 Geocoded Single Look Complex L2_GSLC"
     },
-    "water_shadow_layover_encoding": "undecoded"
+    "documentation_conflict": "The ASF product overview describes a water and shadow-layover mask. The format document and the extracted dataset attributes describe a valid-samples subswath mask. No explanation of that conflict is claimed.",
+    "water_shadow_layover_encoding": "not_the_meaning_of_the_extracted_dataset"
   },
   "grid_comparison": {
     "full_scene_gslc_is_exact_double_of_gcov_frequency_a": true,
@@ -330,7 +346,9 @@
   "mission": "003C",
   "orbit_investigation": {
     "cmr_orbit_type": "MOE",
-    "explanation": "The filename letter and the orbit product type are different fields. CMR ORBIT_TYPE and the HDF5 orbitType dataset both contain MOE. The HDF5 attribute defines MOE as Medium precision Orbit Ephemeris and NOE as Near real-time Orbit Ephemeris. The filename letter N was not found as an internal orbitType value. No pointing-fidelity dataset was found in the identification, orbit, or source-data groups that were read. The two labels are retained and were not merged.",
+    "discrepancy_status": "unresolved",
+    "explanation": "Filename fidelity code N and internal orbitType MOE are both recorded. Product Format Document Version 1.2.1, section 2.2.4, defines N as Near Real-Time fidelity. The orbitType dataset on all four inspected products contains MOE, as does CMR ORBIT_TYPE. These values are not treated as equivalent. No correction is claimed.",
+    "values_not_equivalent": true,
     "filename_letter": "N",
     "filename_letter_meaning_from_mission_002": "near_real_time",
     "internal_dataset_path_gcov": "/science/LSAR/GCOV/metadata/orbit/orbitType",
@@ -562,18 +580,18 @@
     "hdf5_driver": "HDF5",
     "hdf5_image_driver": "HDF5Image"
   },
-  "statement": "This record documents a native-grid inspection of two approved GSLC Frequency A mask crops. It is not a water, area, or change measurement.",
+  "statement": "This record documents native-grid quality control of two approved GSLC Frequency A valid-samples subswath masks. The crops are not a water, shadow, layover, area, or change result.",
   "study_point": {
     "latitude": 30.088337,
     "longitude": 79.808685,
     "source": "Mission 002 catalogue study point"
   },
   "unresolved_questions": [
-    "The product-overview sentence describes a water and shadow-layover mask, while the dataset attribute describes a valid-sample subswath mask. No numeric water, shadow, or layover flag table was present in the HDF5 attributes or on the fetched GSLC user-guide page.",
-    "The specification body D-102269 was not retrieved, so no additional flag table from that document is claimed.",
-    "The observed value 1 is not assigned a subswath name by the attribute.",
-    "The filename letter N remains a separate token. The ASF naming-convention page was not re-read in this mission because the request returned HTTP 500.",
-    "No internal radar-pointing fidelity value was found.",
+    "The ASF product-overview sentence and the Product Format Document Version 1.2.1 disagree about the role of the GSLC mask. The conflict is unresolved. No explanation is claimed.",
+    "The specification body D-102269 was not retrieved. The format document Version 1.2.1 and the copied product attributes are the sources used for the extracted dataset.",
+    "Observed code 1 is a valid-sample subswath code. The document does not assign that code a subswath name.",
+    "Filename fidelity code N and internal orbitType MOE remain an unresolved discrepancy. They are not treated as equivalent.",
+    "No internal radar-pointing fidelity value was read from the four products. This mission did not access the products again to read one.",
     "Geolocation error for the MOE ephemeris was not measured."
   ]
 }

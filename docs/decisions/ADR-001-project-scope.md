@@ -22,7 +22,7 @@ The first vertical slice is:
 2. Group D40 as the primary comparison group: descending track 5, frame 73, Frequency A 40 MHz, HH+HV, provisional CRID P05023.
 3. Every record from that group labeled provisional.
 4. One measurement that uses two acquisitions from Group D40.
-5. Inspection of the companion GSLC mask for water bodies and shadow-layover. The GCOV mask is a separate layer and is not a water classification.
+5. GSLC native-grid subswath-validity mask quality control for the companion acquisitions. The selected dataset is `/science/LSAR/GSLC/grids/frequencyA/mask`. The GCOV mask is a separate valid-samples subswath layer. Neither mask is a water, shadow, or layover classification. The first water-candidate measurement must not depend on such a classification from these masks.
 6. A water-candidate evidence record, stored as a measurement, not as a confirmed shoreline.
 7. Human review with an accept or reject decision.
 8. One report that can be traced to those evidence and decision ids.
@@ -47,8 +47,7 @@ Group A40 (ascending track 127) may be stored later as a separate comparability 
 
 ## Unresolved
 
-- The repository has no licence.
-- The founder still needs an Earthdata Login before any download mission.
-- The rank-1 D40 pair, 6 September and 30 September 2026, is pending raster quality control.
-- Every revalidated filename uses orbit-fidelity letter `N`, while CMR `ORBIT_TYPE` is `MOE`. Both values are retained. Orbit direction for grouping comes from `ASCENDING_DESCENDING`.
+- The rank-1 D40 pair has GCOV raster quality control and GSLC subswath-validity mask quality control. It does not yet have a water-candidate measurement.
+- Filename fidelity code `N` and internal `orbitType` `MOE` are an unresolved discrepancy. The Product Format Document, Version 1.2.1, section 2.2.4, defines `N` as Near Real-Time fidelity. The inspected products and CMR both carry `MOE`. The two labels are not treated as equivalent, and no correction is claimed. Orbit direction for grouping comes from `ASCENDING_DESCENDING`.
 - The `F_F` token in one Group D20 granule id was not defined from a filename specification in Mission 000.
+- The ASF product overview describes a GSLC water and shadow-layover mask. The Product Format Document, Version 1.2.1, and the attributes on the extracted dataset describe a valid-samples subswath mask. That documentation conflict is unresolved.
