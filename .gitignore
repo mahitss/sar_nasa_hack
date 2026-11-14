@@ -1,0 +1,28 @@
+# Secrets. .env.example is the only env file that belongs in Git.
+.env
+.env.*
+!.env.example
+
+# Dependencies and build outputs
+node_modules/
+.next/
+.venv/
+venv/
+__pycache__/
+build/
+dist/
+
+# Local scientific data. data/manifests remains versioned.
+data/raw/
+data/processed/
+data/derived/
+
+# Satellite products and local databases
+*.h5
+*.hdf5
+*.tif
+*.tiff
+*.vrt
+*.gpkg
+*.sqlite
+*.db

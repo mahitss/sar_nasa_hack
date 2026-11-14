@@ -1,0 +1,10 @@
+# Mission 001 placeholder. Do not run `docker compose up` from this file.
+# No image is built and no dependency is installed.
+#
+# PostgreSQL, PostGIS, Auth, and Storage belong to Supabase.
+# Do not add a second PostgreSQL service here.
+# A later mission may add the Python 3.12 scientific worker only.
+
+name: rivet
+
+services: {}
