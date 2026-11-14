@@ -185,10 +185,12 @@ class ScreenTests(unittest.TestCase):
         paint(hhhh, [(1, 0), (1, 1)], 0.08)
         strict = Parameters(0.05, 0.02, 2.0, 2, 0.5)
         loose = Parameters(0.10, 0.02, 2.0, 2, 0.5)
-        counts = screen_module.sensitivity(hhhh, hvhv, looks, gcov, (strict, loose))
+        result = screen_module.sensitivity(hhhh, hvhv, looks, gcov, (strict, loose))
+        counts = result.filtered_candidate_count
         self.assertEqual(counts[0][0], 2)
         self.assertEqual(counts[1][0], 1)
-        self.assertLessEqual(max(max(row) for row in counts), 2)
+        self.assertLessEqual(max(max(row) for row in counts), result.total_sets)
+        self.assertEqual(result.validity_class()[0][0], 1)
 
 
 if __name__ == "__main__":

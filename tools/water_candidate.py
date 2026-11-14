@@ -3,6 +3,17 @@
 The functions compare linear gamma0 power. They do not read satellite files,
 resample rasters, or assign a confidence score. A result of 1 means the pixel
 met the supplied rules. It does not mean the pixel is water.
+
+Mission 005 changes ``sensitivity()`` to return ``SensitivityResult``. The
+filtered-candidate count is no longer a bare grid, so an invalid pixel is not
+reported as a non-candidate.
+
+This module implements Mission 004 hardening:
+- Parameter validation rejects NaN, infinity, zero and negative values.
+- screen() retains raw candidate labels before connected-component filtering.
+- sensitivity() reports per-pixel validity and candidate stability across
+  parameter sets, distinguishing pixels that are invalid in at least one set
+  from pixels that are valid in every set.
 """
 
 from __future__ import annotations
@@ -28,6 +39,10 @@ class CandidateParameters:
     Power limits are linear gamma0. They are experiment parameters, not a
     universal NISAR threshold. ``max_hv_over_hh`` may be None to skip the
     cross-polar ratio gate.
+
+    All float parameters must be finite. Power limits and the optional ratio
+    gate must be strictly positive. ``min_looks`` must be zero or positive.
+    ``min_patch_pixels`` must be at least 1.
     """
 
     hh_max_linear: float
@@ -37,14 +52,118 @@ class CandidateParameters:
     max_hv_over_hh: float | None = None
 
     def __post_init__(self) -> None:
-        if self.hh_max_linear <= 0 or self.hv_max_linear <= 0:
-            raise ValueError("power limits must be positive linear gamma0")
+        for name, value in (
+            ("hh_max_linear", self.hh_max_linear),
+            ("hv_max_linear", self.hv_max_linear),
+            ("min_looks", self.min_looks),
+        ):
+            if not isinstance(value, (int, float)) or math.isnan(value) or math.isinf(value):
+                raise ValueError(f"{name} must be a finite number, got {value!r}")
+        if self.hh_max_linear <= 0:
+            raise ValueError("hh_max_linear must be a finite positive linear gamma0")
+        if self.hv_max_linear <= 0:
+            raise ValueError("hv_max_linear must be a finite positive linear gamma0")
         if self.min_looks < 0:
             raise ValueError("min_looks must be zero or positive")
+        if not isinstance(self.min_patch_pixels, int) or isinstance(self.min_patch_pixels, bool):
+            raise ValueError("min_patch_pixels must be an integer")
         if self.min_patch_pixels < 1:
             raise ValueError("min_patch_pixels must be at least 1")
-        if self.max_hv_over_hh is not None and self.max_hv_over_hh <= 0:
-            raise ValueError("max_hv_over_hh must be positive when set")
+        if self.max_hv_over_hh is not None:
+            if not isinstance(self.max_hv_over_hh, (int, float)) or math.isnan(self.max_hv_over_hh) or math.isinf(self.max_hv_over_hh):
+                raise ValueError("max_hv_over_hh must be a finite number when set")
+            if self.max_hv_over_hh <= 0:
+                raise ValueError("max_hv_over_hh must be positive when set")
+
+
+@dataclass(frozen=True)
+class ScreenResult:
+    """Detailed output from one screen run.
+
+    ``raw`` holds the candidate decision before connected-component filtering:
+    -1 invalid, 0 valid non-candidate, 1 raw candidate.
+    ``filtered`` holds the same classes after small-patch removal.
+    ``valid`` holds 0 for invalid pixels and 1 for valid pixels.
+    """
+
+    raw: LabelGrid
+    filtered: LabelGrid
+    valid: LabelGrid
+
+
+@dataclass(frozen=True)
+class SensitivityResult:
+    """Per-pixel sensitivity across a collection of parameter sets.
+
+    For every pixel the result records how many parameter sets found it valid,
+    how many found it a raw candidate (before patch filtering), and how many
+    found it a filtered candidate (after patch filtering).  The total number of
+    parameter sets is also recorded so callers can compute stability fractions
+    without treating them as probabilities.
+    """
+
+    valid_count: LabelGrid
+    raw_candidate_count: LabelGrid
+    filtered_candidate_count: LabelGrid
+    total_sets: int
+
+    def validity_class(self) -> LabelGrid:
+        """Classify each pixel by validity across parameter sets.
+
+        Returns a grid of the same shape where each value is:
+        - 1: valid in every parameter set
+        - 0: valid in at least one but not every parameter set
+        - -1: invalid in every parameter set
+        """
+        rows = len(self.valid_count)
+        cols = len(self.valid_count[0])
+        out: LabelGrid = [[0 for _ in range(cols)] for _ in range(rows)]
+        total = self.total_sets
+        for row in range(rows):
+            for col in range(cols):
+                vc = self.valid_count[row][col]
+                if vc == total:
+                    out[row][col] = 1
+                elif vc > 0:
+                    out[row][col] = 0
+                else:
+                    out[row][col] = -1
+        return out
+
+    def candidate_stability_class(self) -> LabelGrid:
+        """Classify each pixel by candidate behaviour among valid sets.
+
+        Returns a grid of the same shape where each value is:
+        - 1: candidate in every set in which it was valid (and valid in at
+          least one set)
+        - 0: candidate in some but not all valid sets
+        - -1: never a candidate while valid (or invalid in every set)
+        """
+        rows = len(self.valid_count)
+        cols = len(self.valid_count[0])
+        out: LabelGrid = [[0 for _ in range(cols)] for _ in range(rows)]
+        for row in range(rows):
+            for col in range(cols):
+                vc = self.valid_count[row][col]
+                if vc == 0:
+                    out[row][col] = -1
+                    continue
+                fc = self.filtered_candidate_count[row][col]
+                if fc == vc:
+                    out[row][col] = 1
+                elif fc > 0:
+                    out[row][col] = 0
+                else:
+                    out[row][col] = -1
+        return out
+
+    def __getitem__(self, row: int) -> list[int]:
+        """Backward-compatible row access: behaves like filtered_candidate_count."""
+        return self.filtered_candidate_count[row]
+
+    def __iter__(self):
+        """Backward-compatible iteration: yields rows of filtered_candidate_count."""
+        return iter(self.filtered_candidate_count)
 
 
 def linear_to_db(power: float) -> float:
@@ -63,15 +182,15 @@ def db_to_linear(decibels: float) -> float:
     return 10.0 ** (decibels / 10.0)
 
 
-def screen(
+def screen_detailed(
     hhhh: Grid,
     hvhv: Grid,
     looks: Grid,
     gcov_mask: Mask,
     parameters: CandidateParameters,
     gslc_mask: Mask | None = None,
-) -> LabelGrid:
-    """Label each pixel as invalid (-1), valid non-candidate (0), or candidate (1).
+) -> ScreenResult:
+    """Run one screen and return raw, filtered, and validity labels.
 
     A same-grid GSLC validity mask may be supplied for a fixture whose grid
     already matches the GCOV arrays. This function does not resample.
@@ -80,7 +199,10 @@ def screen(
     rows, cols = _require_same_shape(hhhh, hvhv, looks, gcov_mask)
     if gslc_mask is not None:
         _require_same_shape(hhhh, gslc_mask)
+
     raw = [[0 for _ in range(cols)] for _ in range(rows)]
+    valid = [[0 for _ in range(cols)] for _ in range(rows)]
+
     for row in range(rows):
         for col in range(cols):
             if not _valid_sample(
@@ -92,7 +214,9 @@ def screen(
                 parameters.min_looks,
             ):
                 raw[row][col] = -1
+                valid[row][col] = 0
                 continue
+            valid[row][col] = 1
             hh = float(hhhh[row][col])
             hv = float(hvhv[row][col])
             if hh > parameters.hh_max_linear or hv > parameters.hv_max_linear:
@@ -100,7 +224,26 @@ def screen(
             if parameters.max_hv_over_hh is not None and hv / hh > parameters.max_hv_over_hh:
                 continue
             raw[row][col] = 1
-    return _remove_small_patches(raw, parameters.min_patch_pixels)
+
+    filtered = _remove_small_patches(raw, parameters.min_patch_pixels)
+    return ScreenResult(raw=raw, filtered=filtered, valid=valid)
+
+
+def screen(
+    hhhh: Grid,
+    hvhv: Grid,
+    looks: Grid,
+    gcov_mask: Mask,
+    parameters: CandidateParameters,
+    gslc_mask: Mask | None = None,
+) -> LabelGrid:
+    """Label each pixel as invalid (-1), valid non-candidate (0), or candidate (1).
+
+    The returned grid is the post-filter (connected-component) labelling.
+    Callers needing the pre-filter raw labels should use screen_detailed().
+    """
+
+    return screen_detailed(hhhh, hvhv, looks, gcov_mask, parameters, gslc_mask).filtered
 
 
 def compare(earlier: LabelGrid, later: LabelGrid) -> dict[str, int | LabelGrid]:
@@ -142,29 +285,39 @@ def sensitivity(
     gcov_mask: Mask,
     parameter_sets: Sequence[CandidateParameters],
     gslc_mask: Mask | None = None,
-) -> LabelGrid:
-    """Count how many parameter sets select each pixel.
+) -> SensitivityResult:
+    """Report per-pixel sensitivity across parameter sets.
 
-    The count is an algorithmic sensitivity tally. It is not a probability
-    and it is not a confidence percentage.
+    For every pixel the result records how many parameter sets found it valid,
+    how many found it a raw candidate, and how many found it a filtered
+    candidate.  The count is an algorithmic sensitivity tally. It is not a
+    probability and it is not a confidence percentage.
     """
 
     if not parameter_sets:
         raise ValueError("at least one parameter set is required")
-    total: LabelGrid | None = None
+
+    rows, cols = _require_same_shape(hhhh, hvhv, looks, gcov_mask)
+    valid_count = [[0 for _ in range(cols)] for _ in range(rows)]
+    raw_candidate_count = [[0 for _ in range(cols)] for _ in range(rows)]
+    filtered_candidate_count = [[0 for _ in range(cols)] for _ in range(rows)]
+
     for parameters in parameter_sets:
-        labels = screen(hhhh, hvhv, looks, gcov_mask, parameters, gslc_mask)
-        if total is None:
-            total = [[0 if value < 0 else 0 for value in row] for row in labels]
-            selected = total
-        else:
-            selected = total
-        for row, label_row in enumerate(labels):
-            for col, value in enumerate(label_row):
-                if value == 1:
-                    selected[row][col] += 1
-    assert total is not None
-    return total
+        result = screen_detailed(hhhh, hvhv, looks, gcov_mask, parameters, gslc_mask)
+        for row in range(rows):
+            for col in range(cols):
+                valid_count[row][col] += result.valid[row][col]
+                if result.raw[row][col] == 1:
+                    raw_candidate_count[row][col] += 1
+                if result.filtered[row][col] == 1:
+                    filtered_candidate_count[row][col] += 1
+
+    return SensitivityResult(
+        valid_count=valid_count,
+        raw_candidate_count=raw_candidate_count,
+        filtered_candidate_count=filtered_candidate_count,
+        total_sets=len(parameter_sets),
+    )
 
 
 def _valid_sample(
