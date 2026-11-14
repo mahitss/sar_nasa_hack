@@ -1,0 +1,1231 @@
+{
+  "mission": "007",
+  "source_mission006_commit_expected": "a7fadb9d6c144d856563f310c4ada26c18e70c83",
+  "verification_passed": true,
+  "parameter_domain_changed": false,
+  "classifier_rerun": false,
+  "confirmed_water_extent": false,
+  "area_calculated": false,
+  "shoreline_calculated": false,
+  "output_checks": [
+    {
+      "path": "data/derived/mission006/20260906_valid_count.tif",
+      "sha256": "bd63d0c56ee3bc2aeadfc1d4fa0e2da5d4dbf377fa16d99ea84c30a436a9b1f3",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel is valid. Not a water extent."
+    },
+    {
+      "path": "data/derived/mission006/20260906_raw_candidate_count.tif",
+      "sha256": "c54e847401b24772b791b8b17e4f4678ee285eef38e6a9c3782c610657c5097d",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel is a raw candidate before patch filtering."
+    },
+    {
+      "path": "data/derived/mission006/20260906_filtered_candidate_count.tif",
+      "sha256": "7046eedfab43dcdbd30aa39f7473d3bb5cdbacca43123cb83e84e62c28470e72",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel remains a candidate after four-connected patch filtering."
+    },
+    {
+      "path": "data/derived/mission006/20260906_validity_class.tif",
+      "sha256": "73ada88ede868e017a22e554d785aec930da736e56b466e0a7e8bd3337069bb7",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Validity class across the 1092-set domain."
+    },
+    {
+      "path": "data/derived/mission006/20260906_raw_candidate_stability.tif",
+      "sha256": "0aae393762b642b5cfae11cad5fceb27d96b054e3846f254feaa5a2140c433cf",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Raw-candidate stability. Code 2 is fully sweep-stable."
+    },
+    {
+      "path": "data/derived/mission006/20260906_filtered_candidate_stability.tif",
+      "sha256": "68cd9f7515dc0bcba86585044ce87e829f099d3d23fa7cedfc07470a9c4d6f42",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Filtered-candidate stability. Code 2 is fully sweep-stable."
+    },
+    {
+      "path": "data/derived/mission006/20260930_valid_count.tif",
+      "sha256": "d3e6a244848fa3d97f8af0d7d413e572c66d6744186dcd5834477d02c524fe13",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel is valid. Not a water extent."
+    },
+    {
+      "path": "data/derived/mission006/20260930_raw_candidate_count.tif",
+      "sha256": "1599f90472aab2b5ad9b52bf7020d3265743cd5ae1929131dda4680c16ea8526",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel is a raw candidate before patch filtering."
+    },
+    {
+      "path": "data/derived/mission006/20260930_filtered_candidate_count.tif",
+      "sha256": "d681e5a06bf6734b35ad72badce279f5b4efa937432cea49680f9f4dc5d78b38",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Count of parameter sets in which the pixel remains a candidate after four-connected patch filtering."
+    },
+    {
+      "path": "data/derived/mission006/20260930_validity_class.tif",
+      "sha256": "4e7017fdfb977f4fed37c28b32ccec79af28100b1baae95c3aa689cfe5a9669b",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Validity class across the 1092-set domain."
+    },
+    {
+      "path": "data/derived/mission006/20260930_raw_candidate_stability.tif",
+      "sha256": "c23d87016d17c24a2b19b280d3707bc3896098228ec835a8654f34b817041d77",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Raw-candidate stability. Code 2 is fully sweep-stable."
+    },
+    {
+      "path": "data/derived/mission006/20260930_filtered_candidate_stability.tif",
+      "sha256": "120d8447b904a015a654d4b2f0c1ef84c656fb676a04a1fa56483e1167d699ac",
+      "matches_manifest_sha256": true,
+      "width": 1171,
+      "height": 1343,
+      "crs": "EPSG:32644",
+      "geotransform": [
+        379470.0,
+        10.0,
+        0.0,
+        3336070.0,
+        0.0,
+        -10.0
+      ],
+      "data_type": "Int16",
+      "description": "Filtered-candidate stability. Code 2 is fully sweep-stable."
+    }
+  ],
+  "problems": [],
+  "parameter_sensitive_summary": {
+    "20260906": {
+      "candidate_class": "filtered_parameter_sensitive",
+      "component_count": 18853,
+      "pixel_count": 84468,
+      "largest_component_pixels": 916,
+      "component_size_median": 1.0,
+      "listed_as_review_patches": false,
+      "reason": "The class is widespread. Listing every component would treat a parameter-sensitive field as a set of lakes."
+    },
+    "20260930": {
+      "candidate_class": "filtered_parameter_sensitive",
+      "component_count": 24991,
+      "pixel_count": 108830,
+      "largest_component_pixels": 787,
+      "component_size_median": 1.0,
+      "listed_as_review_patches": false,
+      "reason": "The class is widespread. Listing every component would treat a parameter-sensitive field as a set of lakes."
+    }
+  },
+  "regions": [
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-001",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 30,
+        "row_max": 30,
+        "col_min": 37,
+        "col_max": 37
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 737,
+        "filtered_maximum": 737,
+        "filtered_median": 737.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-002",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 147,
+        "row_max": 147,
+        "col_min": 631,
+        "col_max": 631
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 767,
+        "filtered_maximum": 767,
+        "filtered_median": 767.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-003",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 478,
+        "row_max": 478,
+        "col_min": 182,
+        "col_max": 182
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 728,
+        "filtered_maximum": 728,
+        "filtered_median": 728.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-004",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 571,
+        "row_max": 571,
+        "col_min": 185,
+        "col_max": 185
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 524,
+        "filtered_maximum": 524,
+        "filtered_median": 524.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-005",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 1208,
+        "row_max": 1208,
+        "col_min": 147,
+        "col_max": 147
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 644,
+        "filtered_maximum": 644,
+        "filtered_median": 644.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-raw_fully_sweep_stable-006",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 1215,
+        "row_max": 1215,
+        "col_min": 172,
+        "col_max": 172
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 810,
+        "filtered_maximum": 810,
+        "filtered_median": 810.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-001",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 145,
+        "row_max": 150,
+        "col_min": 635,
+        "col_max": 642
+      },
+      "pixel_count": 26,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-002",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 475,
+        "row_max": 480,
+        "col_min": 182,
+        "col_max": 185
+      },
+      "pixel_count": 16,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-003",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 518,
+        "row_max": 520,
+        "col_min": 549,
+        "col_max": 555
+      },
+      "pixel_count": 15,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-004",
+      "date": "20260906",
+      "pixel_bounds": {
+        "row_min": 1218,
+        "row_max": 1222,
+        "col_min": 178,
+        "col_max": 191
+      },
+      "pixel_count": 31,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-001",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 258,
+        "row_max": 258,
+        "col_min": 151,
+        "col_max": 151
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 652,
+        "filtered_maximum": 652,
+        "filtered_median": 652.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-002",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 474,
+        "row_max": 476,
+        "col_min": 178,
+        "col_max": 178
+      },
+      "pixel_count": 3,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 893,
+        "filtered_maximum": 893,
+        "filtered_median": 893.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-003",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 476,
+        "row_max": 477,
+        "col_min": 182,
+        "col_max": 182
+      },
+      "pixel_count": 2,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 728,
+        "filtered_maximum": 728,
+        "filtered_median": 728.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-004",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 478,
+        "row_max": 478,
+        "col_min": 186,
+        "col_max": 186
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 803,
+        "filtered_maximum": 803,
+        "filtered_median": 803.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-005",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 546,
+        "row_max": 546,
+        "col_min": 69,
+        "col_max": 69
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 634,
+        "filtered_maximum": 634,
+        "filtered_median": 634.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-006",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 840,
+        "row_max": 840,
+        "col_min": 259,
+        "col_max": 259
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 766,
+        "filtered_maximum": 766,
+        "filtered_median": 766.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-007",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 1208,
+        "row_max": 1208,
+        "col_min": 147,
+        "col_max": 147
+      },
+      "pixel_count": 1,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 650,
+        "filtered_maximum": 650,
+        "filtered_median": 650.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-raw_fully_sweep_stable-008",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 1214,
+        "row_max": 1215,
+        "col_min": 172,
+        "col_max": 172
+      },
+      "pixel_count": 2,
+      "candidate_class": "raw_fully_sweep_stable",
+      "selection_count_summary": {
+        "raw_minimum": 1092,
+        "raw_maximum": 1092,
+        "raw_median": 1092.0,
+        "filtered_minimum": 903,
+        "filtered_maximum": 903,
+        "filtered_median": 903.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-001",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 142,
+        "row_max": 149,
+        "col_min": 633,
+        "col_max": 642
+      },
+      "pixel_count": 37,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-002",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 474,
+        "row_max": 477,
+        "col_min": 182,
+        "col_max": 187
+      },
+      "pixel_count": 12,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-003",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 476,
+        "row_max": 477,
+        "col_min": 181,
+        "col_max": 181
+      },
+      "pixel_count": 2,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-004",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 517,
+        "row_max": 522,
+        "col_min": 549,
+        "col_max": 555
+      },
+      "pixel_count": 27,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    },
+    {
+      "id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-005",
+      "date": "20260930",
+      "pixel_bounds": {
+        "row_min": 1217,
+        "row_max": 1223,
+        "col_min": 178,
+        "col_max": 192
+      },
+      "pixel_count": 51,
+      "candidate_class": "filtered_candidate_in_every_valid_set_but_partially_valid",
+      "selection_count_summary": {
+        "raw_minimum": 546,
+        "raw_maximum": 546,
+        "raw_median": 546.0,
+        "filtered_minimum": 546,
+        "filtered_maximum": 546,
+        "filtered_median": 546.0
+      },
+      "touches_invalid_pixels": false,
+      "touches_raster_boundary": false,
+      "coordinate_frame": "crop row and column, origin at the upper left",
+      "georeferencing": "not independently surveyed; product geotransform was checked only for internal consistency",
+      "limitations": [
+        "This patch is an algorithmic candidate group, not a lake.",
+        "No area or shoreline is defined.",
+        "The Mission 005 parameter domain was not changed."
+      ]
+    }
+  ],
+  "review_records": [
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-001",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-002",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-003",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-004",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-005",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-raw_fully_sweep_stable-006",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-001",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-002",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-003",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260906-filtered_candidate_in_every_valid_set_but_partially_valid-004",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-001",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-002",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-003",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-004",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-005",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-006",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-007",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-raw_fully_sweep_stable-008",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-001",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-002",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-003",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-004",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    },
+    {
+      "region_id": "R007-20260930-filtered_candidate_in_every_valid_set_but_partially_valid-005",
+      "decision": "request_independent_evidence",
+      "note": "No same-date optical or terrain observation was retrieved. The patch stays an unresolved candidate group.",
+      "confirmed_water": false,
+      "area_estimated": false,
+      "shoreline_estimated": false
+    }
+  ],
+  "evidence": [
+    {
+      "provider": "Springer Nature, Discover Geoscience",
+      "dataset": "Ghoke and colleagues, Reactivation dynamics of the Kuwari landslide, DOI 10.1007/s44288-026-00717-w",
+      "acquisition_date": "optical and Sentinel-1 analysis from 2013 through 2025; article published 2026-09-05",
+      "spatial_coverage": "Kuwari landslide on the Shambhu River, Kapkot, Bageshwar. The article states a landslide extent near 30.084\u201330.087 N and 79.79\u201379.80 E.",
+      "resolution_or_posting": "Resourcesat-2/2A LISS-IV, three Sentinel-2 scenes, one Cartosat-3 scene, and Sentinel-1 SBAS; CartoDEM 10 m and SRTM 30 m are cited as model inputs",
+      "processing_level": "published interpretation and a HEC-RAS scenario, not a RIVET measurement",
+      "access": "https://doi.org/10.1007/s44288-026-00717-w",
+      "overlaps_candidate_region": "historical overlap with the same valley; not a pixel match to the Mission 006 crops",
+      "overlaps_acquisition_dates": "no; the optical series ends in 2025 and does not include 2026-09-06 or 2026-09-30",
+      "limitations": "Lake lengths reported in that paper are prior results. They are not an area for these candidate pixels and were not used to choose thresholds.",
+      "used_to_retune_thresholds": false
+    },
+    {
+      "provider": "Journal of the Geological Society of India",
+      "dataset": "Bisht and colleagues, Kuwari Lake, 2022, DOI 10.1007/s12594-022-1927-3",
+      "acquisition_date": "2022 note; observations begin years earlier",
+      "spatial_coverage": "Kuwari landslide-dammed lake, Bageshwar",
+      "resolution_or_posting": "short geological communication; no new raster was retrieved",
+      "processing_level": "published note",
+      "access": "https://doi.org/10.1007/s12594-022-1927-3",
+      "overlaps_candidate_region": "same valley, historical",
+      "overlaps_acquisition_dates": "no",
+      "limitations": "It cannot confirm or reject a September 2026 candidate pixel.",
+      "used_to_retune_thresholds": false
+    },
+    {
+      "provider": "South Asia Network on Dams, Rivers and People",
+      "dataset": "SANDRP Kunwari landslide-dam note, 22 November 2024",
+      "acquisition_date": "narrative covering May 2022 through November 2024",
+      "spatial_coverage": "secondary coordinate 30.088337 N, 79.808685 E",
+      "resolution_or_posting": "article, not a survey",
+      "processing_level": "secondary report",
+      "access": "https://sandrp.in/2024/11/22/uttarakhand-kunwari-potentially-dangerous-for-landslides-dam-in-pindar-valley/",
+      "overlaps_candidate_region": "the coordinate is the study point already used for catalogue selection; it is not a surveyed patch corner",
+      "overlaps_acquisition_dates": "no",
+      "limitations": "A secondary article is not independent pixel evidence.",
+      "used_to_retune_thresholds": false
+    },
+    {
+      "provider": "Copernicus / ESA",
+      "dataset": "Sentinel-2 MSI L2A",
+      "acquisition_date": "a scene-level query for 2026-09-06 and 2026-09-30 was not run",
+      "spatial_coverage": "global 110 km tiles; the tile covering the study point was not confirmed in this mission",
+      "resolution_or_posting": "10 m visible and near-infrared bands, 20 m and 60 m for other bands",
+      "processing_level": "L2A surface reflectance when a scene is retrieved",
+      "access": "https://dataspace.copernicus.eu/",
+      "overlaps_candidate_region": "unknown until a catalogue query",
+      "overlaps_acquisition_dates": "unknown; global acquisition plans include September 2026, which does not prove a cloud-free scene over Kuwari",
+      "limitations": "One L2A tile is commonly several hundred megabytes to about a gigabyte. It was not downloaded. No tile identifier is claimed.",
+      "used_to_retune_thresholds": false
+    },
+    {
+      "provider": "USGS",
+      "dataset": "Landsat 8/9 Collection 2 Level-2",
+      "acquisition_date": "a path/row and scene query for the two NISAR dates was not run",
+      "spatial_coverage": "WRS-2 scene; the path and row for 79.81 E, 30.09 N were not resolved here",
+      "resolution_or_posting": "30 m optical and thermal",
+      "processing_level": "Collection 2 Level-2",
+      "access": "https://doi.org/10.5066/P9OGBGM6",
+      "overlaps_candidate_region": "unknown until a catalogue query",
+      "overlaps_acquisition_dates": "unknown",
+      "limitations": "A 30 m pixel is coarser than the 10 m GCOV posting. No scene was downloaded.",
+      "used_to_retune_thresholds": false
+    },
+    {
+      "provider": "Copernicus DEM",
+      "dataset": "GLO-30 Public digital surface model, 2021 release",
+      "acquisition_date": "static composite; not an observation on 2026-09-06 or 2026-09-30",
+      "spatial_coverage": "global where the public 30 m tiles have been released; India tile release was not checked file by file",
+      "resolution_or_posting": "30 m",
+      "processing_level": "DSM, including vegetation and structures where present",
+      "access": "https://registry.opendata.aws/copernicus-dem/",
+      "overlaps_candidate_region": "a 30 m crop of the diagnostic window would be a few hundred pixels on a side, on the order of a few megabytes, and was not downloaded",
+      "overlaps_acquisition_dates": "no; a DEM is not dated to the NISAR acquisitions",
+      "limitations": "A DSM can support a later shadow and layover test. It does not by itself identify water, and it was not used to edit the candidate counts.",
+      "used_to_retune_thresholds": false
+    }
+  ],
+  "evidence_problems": {
+    "Ghoke and colleagues, Reactivation dynamics of the Kuwari landslide, DOI 10.1007/s44288-026-00717-w": [],
+    "Bisht and colleagues, Kuwari Lake, 2022, DOI 10.1007/s12594-022-1927-3": [],
+    "SANDRP Kunwari landslide-dam note, 22 November 2024": [],
+    "Sentinel-2 MSI L2A": [],
+    "Landsat 8/9 Collection 2 Level-2": [],
+    "GLO-30 Public digital surface model, 2021 release": []
+  },
+  "review_decisions_allowed": [
+    "accept_unresolved_water_candidate",
+    "reject_likely_non_water_or_confounder",
+    "request_independent_evidence",
+    "unresolved_insufficient_evidence"
+  ],
+  "terrain_mission_proposed": true,
+  "gslc_mask_used_as_terrain": false,
+  "stored_looks_at_review_classes": {
+    "20260906": {
+      "raw_stability_code_2": {
+        "pixel_count": 6,
+        "minimum": 2.0266547203063965,
+        "maximum": 6.383866786956787,
+        "source": "data/processed/mission003/20260906_gcov_frequencyA_numberOfLooks.tif"
+      },
+      "filtered_stability_code_1": {
+        "pixel_count": 88,
+        "minimum": 0.01516193151473999,
+        "maximum": 1.9356980323791504,
+        "source": "data/processed/mission003/20260906_gcov_frequencyA_numberOfLooks.tif"
+      }
+    },
+    "20260930": {
+      "raw_stability_code_2": {
+        "pixel_count": 12,
+        "minimum": 2.0277576446533203,
+        "maximum": 6.3839826583862305,
+        "source": "data/processed/mission003/20260930_gcov_frequencyA_numberOfLooks.tif"
+      },
+      "filtered_stability_code_1": {
+        "pixel_count": 129,
+        "minimum": 0.009020080789923668,
+        "maximum": 1.962552785873413,
+        "source": "data/processed/mission003/20260930_gcov_frequencyA_numberOfLooks.tif"
+      }
+    }
+  },
+  "review_timestamp_utc": "2026-11-14T14:59:02Z"
+}
