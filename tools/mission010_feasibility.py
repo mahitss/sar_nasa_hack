@@ -27,8 +27,22 @@ GEOMETRY_DATASETS = (
     "/science/LSAR/identification/lookDirection",
     "/science/LSAR/identification/orbitPassDirection",
     "/science/LSAR/GCOV/metadata/orbit/orbitType",
+    "/science/LSAR/GCOV/metadata/orbit/time",
+    "/science/LSAR/GCOV/metadata/orbit/interpMethod",
     "/science/LSAR/GCOV/metadata/orbit/position",
     "/science/LSAR/GCOV/metadata/orbit/velocity",
+    "/science/LSAR/GCOV/metadata/attitude/time",
+    "/science/LSAR/GCOV/metadata/attitude/quaternions",
+    "/science/LSAR/GCOV/metadata/attitude/eulerAngles",
+    "/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/bias/x",
+    "/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/bias/y",
+    "/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/standardDeviation/x",
+    "/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/standardDeviation/y",
+    "/science/LSAR/GCOV/metadata/processingInformation/inputs/demSource",
+    "/science/LSAR/GCOV/metadata/processingInformation/inputs/demFiles",
+    "/science/LSAR/GCOV/metadata/radarGrid/xCoordinates",
+    "/science/LSAR/GCOV/metadata/radarGrid/yCoordinates",
+    "/science/LSAR/GCOV/metadata/radarGrid/heightAboveEllipsoid",
     "/science/LSAR/GCOV/metadata/radarGrid/incidenceAngle",
     "/science/LSAR/GCOV/metadata/radarGrid/slantRange",
     "/science/LSAR/GCOV/metadata/radarGrid/losUnitVectorX",
@@ -40,6 +54,8 @@ GEOMETRY_DATASETS = (
     "/science/LSAR/GSLC/metadata/radarGrid/losUnitVectorX",
     "/science/LSAR/GSLC/metadata/radarGrid/losUnitVectorY",
 )
+
+FILENAME_ORBIT_EPHEMERIS = {"P": "POE", "M": "MOE", "N": "NOE", "F": "FOE"}
 
 
 def geocells_for_bbox(west: float, south: float, east: float, north: float) -> list[tuple[int, int]]:
@@ -93,11 +109,40 @@ def approximate_ground_posting_m(latitude_deg: float, spacing_arcsec: float = GL
 
 
 def orbit_labels_remain_unresolved(filename_code: str, orbit_type: str) -> dict:
+    """Compare the filename ephemeris token with the HDF5 orbitType value.
+
+    Section 2.2.4 maps filename code N to Near real-time Orbit Ephemeris (NOE).
+    The same section also pairs N with Near real-time Radar Pointing (NRP).
+    The HDF5 orbitType field is FOE, NOE, MOE, POE, or Custom. A disagreement
+    is a cross-field inconsistency. It is not resolved here.
+    """
+    expected = FILENAME_ORBIT_EPHEMERIS.get(filename_code)
+    if expected is None:
+        consistency = "unknown"
+        reason = "The filename code is not one of P, M, N, or F, so no expected ephemeris was assigned."
+    elif expected == orbit_type:
+        consistency = "match"
+        reason = (
+            "The filename ephemeris token and the HDF5 orbitType value use the same ephemeris name. "
+            "That agreement has not been verified against the product file."
+        )
+    else:
+        consistency = "mismatch"
+        reason = (
+            "Both fields describe orbit-ephemeris provenance, but the values disagree. "
+            f"Product Format Document 1.2.1 section 2.2.4 maps filename code {filename_code} to {expected}. "
+            f"The observed HDF5 orbitType value is {orbit_type}. "
+            "The original values are unchanged and still require verification against the product metadata and provider guidance."
+        )
     return {
         "filename_fidelity_code": filename_code,
+        "filename_expected_orbit_ephemeris": expected,
+        "observed_orbit_type": orbit_type,
         "internal_orbit_type": orbit_type,
+        "consistency": consistency,
         "resolved": False,
-        "reason": "Product Format Document 1.2.1 section 2.2.4 defines N as Near Real-Time fidelity. MOE is a separate orbit-type value.",
+        "verified_against_product_file": False,
+        "reason": reason,
     }
 
 
@@ -111,9 +156,31 @@ def geometry_role(dataset_path: str) -> str:
     if dataset_path.endswith(("lookDirection", "orbitPassDirection")):
         return "scene-level label, not a per-pixel incidence angle"
     if dataset_path.endswith("orbitType"):
-        return "orbit-product label, unresolved against filename fidelity code N"
+        return "HDF5 orbit-ephemeris label. Filename code N expects NOE. An observed MOE value is a mismatch and is not resolved"
+    if dataset_path.endswith("orbit/time"):
+        return "time tags for the orbit position and velocity records, not read from these granules"
+    if dataset_path.endswith("interpMethod"):
+        return "orbit interpolation method, Hermite or Legendre in the format document, not read from these granules"
     if "orbit/position" in dataset_path or dataset_path.endswith("velocity"):
-        return "orbit state vector, not a per-pixel geometry raster"
+        return "orbit state vector in the WGS84 G1762 frame, not a per-pixel geometry raster"
+    if dataset_path.endswith("attitude/time"):
+        return "time tags for the attitude records, not read from these granules"
+    if dataset_path.endswith("quaternions"):
+        return "attitude quaternions, not read from these granules"
+    if dataset_path.endswith("eulerAngles"):
+        return "attitude Euler angles in degrees, not read from these granules"
+    if "geometricAccuracy" in dataset_path:
+        return "product-provided localization estimate in meters, not independent surveyed ground truth and not read from these granules"
+    if dataset_path.endswith("demSource"):
+        return "processor description of the DEM used to make the product, not inspected in these granules"
+    if dataset_path.endswith("demFiles"):
+        return "list of DEM files named by the processor, not inspected in these granules"
+    if dataset_path.endswith("radarGrid/xCoordinates"):
+        return "east coordinates of the radar-grid cube axis. The posting was not read"
+    if dataset_path.endswith("radarGrid/yCoordinates"):
+        return "north coordinates of the radar-grid cube axis. The posting was not read"
+    if dataset_path.endswith("heightAboveEllipsoid"):
+        return "heights above the WGS84 ellipsoid for the radar-grid height axis, not a DEM and not read"
     if "losUnitVector" in dataset_path or dataset_path.endswith(("slantRange", "elevationAngle")):
         return "radar-grid geometry cube, not the 10 m GCOV image grid"
     return "unclassified"
@@ -213,9 +280,10 @@ def build_manifest() -> dict:
         },
         "missing_inputs": [
             "A Copernicus DEM elevation array for the buffered window",
-            "The GCOV radarGrid incidence, slant-range, and line-of-sight cubes from the source HDF5",
+            "The GCOV radarGrid incidence, slant-range, line-of-sight, and coordinate-axis datasets from the source HDF5",
             "The scalar shadowMaskingApplied flag from the source HDF5",
-            "A measured geolocation error while filename code N and orbitType MOE remain unresolved",
+            "The product geometric-accuracy estimates and the processing DEM source and file list",
+            "A resolution of the filename N versus HDF5 orbitType MOE mismatch after the product file is checked",
             "An independent non-water target for a later geometry test",
         ],
         "validation_requirements": [

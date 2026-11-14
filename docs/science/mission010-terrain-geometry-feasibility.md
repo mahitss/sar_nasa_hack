@@ -62,8 +62,19 @@ The Mission 003 crops contain GCOV `HHHH`, `HVHV`, `numberOfLooks`, the GCOV val
 | --- | --- |
 | `/science/LSAR/identification/lookDirection` | Scalar, `Left` or `Right` |
 | `/science/LSAR/identification/orbitPassDirection` | Scalar, `Ascending` or `Descending` |
-| `/science/LSAR/GCOV/metadata/orbit/orbitType` | Orbit-product label |
-| `/science/LSAR/GCOV/metadata/orbit/position` and `velocity` | Time-tagged ECEF state vectors |
+| `/science/LSAR/GCOV/metadata/orbit/orbitType` | HDF5 orbit-ephemeris label: `FOE`, `NOE`, `MOE`, `POE`, or `Custom` |
+| `/science/LSAR/GCOV/metadata/orbit/time` | Time tags for the position and velocity records |
+| `/science/LSAR/GCOV/metadata/orbit/interpMethod` | Interpolation method, `Hermite` or `Legendre` in the format table |
+| `/science/LSAR/GCOV/metadata/orbit/position` and `velocity` | State vectors in the WGS84 G1762 frame |
+| `/science/LSAR/GCOV/metadata/attitude/time` | Time tags for the attitude records |
+| `/science/LSAR/GCOV/metadata/attitude/quaternions` | Attitude quaternions |
+| `/science/LSAR/GCOV/metadata/attitude/eulerAngles` | Roll, pitch, and yaw, in degrees |
+| `/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/bias/x` and `bias/y` | Product estimates of localization bias, in meters. Not a surveyed ground truth |
+| `/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/standardDeviation/x` and `standardDeviation/y` | Product estimates of localization standard deviation, in meters. Not a surveyed ground truth |
+| `/science/LSAR/GCOV/metadata/processingInformation/inputs/demSource` | Processor description of the DEM used to make the GCOV product |
+| `/science/LSAR/GCOV/metadata/processingInformation/inputs/demFiles` | List of DEM files named by the processor |
+| `/science/LSAR/GCOV/metadata/radarGrid/xCoordinates` and `yCoordinates` | East and north axes of the radar-grid cube. Posting was not read |
+| `/science/LSAR/GCOV/metadata/radarGrid/heightAboveEllipsoid` | Heights above the WGS84 ellipsoid for that cube. This is not a DEM |
 | `/science/LSAR/GCOV/metadata/radarGrid/incidenceAngle` | Float32 cube. Incidence between the line of sight and the ellipsoid normal at the target height. Units degrees. Valid range 0 to 90 |
 | `/science/LSAR/GCOV/metadata/radarGrid/slantRange` | Slant range, meters |
 | `/science/LSAR/GCOV/metadata/radarGrid/losUnitVectorX` and `losUnitVectorY` | East and north components of the line-of-sight unit vector. The up component is not stored |
@@ -75,7 +86,7 @@ The incidence dataset is a radar-grid cube with height, length, and width dimens
 
 `shadowMaskingApplied` is not a shadow map. The GSLC path `/science/LSAR/GSLC/grids/frequencyA/mask` remains a valid-samples subswath mask. It is not a terrain, shadow, or layover mask. The same is true of the GCOV mask.
 
-Filename fidelity code `N` and internal `orbitType` `MOE` stay unresolved. Section 2.2.4 defines `N` as Near Real-Time fidelity. No geolocation error was measured for this valley.
+Filename code `N` and HDF5 `orbitType` `MOE` are a cross-field inconsistency. Section 2.2.4 maps `N` to Near real-time Orbit Ephemeris, `NOE`, and also pairs that filename token with Near real-time Radar Pointing, `NRP`. The HDF5 `orbitType` vocabulary is `FOE`, `NOE`, `MOE`, `POE`, or `Custom`, and `MOE` means Medium precision Orbit Ephemeris. Both fields describe orbit-ephemeris provenance, and the values disagree. The observed values are unchanged. The mismatch is not resolved, and it has not been rechecked against the product file or provider guidance. No geolocation error was measured for this valley. The geometric-accuracy datasets, if present, would still be product estimates rather than a survey.
 
 ## What a later model would need
 
@@ -97,7 +108,7 @@ A future test needs a target that is not a candidate patch. Useful checks are a 
 - No DEM array is in the repository, and none was downloaded.
 - The source GCOV and GSLC HDF5 files were not opened, so the cube shapes, spacing attributes, look direction, and `shadowMaskingApplied` value are not known for these two dates.
 - Ellipsoid incidence and an EGM2008 surface model are not the same height reference.
-- Filename code `N` and `orbitType` `MOE` are still unresolved, so the geolocation error is unknown.
+- Filename code `N` expects `NOE`, while the recorded HDF5 `orbitType` is `MOE`. That mismatch is unresolved, so the geolocation error is unknown.
 - The GSLC valid-samples mask cannot fill any of those gaps.
 - NASADEM local incidence is SRTM geometry from 2000, not NISAR geometry.
 

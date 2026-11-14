@@ -49,11 +49,14 @@ class GeometryTests(unittest.TestCase):
         self.assertIn("not local slope incidence", role)
         self.assertIn("not the 10 m", role)
 
-    def test_orbit_labels_stay_unresolved(self):
+    def test_filename_n_expects_noe_and_moe_is_an_unresolved_mismatch(self):
         labels = feasibility.orbit_labels_remain_unresolved("N", "MOE")
+        self.assertEqual(labels["filename_expected_orbit_ephemeris"], "NOE")
+        self.assertEqual(labels["observed_orbit_type"], "MOE")
+        self.assertEqual(labels["consistency"], "mismatch")
         self.assertFalse(labels["resolved"])
-        self.assertEqual(labels["filename_fidelity_code"], "N")
-        self.assertEqual(labels["internal_orbit_type"], "MOE")
+        self.assertFalse(labels["verified_against_product_file"])
+        self.assertIn("disagree", labels["reason"])
 
     def test_manifest_does_not_download_or_run_a_model(self):
         manifest = feasibility.build_manifest()
@@ -66,6 +69,24 @@ class GeometryTests(unittest.TestCase):
         self.assertFalse(manifest["gslc_mask_used_as_terrain"])
         self.assertIn("EGM2008", manifest["copernicus_dem"]["vertical_datum"])
         self.assertIn("EGM96", manifest["nasadem"]["vertical_datum"])
+        paths = {item["path"]: item["role"] for item in manifest["nisar_geometry"]["datasets"]}
+        for name in ("bias/x", "bias/y", "standardDeviation/x", "standardDeviation/y"):
+            role = paths["/science/LSAR/GCOV/metadata/ceosAnalysisReadyData/geometricAccuracy/" + name]
+            self.assertIn("estimate", role)
+            self.assertIn("not independent surveyed ground truth", role)
+        self.assertIn("demSource", "".join(paths))
+        self.assertIn("demFiles", "".join(paths))
+        self.assertIn("/science/LSAR/GCOV/metadata/radarGrid/xCoordinates", paths)
+        self.assertIn("/science/LSAR/GCOV/metadata/radarGrid/yCoordinates", paths)
+        self.assertIn("/science/LSAR/GCOV/metadata/radarGrid/heightAboveEllipsoid", paths)
+        self.assertIn("not read", paths["/science/LSAR/GCOV/metadata/radarGrid/xCoordinates"])
+        orbit = manifest["nisar_geometry"]["orbit_labels"]
+        self.assertEqual(orbit["consistency"], "mismatch")
+        self.assertFalse(manifest["nisar_product_downloaded"])
+        saved = Path(__file__).resolve().parents[2] / "data" / "manifests" / "mission010_terrain_geometry.json"
+        if saved.exists():
+            import json
+            self.assertEqual(json.loads(saved.read_text(encoding="utf-8")), manifest)
 
 
 if __name__ == "__main__":
