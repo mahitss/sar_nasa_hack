@@ -20,7 +20,7 @@ export const DISCOVERY = {
 } as const;
 
 export const ACRONYMS = {
-  CRID: "Composite Release ID",
+  CRID: "Composite Release Identifier",
   GCOV: "Geocoded Covariance",
   GSLC: "Geocoded Single Look Complex",
   SCL: "Scene Classification Layer",
@@ -197,7 +197,7 @@ export const EVIDENCE: EvidenceItem[] = [
     category: "Terrain",
     date: "2026-11-14",
     status: "Unresolved",
-    kind: "interpretation",
+    kind: "gap",
     summary:
       "A shadow model was not run. Filename N expects NOE while the recorded orbit type was MOE.",
     details: [

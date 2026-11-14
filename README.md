@@ -67,7 +67,7 @@ The revalidated catalogue record is `data/manifests/nisar_kuwari_catalogue.json`
 - Ghoke and colleagues, *Discover Geoscience*, 5 September 2026, as prior published research
 - NRSC/NDEM 2022 Kunwari note, Bisht and colleagues 2022, and the SANDRP 2024 commentary, as prior context
 
-Links and citation status are in `docs/submission/sources.md`. No science files have been downloaded.
+Links and citation status are in `docs/submission/sources.md`. Mission 011 downloaded two Copernicus GLO-30 DEM geocells and generated a buffered elevation crop locally; those files are gitignored, while their checksums and processing records are committed in `data/manifests/mission011_terrain_geometry_acquisition.json`. No complete NISAR HDF5 product was downloaded or stored; Mission 012 performed authenticated partial HTTPS metadata reads only.
 
 ## Provisional maturity
 
@@ -81,11 +81,11 @@ The L-band scenes proposed for the first comparison were processed as provisiona
 | Git | Foundation commit `98a00e6f3d619ee2446f1fabc41a6837dd7ec455` on `main`, published to `origin/main`. |
 | Remote | `origin` = `https://github.com/mahitss/sar_nasa_hack.git` |
 | Application code | Implemented in `apps/web` (five routes) |
-| Dependencies | Installed in `apps/web` (package-lock.json present) |
+| Dependencies | Locked in `apps/web/package-lock.json`; install with `npm ci` |
 | Supabase project | Not created |
 | Database migrations | Not created |
 | Docker services | Not defined and not started |
-| Satellite data | Not downloaded. `data/raw`, `data/processed`, and `data/derived` are gitignored. The CMR manifest is versioned metadata only. |
+| Satellite data | Mission 011 stored two Copernicus GLO-30 DEM geocells and a derived crop locally (gitignored); checksums/records committed. Those local tiles are not the ellipsoid-referenced 2023_1 DEM named by the NISAR processor. No complete NISAR HDF5 product was downloaded or stored; Mission 012 performed partial HTTPS metadata reads only. `data/raw`, `data/processed`, and `data/derived` are gitignored. The CMR manifest is versioned metadata only. |
 
 Local setup for later missions is documented in `.env.example`. That file contains names and placeholders only.
 
