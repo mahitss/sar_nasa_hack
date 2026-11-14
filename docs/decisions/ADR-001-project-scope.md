@@ -10,7 +10,9 @@ Mission 000 ended CONDITIONAL GO. The technical architect approved the condition
 
 The historical research case is the Kuwari landslide-dammed lake, Uttarakhand, India. It is not framed as an active emergency.
 
-Mission 000 catalogue identifiers are inputs. They were not rechecked while this ADR was written.
+The foundation commit is `98a00e6f3d619ee2446f1fabc41a6837dd7ec455` on `main`, and it has been pushed to `origin`.
+
+Mission 000 catalogue identifiers are historical inputs. They are not authoritative by themselves. Mission 002 rechecked the GCOV and GSLC collections against NASA CMR and wrote `data/manifests/nisar_kuwari_catalogue.json`. That manifest still requires architect review before a download, and it is not a raster validation.
 
 ## Decision
 
@@ -20,7 +22,7 @@ The first vertical slice is:
 2. Group D40 as the primary comparison group: descending track 5, frame 73, Frequency A 40 MHz, HH+HV, provisional CRID P05023.
 3. Every record from that group labeled provisional.
 4. One measurement that uses two acquisitions from Group D40.
-5. Inspection of the companion GSLC mask for water, radar shadow, and layover.
+5. Inspection of the companion GSLC mask for water bodies and shadow-layover. The GCOV mask is a separate layer and is not a water classification.
 6. A water-candidate evidence record, stored as a measurement, not as a confirmed shoreline.
 7. Human review with an accept or reject decision.
 8. One report that can be traced to those evidence and decision ids.
@@ -40,12 +42,13 @@ Group A40 (ascending track 127) may be stored later as a separate comparability 
 ## Consequences
 
 - Later missions that add a model must store it with claim level `model`.
-- A validated-only comparison remains blocked inside the 8 July 2026–14 November 2026 window until a second same-mode P05036 scene is confirmed in CMR.
-- Manifest files that list granule ids are not created in this mission, so the provisional ids are not mistaken for a rechecked catalogue.
+- A validated-only comparison remains blocked inside the 8 July 2026–14 November 2026 window. Mission 002 found one P05036 scene in the D40 mode, acquired 24 October 2026, and no second scene with the same geometry, bandwidth, polarization, and study-point coverage.
+- The Mission 002 manifest lists rechecked granule identifiers. It does not by itself authorize a measurement claim or a bulk download.
 
 ## Unresolved
 
 - The repository has no licence.
-- No commit or push has been approved.
 - The founder still needs an Earthdata Login before any download mission.
+- The rank-1 D40 pair, 6 September and 30 September 2026, is pending raster quality control.
+- Every revalidated filename uses orbit-fidelity letter `N`, while CMR `ORBIT_TYPE` is `MOE`. Both values are retained. Orbit direction for grouping comes from `ASCENDING_DESCENDING`.
 - The `F_F` token in one Group D20 granule id was not defined from a filename specification in Mission 000.

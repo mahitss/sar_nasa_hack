@@ -34,7 +34,7 @@ The worker is not an HTTP business API. It does not own incidents, roles, or dec
 
 User-scoped queries use a direct pgx transaction that carries a verified JWT identity. The sequence is:
 
-1. Go verifies the bearer token against the Supabase JWKS. Checks include signature, expiry, issuer, and audience. A shared HMAC secret is a fallback only if a later decision explicitly selects it.
+1. Go verifies the bearer token against the Supabase JWKS in `SUPABASE_JWKS_URL`. Checks include signature, expiry, issuer, and audience. The environment template does not carry an HMAC shared secret.
 2. Go opens a transaction with pgx.
 3. Inside that transaction, before any application query, Go sets the database session to the verified subject (`sub`) and the `authenticated` role, using transaction-local configuration such as `set_config('request.jwt.claims', ..., true)` and `SET LOCAL ROLE authenticated`.
 4. Row Level Security then sees that identity through `auth.uid()` and the membership policies.

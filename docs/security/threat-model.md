@@ -15,7 +15,7 @@ Status: design approved for later implementation. No authentication code, Supaba
 
 | Boundary | Rule |
 | --- | --- |
-| Browser | Holds the user session and the Supabase anon key. Does not hold the service-role key, database password, or Earthdata password. |
+| Browser | Holds the user session and the Supabase publishable key. Does not hold the service-role key, database password, or Earthdata password. |
 | Go API | Verifies the JWT, then applies that identity to each pgx transaction. Owns authorization decisions. |
 | Postgres | Enforces Row Level Security as a backstop. Does not trust a user id sent only as a query parameter. |
 | Python worker | Accepts job ids from the database. Downloads only from an allowlisted Earthdata or ASF host, and only for granule ids stored on the job. |

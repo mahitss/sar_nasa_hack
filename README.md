@@ -39,25 +39,25 @@ Claim levels used throughout the project:
 
 Go owns business logic. Python owns scientific processing. Next.js owns the interface. FastAPI, Kafka, and Kubernetes are not part of this architecture. Supabase is the only database. Docker Compose does not run a second PostgreSQL.
 
-No application code or dependencies are installed in this mission.
+The web application, Go API, and scientific worker are not implemented. No third-party packages are installed. `tools/catalogue_audit.py` is a standard-library catalogue audit, not the processing pipeline.
 
 ## Scientific limits of the first slice
 
-Mission 000 found comparable provisional NISAR L-band GCOV scenes on descending track 5, frame 73, at 40 MHz and HH+HV (Group D40, CRID P05023). That group is the primary comparison set. The scenes are provisional, not validated. ASF's initial validated release uses a different composite release ID, P05036, and this date window did not contain a second validated scene in the same mode.
+Group D40 is the primary comparison set: provisional NISAR L-band GCOV, descending track 5, frame 73, Frequency A 40 MHz, HH+HV, CRID P05023. A fresh CMR query on 2026-11-14 confirmed four acquisitions whose footprints contain the published study coordinate: 20 July, 13 August, 6 September, and 30 September 2026. The same query found only one validated P05036 scene in that mode, on 24 October 2026, so there is no validated pair in this window. The catalogue shortlist for the first pair is 6 September and 30 September. It is pending raster inspection and is not a completed measurement.
 
 The first vertical slice, when later missions implement it, is limited to:
 
 - NISAR L-band GCOV
 - Group D40, with provisional CRID P05023 labeled on every record
 - one measurement from two acquisitions
-- inspection of the GSLC shadow and layover mask
+- inspection of the GSLC water-body and shadow-layover mask, kept distinct from the GCOV multi-looking mask
 - a water-candidate evidence record
 - human review
 - one reproducible report
 
 S-band, GUNW, GOFF, deformation claims, breach simulation, and infrastructure exposure are outside that slice.
 
-Granule identifiers copied from Mission 000 are provisional until a later mission rechecks them against NASA CMR. See `docs/science/mission-000-audit.md` and `docs/science/limitations.md`.
+The revalidated catalogue record is `data/manifests/nisar_kuwari_catalogue.json`. It is metadata, not a processed result. Mission 000 identifiers remain a historical record in `docs/science/mission-000-audit.md`. Limits are in `docs/science/limitations.md`.
 
 ## Research sources
 
@@ -78,14 +78,14 @@ The L-band scenes proposed for the first comparison were processed as provisiona
 | Item | State |
 | --- | --- |
 | Working directory | `C:\Projects\RIVET` |
-| Git | Initialized on `main`. No commit yet. |
+| Git | Foundation commit `98a00e6f3d619ee2446f1fabc41a6837dd7ec455` on `main`, published to `origin/main`. |
 | Remote | `origin` = `https://github.com/mahitss/sar_nasa_hack.git` |
 | Application code | Not created |
 | Dependencies | Not installed |
 | Supabase project | Not created |
 | Database migrations | Not created |
 | Docker services | Not defined and not started |
-| Satellite data | Not downloaded. `data/raw`, `data/processed`, and `data/derived` are gitignored |
+| Satellite data | Not downloaded. `data/raw`, `data/processed`, and `data/derived` are gitignored. The CMR manifest is versioned metadata only. |
 
 Local setup for later missions is documented in `.env.example`. That file contains names and placeholders only.
 
@@ -95,7 +95,8 @@ Local setup for later missions is documented in `.env.example`. That file contai
 apps/web/                 Next.js application (not created yet)
 services/api/             Go API (not created yet)
 services/worker/          Python worker (not created yet)
-data/manifests/           Versioned metadata only
+data/manifests/           Versioned catalogue metadata
+tools/catalogue_audit.py  Standard-library CMR revalidation script
 data/raw/                 Gitignored satellite inputs
 data/processed/           Gitignored intermediates
 data/derived/             Gitignored derived outputs
