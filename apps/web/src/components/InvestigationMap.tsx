@@ -5,6 +5,11 @@ import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { DISCOVERY } from "@/lib/case-data";
 
+// Configure MapLibre to use the standalone web worker served from public/
+if (typeof window !== "undefined" && typeof maplibregl.setWorkerUrl === "function") {
+  maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
+}
+
 const polygon: GeoJSON.Feature = {
   type: "Feature",
   properties: {},
@@ -28,7 +33,13 @@ export function InvestigationMap() {
   useEffect(() => {
     if (!container.current) return;
     let map: maplibregl.Map | null = null;
+    let isMounted = true;
+
     try {
+      if (typeof maplibregl.setWorkerUrl === "function") {
+        maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
+      }
+
       map = new maplibregl.Map({
         container: container.current,
         style: {
@@ -46,59 +57,85 @@ export function InvestigationMap() {
         center: [(DISCOVERY.west + DISCOVERY.east) / 2, (DISCOVERY.south + DISCOVERY.north) / 2],
         zoom: 11,
       });
+
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+
       map.on("error", (e) => {
-        const ev = e as unknown as { tile?: unknown };
-        if (ev?.tile) setTilesFailed(true);
-        else setStatus("error");
+        if (!isMounted) return;
+        const ev = e as unknown as { tile?: unknown; error?: { message?: string } };
+        if (ev?.tile) {
+          setTilesFailed(true);
+        } else {
+          console.warn("MapLibre event:", e);
+        }
       });
+
       map.on("load", () => {
-        map!.addSource("discovery", { type: "geojson", data: polygon });
-        map!.addLayer({
-          id: "discovery-fill",
-          type: "fill",
-          source: "discovery",
-          paint: { "fill-color": "#d7b56d", "fill-opacity": 0.08 },
-        });
-        map!.addLayer({
-          id: "discovery-line",
-          type: "line",
-          source: "discovery",
-          paint: { "line-color": "#f3e2b3", "line-width": 3 },
-        });
-        map!.fitBounds(
-          [
-            [DISCOVERY.west, DISCOVERY.south],
-            [DISCOVERY.east, DISCOVERY.north],
-          ],
-          { padding: 40 }
-        );
-        setStatus("ready");
+        if (!isMounted || !map) return;
+        try {
+          map.addSource("discovery", { type: "geojson", data: polygon });
+          map.addLayer({
+            id: "discovery-fill",
+            type: "fill",
+            source: "discovery",
+            paint: { "fill-color": "#d7b56d", "fill-opacity": 0.08 },
+          });
+          map.addLayer({
+            id: "discovery-line",
+            type: "line",
+            source: "discovery",
+            paint: { "line-color": "#f3e2b3", "line-width": 3 },
+          });
+          map.fitBounds(
+            [
+              [DISCOVERY.west, DISCOVERY.south],
+              [DISCOVERY.east, DISCOVERY.north],
+            ],
+            { padding: 40 }
+          );
+          map.resize();
+          setStatus("ready");
+        } catch (err) {
+          console.error("Error setting up discovery layer:", err);
+          setStatus("ready");
+        }
       });
-    } catch {
+
+      // Observe container size changes to resize the WebGL canvas smoothly
+      const resizeObserver = new ResizeObserver(() => {
+        if (map) {
+          map.resize();
+        }
+      });
+      resizeObserver.observe(container.current);
+
+      return () => {
+        isMounted = false;
+        resizeObserver.disconnect();
+        map?.remove();
+      };
+    } catch (err) {
+      console.error("Failed to initialize MapLibre map:", err);
       setStatus("error");
     }
-    return () => {
-      map?.remove();
-    };
   }, []);
 
   return (
     <div>
-      {status === "loading" && (
-        <div className="flex h-[28rem] items-center justify-center rounded-2xl border border-white/10 bg-[#17211d] text-sm text-[#93a39b]">
-          Loading map…
-        </div>
-      )}
-      {status === "error" && (
-        <div className="flex h-[28rem] items-center justify-center rounded-2xl border border-white/10 bg-[#17211d] text-sm text-[#c9d5cf]">
-          Map could not be loaded. Coordinate context is still shown below.
-        </div>
-      )}
-      <div
-        ref={container}
-        className={`h-[28rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d] ${status !== "ready" ? "hidden" : ""}`}
-      />
+      <div className="relative h-[28rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d]">
+        <div ref={container} className="h-full w-full" />
+        {status === "loading" && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#17211d] text-sm text-[#93a39b]">
+            Loading map…
+          </div>
+        )}
+        {status === "error" && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#17211d] text-sm text-[#c9d5cf]">
+            Map could not be loaded. Coordinate context is still shown below.
+          </div>
+        )}
+      </div>
+
       <p className="mt-3 text-sm text-[#c9d5cf]" role="status">
         {tilesFailed
           ? "Basemap tiles did not load. The gold outline on the dark canvas is still the discovery window, not a lake boundary."
