@@ -21,9 +21,17 @@ type Config struct {
 }
 
 func Load() (Config, error) {
+	httpAddr := envOr("RIVET_HTTP_ADDR", "")
+	if httpAddr == "" {
+		if p := os.Getenv("PORT"); p != "" {
+			httpAddr = ":" + p
+		} else {
+			httpAddr = ":8080"
+		}
+	}
 	cfg := Config{
 		Env:         envOr("RIVET_ENV", "development"),
-		HTTPAddr:    envOr("RIVET_HTTP_ADDR", ":8080"),
+		HTTPAddr:    httpAddr,
 		LogLevel:    envOr("RIVET_LOG_LEVEL", "info"),
 		SupabaseURL: os.Getenv("SUPABASE_URL"),
 		JWKSURL:     os.Getenv("SUPABASE_JWKS_URL"),

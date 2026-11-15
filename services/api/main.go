@@ -25,7 +25,15 @@ func main() {
 	cfg, err := config.Load()
 	if err != nil {
 		log.Printf("config: %v", err)
-		cfg.HTTPAddr = envOr("RIVET_HTTP_ADDR", ":8080")
+		httpAddr := envOr("RIVET_HTTP_ADDR", "")
+		if httpAddr == "" {
+			if p := os.Getenv("PORT"); p != "" {
+				httpAddr = ":" + p
+			} else {
+				httpAddr = ":8080"
+			}
+		}
+		cfg.HTTPAddr = httpAddr
 	}
 
 	var repo store.Repository
