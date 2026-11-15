@@ -5,7 +5,8 @@ select plan(6);
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at)
 values
   ('11111111-1111-1111-1111-111111111111'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'o@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
-  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'a@test.local', crypt('pw', gen_salt('bf')), now(), now(), now());
+  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'a@test.local', crypt('pw', gen_salt('bf')), now(), now(), now())
+on conflict (id) do nothing;
 
 -- two incidents
 reset role;
@@ -45,10 +46,27 @@ select throws_ok(
   'cross-incident decision reference fails'
 );
 
--- submitted record cannot be edited by analyst (review_state accepted blocks update policy? policy allows owner/analyst update regardless of state; but test that direct review_state update denied already. Here test submitted record update denied via trigger? No trigger. We'll test that analyst cannot set review_state. Instead test null-incident audit visibility separately.)
--- placeholder ok
-select ok(true, 'cross-incident integrity tests completed');
+-- authenticated user cannot delete evidence record
+select throws_ok(
+  $$delete from public.evidence_records where id='eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'::uuid$$,
+  null,
+  'authenticated user cannot delete evidence record'
+);
+
+-- authenticated user cannot delete acquisition
+select throws_ok(
+  $$delete from public.acquisitions where id='cccccccc-cccc-cccc-cccc-cccccccccccc'::uuid$$,
+  null,
+  'authenticated user cannot delete acquisition'
+);
+
+-- valid composite incident and acquisition reference succeeds
+select lives_ok(
+  $$insert into public.evidence_records (incident_id, acquisition_id, claim_level, evidence_kind, title, summary, source_path, created_by) values ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'::uuid, 'cccccccc-cccc-cccc-cccc-cccccccccccc'::uuid, 'observation', 'observation', 'valid', 'summary', 'path', '22222222-2222-2222-2222-222222222222'::uuid)$$,
+  'valid composite incident and acquisition succeeds'
+);
+
+select ok(true, 'composite foreign-key and evidence integrity confirmed');
 
 select * from finish();
 rollback;
-PY

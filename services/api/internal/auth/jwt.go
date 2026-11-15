@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"crypto/rsa"
 	"fmt"
 	"time"
 
@@ -34,7 +33,7 @@ func NewVerifier(jwksURL, issuer, audience string, timeout, leeway time.Duration
 
 func (v *Verifier) Verify(ctx context.Context, tokenString string) (Identity, error) {
 	parser := jwt.NewParser(
-		jwt.WithValidMethods([]string{"RS256"}),
+		jwt.WithValidMethods([]string{"RS256", "ES256"}),
 		jwt.WithIssuer(v.issuer),
 		jwt.WithAudience(v.audience),
 		jwt.WithLeeway(v.leeway),
@@ -48,7 +47,7 @@ func (v *Verifier) Verify(ctx context.Context, tokenString string) (Identity, er
 		if err != nil {
 			return nil, err
 		}
-		return (*rsa.PublicKey)(key), nil
+		return key, nil
 	})
 	if err != nil {
 		return Identity{}, err

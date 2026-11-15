@@ -53,7 +53,7 @@ create or replace function public.submit_evidence_decision(
 ) returns uuid language plpgsql security definer set search_path = '' as $$
 declare
   v_reviewer uuid := auth.uid();
-  v_state review_state;
+  v_state public.review_state;
   v_decision_id uuid;
 begin
   if p_decision not in ('accept','reject','needs_investigation') then
@@ -79,9 +79,9 @@ begin
     raise exception 'cannot review own evidence';
   end if;
   v_state := case p_decision
-    when 'accept' then 'accepted'::review_state
-    when 'reject' then 'rejected'::review_state
-    when 'needs_investigation' then 'needs_investigation'::review_state
+    when 'accept' then 'accepted'::public.review_state
+    when 'reject' then 'rejected'::public.review_state
+    when 'needs_investigation' then 'needs_investigation'::public.review_state
   end;
   insert into public.decisions (incident_id, evidence_record_id, reviewer_id, decision, rationale)
   values (p_incident_id, p_evidence_record_id, v_reviewer, p_decision, p_rationale)

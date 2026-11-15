@@ -12,51 +12,49 @@ alter table public.decisions enable row level security;
 alter table public.reports enable row level security;
 alter table public.audit_events enable row level security;
 
--- Base grants: revoke everything from anon/public
-revoke all on all tables in schema public from anon, public;
-revoke all on all sequences in schema public from anon, public;
-revoke all on all functions in schema public from anon, public;
+-- Base grants: revoke everything from anon, public, authenticated
+revoke all on all tables in schema public from anon, public, authenticated;
+revoke all on all sequences in schema public from anon, public, authenticated;
+revoke all on all functions in schema public from anon, public, authenticated;
 
--- authenticated: explicit per-table grants
+-- authenticated: explicit per-table and per-column grants
 -- profiles
-grant select, insert, update on public.profiles to authenticated;
-revoke update (id, created_at, updated_at) on public.profiles from authenticated;
-revoke insert (created_at, updated_at) on public.profiles from authenticated;
+grant select on public.profiles to authenticated;
+grant insert (id, display_name) on public.profiles to authenticated;
+grant update (display_name) on public.profiles to authenticated;
 
 -- user_roles: no client access
-revoke all on public.user_roles from authenticated;
+-- (already revoked)
 
 -- incidents
-grant select, insert, update on public.incidents to authenticated;
-revoke update (id, created_by, created_at, updated_at, archived_at) on public.incidents from authenticated;
-revoke delete on public.incidents from authenticated;
+grant select on public.incidents to authenticated;
+grant insert (id, title, description, discovery_west, discovery_south, discovery_east, discovery_north, created_by) on public.incidents to authenticated;
+grant update (title, description, discovery_west, discovery_south, discovery_east, discovery_north) on public.incidents to authenticated;
 
 -- incident_members
-grant select, insert, update, delete on public.incident_members to authenticated;
-revoke update (id, incident_id, user_id, created_at) on public.incident_members from authenticated;
-revoke insert (id, created_at) on public.incident_members from authenticated;
+grant select, delete on public.incident_members to authenticated;
+grant insert (incident_id, user_id, role) on public.incident_members to authenticated;
+grant update (role) on public.incident_members to authenticated;
 
 -- acquisitions
-grant select, insert on public.acquisitions to authenticated;
+grant select on public.acquisitions to authenticated;
+grant insert (id, incident_id, source_provider, granule_id, acquisition_start, acquisition_end, track, frame, orbit_direction, frequency_mhz, bandwidth_mhz, polarization, crid, product_maturity, source_metadata) on public.acquisitions to authenticated;
 grant update (source_metadata) on public.acquisitions to authenticated;
-revoke delete on public.acquisitions from authenticated;
 
 -- evidence_records
-grant select, insert, update on public.evidence_records to authenticated;
-revoke update (id, incident_id, acquisition_id, claim_level, evidence_kind, source_mission, source_path, review_state, created_by, created_at, updated_at) on public.evidence_records from authenticated;
-revoke insert (id, review_state, created_at, updated_at) on public.evidence_records from authenticated;
-revoke delete on public.evidence_records from authenticated;
+grant select on public.evidence_records to authenticated;
+grant insert (id, incident_id, acquisition_id, claim_level, evidence_kind, source_mission, title, summary, details, source_path, limitations, processing_version, code_version, parameters, source_checksums, measurement_unit, created_by) on public.evidence_records to authenticated;
+grant update (title, summary, details, limitations, processing_version, code_version, parameters, source_checksums, measurement_unit) on public.evidence_records to authenticated;
 
 -- processing_jobs: no client update/delete
 grant select, insert on public.processing_jobs to authenticated;
-revoke update, delete on public.processing_jobs from authenticated;
 
 -- decisions: read only for clients (insert via function)
 grant select on public.decisions to authenticated;
 
 -- reports
-grant select, insert on public.reports to authenticated;
-revoke update, delete on public.reports from authenticated;
+grant select on public.reports to authenticated;
+grant insert (id, incident_id, title, content, generated_by) on public.reports to authenticated;
 
 -- audit_events: select only
 grant select on public.audit_events to authenticated;
@@ -78,7 +76,7 @@ create policy profiles_update_own on public.profiles for update to authenticated
 
 -- incidents
 create policy incidents_select_member on public.incidents for select to authenticated
-  using (private.is_incident_member(id));
+  using (created_by = auth.uid() or private.is_incident_member(id));
 create policy incidents_insert_creator on public.incidents for insert to authenticated
   with check (created_by = auth.uid());
 create policy incidents_update_owner on public.incidents for update to authenticated

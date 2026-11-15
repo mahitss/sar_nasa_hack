@@ -2,6 +2,9 @@ package auth
 
 import (
 	"context"
+	"crypto"
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rsa"
 	"encoding/base64"
 	"encoding/json"
@@ -19,6 +22,9 @@ type jwk struct {
 	Alg string `json:"alg"`
 	N   string `json:"n"`
 	E   string `json:"e"`
+	Crv string `json:"crv"`
+	X   string `json:"x"`
+	Y   string `json:"y"`
 }
 
 type jwksDoc struct {
@@ -29,18 +35,16 @@ type jwksClient struct {
 	url     string
 	client  *http.Client
 	mu      sync.RWMutex
-	keys    map[string]*rsaPublicKey
+	keys    map[string]crypto.PublicKey
 	fetched time.Time
 	ttl     time.Duration
 }
 
-type rsaPublicKey = rsa.PublicKey
-
 func newJWKSClient(url string, timeout time.Duration) *jwksClient {
-	return &jwksClient{url: url, client: &http.Client{Timeout: timeout}, keys: map[string]*rsaPublicKey{}, ttl: 5 * time.Minute}
+	return &jwksClient{url: url, client: &http.Client{Timeout: timeout}, keys: map[string]crypto.PublicKey{}, ttl: 5 * time.Minute}
 }
 
-func (c *jwksClient) GetKey(ctx context.Context, kid string) (*rsaPublicKey, error) {
+func (c *jwksClient) GetKey(ctx context.Context, kid string) (crypto.PublicKey, error) {
 	c.mu.RLock()
 	if k, ok := c.keys[kid]; ok && time.Since(c.fetched) < c.ttl {
 		c.mu.RUnlock()
@@ -75,25 +79,40 @@ func (c *jwksClient) refresh(ctx context.Context) error {
 	if err := json.NewDecoder(resp.Body).Decode(&doc); err != nil {
 		return err
 	}
-	keys := map[string]*rsaPublicKey{}
+	keys := map[string]crypto.PublicKey{}
 	for _, k := range doc.Keys {
-		if k.Kty != "RSA" {
-			continue
+		if k.Kty == "RSA" {
+			nBytes, err := base64.RawURLEncoding.DecodeString(k.N)
+			if err != nil {
+				continue
+			}
+			eBytes, err := base64.RawURLEncoding.DecodeString(k.E)
+			if err != nil {
+				continue
+			}
+			n := new(big.Int).SetBytes(nBytes)
+			e := 0
+			for _, b := range eBytes {
+				e = e*256 + int(b)
+			}
+			keys[k.Kid] = &rsa.PublicKey{N: n, E: e}
+		} else if k.Kty == "EC" && (k.Crv == "P-256" || k.Alg == "ES256") {
+			xBytes, err := base64.RawURLEncoding.DecodeString(k.X)
+			if err != nil {
+				continue
+			}
+			yBytes, err := base64.RawURLEncoding.DecodeString(k.Y)
+			if err != nil {
+				continue
+			}
+			x := new(big.Int).SetBytes(xBytes)
+			y := new(big.Int).SetBytes(yBytes)
+			keys[k.Kid] = &ecdsa.PublicKey{
+				Curve: elliptic.P256(),
+				X:     x,
+				Y:     y,
+			}
 		}
-		nBytes, err := base64.RawURLEncoding.DecodeString(k.N)
-		if err != nil {
-			continue
-		}
-		eBytes, err := base64.RawURLEncoding.DecodeString(k.E)
-		if err != nil {
-			continue
-		}
-		n := new(big.Int).SetBytes(nBytes)
-		e := 0
-		for _, b := range eBytes {
-			e = e*256 + int(b)
-		}
-		keys[k.Kid] = &rsa.PublicKey{N: n, E: e}
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()

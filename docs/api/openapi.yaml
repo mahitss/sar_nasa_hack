@@ -2,22 +2,542 @@ openapi: 3.0.3
 info:
   title: RIVET API
   version: 0.1.0
+  description: Evidence-backed geospatial intelligence platform for the Kuwari landslide-dammed lake investigation.
 paths:
   /healthz:
     get:
-      summary: Liveness
+      summary: Liveness probe
       responses:
-        "200": { description: OK }
+        "200":
+          description: Service is alive
   /readyz:
     get:
-      summary: Readiness
+      summary: Readiness probe
       responses:
-        "200": { description: ready }
+        "200":
+          description: Service is ready to serve traffic
   /api/v1/whoami:
     get:
-      summary: Verified identity
+      summary: Verified identity claim
+      security:
+        - BearerAuth: []
       responses:
-        "200": { description: identity }
+        "200":
+          description: Subject identity returned from verified JWT
   /api/v1/incidents:
-    get: { summary: List incidents, responses: { "200": { description: OK } } }
-    post: { summary: Create incident, responses: { "201": { description: created } } }
+    get:
+      summary: List user-scoped incidents
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: List of incidents where the user is an active member
+    post:
+      summary: Create a new incident
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string }
+                description: { type: string }
+                discovery_west: { type: number }
+                discovery_south: { type: number }
+                discovery_east: { type: number }
+                discovery_north: { type: number }
+      responses:
+        "201":
+          description: Incident created (creator automatically assigned owner role)
+        "400":
+          description: Invalid input
+  /api/v1/incidents/{incidentID}:
+    get:
+      summary: Retrieve incident details
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Incident details
+        "404":
+          description: Incident not found or inaccessible to user
+  /api/v1/incidents/{incidentID}/role:
+    get:
+      summary: Retrieve authenticated user's role in incident
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: User's role in incident
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  incident_id: { type: string, format: uuid }
+                  user_id: { type: string, format: uuid }
+                  role: { type: string, enum: [owner, analyst, reviewer, viewer] }
+        "404":
+          description: Not a member of this incident
+  /api/v1/incidents/{incidentID}/members:
+    post:
+      summary: Add an incident member (Owner only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, role]
+              properties:
+                user_id: { type: string, format: uuid }
+                role: { type: string, enum: [analyst, reviewer, viewer] }
+      responses:
+        "201":
+          description: Member added successfully
+        "403":
+          description: Forbidden (only owners can add members)
+  /api/v1/incidents/{incidentID}/audit:
+    get:
+      summary: List audit events for incident
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: List of audit events for incident
+        "403":
+          description: Access denied
+  /api/v1/incidents/{incidentID}/acquisitions:
+    get:
+      summary: List acquisitions for incident
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: List of acquisitions
+        "404":
+          description: Incident not found
+    post:
+      summary: Create new acquisition record
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source_provider, granule_id, crid]
+              properties:
+                source_provider: { type: string }
+                granule_id: { type: string }
+                crid: { type: string }
+                product_maturity: { type: string, enum: [provisional, validated], default: provisional }
+      responses:
+        "201":
+          description: Acquisition created
+        "403":
+          description: Insufficient permission (analyst or owner required)
+  /api/v1/incidents/{incidentID}/evidence:
+    get:
+      summary: List evidence records
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: List of evidence records
+    post:
+      summary: Create draft evidence record
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, summary, source_path]
+              properties:
+                acquisition_id: { type: string, format: uuid }
+                claim_level: { type: string, enum: [observation, measurement, interpretation, hypothesis, model, gap] }
+                evidence_kind: { type: string, enum: [observation, measurement, interpretation, hypothesis, gap] }
+                title: { type: string }
+                summary: { type: string }
+                source_path: { type: string }
+      responses:
+        "201":
+          description: Evidence created in draft state
+        "403":
+          description: Insufficient permission
+  /api/v1/incidents/{incidentID}/evidence/{evidenceID}:
+    get:
+      summary: Retrieve evidence record
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: evidenceID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Evidence record details
+        "404":
+          description: Evidence not found
+    patch:
+      summary: Update evidence metadata (title and summary only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: evidenceID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                summary: { type: string }
+      responses:
+        "200":
+          description: Evidence updated (review_state unchanged)
+        "403":
+          description: Insufficient permission
+  /api/v1/incidents/{incidentID}/evidence/{evidenceID}/decisions:
+    post:
+      summary: Submit atomic review decision
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: evidenceID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision]
+              properties:
+                decision: { type: string, enum: [accept, reject, needs_investigation] }
+                rationale: { type: string }
+      responses:
+        "201":
+          description: Review decision recorded and review_state transitioned atomically
+        "400":
+          description: Invalid decision value
+        "403":
+          description: Not authorized to review or author attempting self-review
+  /api/v1/incidents/{incidentID}/jobs:
+    get:
+      summary: List processing jobs
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: List of processing jobs
+    post:
+      summary: Create new queued processing job
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [job_type, idempotency_key]
+              properties:
+                job_type: { type: string }
+                idempotency_key: { type: string }
+      responses:
+        "201":
+          description: Job created in queued state
+        "403":
+          description: Insufficient permission
+        "409":
+          description: Idempotency conflict (job with key already exists)
+  /api/v1/incidents/{incidentID}/jobs/{jobID}:
+    get:
+      summary: Retrieve processing job
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: jobID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Processing job status
+        "404":
+          description: Job not found
+  /api/v1/incidents/{incidentID}/reports:
+    get:
+      summary: List reports
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: List of reports
+    post:
+      summary: Create incident report
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string }
+                content: { type: object }
+      responses:
+        "201":
+          description: Report created
+        "403":
+          description: Insufficient permission
+  /api/v1/incidents/{incidentID}/reports/{reportID}:
+    get:
+      summary: Retrieve report
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: incidentID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: reportID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Report content
+        "404":
+          description: Report not found
+  /internal/v1/worker/jobs/claim:
+    post:
+      summary: Atomically claim next eligible queued processing job
+      security:
+        - WorkerAuth: []
+      responses:
+        "200":
+          description: Claimed job or null if queue is empty
+        "401":
+          description: Invalid worker signature or unknown worker
+  /internal/v1/worker/jobs/{jobID}/start:
+    post:
+      summary: Transition claimed job to running
+      security:
+        - WorkerAuth: []
+      parameters:
+        - name: jobID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lease_token]
+              properties:
+                lease_token: { type: string }
+      responses:
+        "200":
+          description: Job transitioned to running
+        "403":
+          description: Lease token mismatch or expired
+  /internal/v1/worker/jobs/{jobID}/heartbeat:
+    post:
+      summary: Extend active job lease
+      security:
+        - WorkerAuth: []
+      parameters:
+        - name: jobID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lease_token]
+              properties:
+                lease_token: { type: string }
+                extend_seconds: { type: integer, default: 300 }
+      responses:
+        "200":
+          description: Lease extended
+        "403":
+          description: Lease expired or token mismatch
+  /internal/v1/worker/jobs/{jobID}/complete:
+    post:
+      summary: Complete job with verified result manifest
+      security:
+        - WorkerAuth: []
+      parameters:
+        - name: jobID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lease_token, manifest]
+              properties:
+                lease_token: { type: string }
+                manifest:
+                  type: object
+                  required: [schema_version, status, task_type]
+                  properties:
+                    schema_version: { type: string, enum: ["1.0"] }
+                    status: { type: string, enum: [succeeded] }
+                    task_type: { type: string }
+                    summary: { type: object }
+      responses:
+        "200":
+          description: Job marked succeeded and manifest persisted
+        "403":
+          description: Lease token mismatch or job not running
+  /internal/v1/worker/jobs/{jobID}/fail:
+    post:
+      summary: Record failure for an active job
+      security:
+        - WorkerAuth: []
+      parameters:
+        - name: jobID
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lease_token]
+              properties:
+                lease_token: { type: string }
+                error_message: { type: string }
+      responses:
+        "200":
+          description: Job marked failed
+        "403":
+          description: Lease token mismatch
+  /internal/v1/worker/leases/recover:
+    post:
+      summary: Recover expired job leases back to queued or failed
+      security:
+        - WorkerAuth: []
+      responses:
+        "200":
+          description: Recovered jobs count
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    WorkerAuth:
+      type: apiKey
+      name: X-Signature
+      in: header
+      description: Ed25519 request signature binding method, path, worker ID, key ID, timestamp, nonce, and body SHA-256

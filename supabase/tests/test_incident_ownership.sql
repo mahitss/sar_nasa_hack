@@ -6,7 +6,8 @@ select plan(8);
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at)
 values
   ('11111111-1111-1111-1111-111111111111'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'u1@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
-  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'u2@test.local', crypt('pw', gen_salt('bf')), now(), now(), now());
+  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'u2@test.local', crypt('pw', gen_salt('bf')), now(), now(), now())
+on conflict (id) do nothing;
 
 -- act as user1
 select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', true);
@@ -73,6 +74,12 @@ select throws_ok(
   'cannot reassign membership user_id'
 );
 
+-- authenticated user cannot delete incident
+select throws_ok(
+  $$delete from public.incidents where id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid$$,
+  null,
+  'authenticated user cannot delete incident'
+);
+
 select * from finish();
 rollback;
-PY

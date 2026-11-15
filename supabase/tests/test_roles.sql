@@ -7,7 +7,8 @@ values
   ('11111111-1111-1111-1111-111111111111'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'owner@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
   ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'analyst@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
   ('33333333-3333-3333-3333-333333333333'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'reviewer@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
-  ('44444444-4444-4444-4444-444444444444'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'viewer@test.local', crypt('pw', gen_salt('bf')), now(), now(), now());
+  ('44444444-4444-4444-4444-444444444444'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'viewer@test.local', crypt('pw', gen_salt('bf')), now(), now(), now())
+on conflict (id) do nothing;
 
 -- owner creates incident
 select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', true);
@@ -85,11 +86,38 @@ select throws_ok(
   'direct review_state update denied'
 );
 
--- platform admin does not bypass membership (no rows visible)
+-- analyst cannot review evidence via RPC
 reset role;
-insert into public.user_roles (user_id, role) values ('44444444-4444-4444-4444-444444444444'::uuid, 'platform_admin');
+insert into public.evidence_records (id, incident_id, claim_level, evidence_kind, title, summary, source_path, created_by)
+values ('ffffffff-ffff-ffff-ffff-ffffffffffff'::uuid, 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid, 'observation', 'observation', 't3', 's3', 'src3', '11111111-1111-1111-1111-111111111111'::uuid);
+select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', true);
+select set_config('request.jwt.claims', '{"sub":"22222222-2222-2222-2222-222222222222","role":"authenticated"}', true);
+set local role authenticated;
+select throws_ok(
+  $$select public.submit_evidence_decision('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid, 'ffffffff-ffff-ffff-ffff-ffffffffffff'::uuid, 'accept', 'analyst attempt')$$,
+  'not authorized to review',
+  'analyst cannot review evidence via RPC'
+);
+
+-- viewer cannot create report
 select set_config('request.jwt.claim.sub', '44444444-4444-4444-4444-444444444444', true);
 select set_config('request.jwt.claims', '{"sub":"44444444-4444-4444-4444-444444444444","role":"authenticated"}', true);
+set local role authenticated;
+select throws_ok(
+  $$insert into public.reports (incident_id, title, generated_by) values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid, 'viewer report', '44444444-4444-4444-4444-444444444444'::uuid)$$,
+  null,
+  'viewer cannot create report'
+);
+
+-- platform admin does not bypass membership (no rows visible)
+reset role;
+insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at)
+values ('55555555-5555-5555-5555-555555555555'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'admin@test.local', crypt('pw', gen_salt('bf')), now(), now(), now())
+on conflict (id) do nothing;
+insert into public.user_roles (user_id, role) values ('55555555-5555-5555-5555-555555555555'::uuid, 'platform_admin')
+on conflict (user_id, role) do nothing;
+select set_config('request.jwt.claim.sub', '55555555-5555-5555-5555-555555555555', true);
+select set_config('request.jwt.claims', '{"sub":"55555555-5555-5555-5555-555555555555","role":"authenticated"}', true);
 set local role authenticated;
 select is(
   (select count(*) from public.incidents where id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid)::int,
@@ -99,4 +127,3 @@ select is(
 
 select * from finish();
 rollback;
-PY

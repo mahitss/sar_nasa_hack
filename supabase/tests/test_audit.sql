@@ -5,7 +5,8 @@ select plan(6);
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at)
 values
   ('11111111-1111-1111-1111-111111111111'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'o@test.local', crypt('pw', gen_salt('bf')), now(), now(), now()),
-  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'm@test.local', crypt('pw', gen_salt('bf')), now(), now(), now());
+  ('22222222-2222-2222-2222-222222222222'::uuid, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'm@test.local', crypt('pw', gen_salt('bf')), now(), now(), now())
+on conflict (id) do nothing;
 
 reset role;
 insert into public.incidents (id, title, created_by) values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'::uuid, 'inc', '11111111-1111-1111-1111-111111111111'::uuid);
@@ -61,4 +62,3 @@ select is(
 
 select * from finish();
 rollback;
-PY

@@ -106,7 +106,9 @@ begin
   end if;
 
   begin
-    if tg_op in ('INSERT','UPDATE') then
+    if tg_table_name = 'incidents' then
+      v_incident_id := v_entity_id;
+    elsif tg_op in ('INSERT','UPDATE') then
       v_incident_id := (to_jsonb(new)->>'incident_id')::uuid;
     else
       v_incident_id := (to_jsonb(old)->>'incident_id')::uuid;

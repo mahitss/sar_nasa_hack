@@ -14,6 +14,11 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: "1.25"
+      - name: verify sqlc generate
+        run: |
+          go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.28.0
+          sqlc generate
+          git diff --exit-code internal/database/db
       - run: gofmt -l .
       - run: go vet ./...
       - run: go test ./...

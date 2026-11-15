@@ -76,7 +76,6 @@ export function InvestigationMap() {
         setStatus("ready");
       });
     } catch {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus("error");
     }
     return () => {
