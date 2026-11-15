@@ -25,6 +25,20 @@ func New(repo store.Repository, tx transaction.TxManager) *Handler {
 	}
 }
 
+func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, http.StatusOK, map[string]interface{}{
+		"name":        "RIVET API",
+		"version":     "1.0.0",
+		"status":      "live",
+		"description": "Evidence-backed SAR fluvial investigation platform API",
+		"endpoints": map[string]string{
+			"health": "/healthz",
+			"ready":  "/readyz",
+			"api":    "/api/v1",
+		},
+	})
+}
+
 func (h *Handler) Healthz(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

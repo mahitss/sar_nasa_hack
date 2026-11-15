@@ -22,6 +22,7 @@ func New(cfg config.Config, h *handler.Handler, verifier *auth.Verifier, workerH
 	r.Use(mwm.Recover)
 	r.Use(mwm.RequestID)
 	r.Use(middleware.Logger)
+	r.Get("/", h.Index)
 	r.Get("/healthz", h.Healthz)
 	r.Get("/readyz", h.Readyz)
 
