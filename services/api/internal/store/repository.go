@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 )
 
@@ -85,13 +86,15 @@ type Report struct {
 }
 
 type AuditEvent struct {
-	ID          string    `json:"id"`
-	ActorID     string    `json:"actor_id"`
-	Action      string    `json:"action"`
-	EntityTable string    `json:"entity_table"`
-	EntityID    string    `json:"entity_id"`
-	IncidentID  string    `json:"incident_id"`
-	OccurredAt  time.Time `json:"occurred_at"`
+	ID          string          `json:"id"`
+	ActorID     string          `json:"actor_id"`
+	Action      string          `json:"action"`
+	EntityTable string          `json:"entity_table"`
+	EntityID    string          `json:"entity_id"`
+	IncidentID  string          `json:"incident_id"`
+	BeforeData  json.RawMessage `json:"before_data,omitempty"`
+	AfterData   json.RawMessage `json:"after_data,omitempty"`
+	OccurredAt  time.Time       `json:"occurred_at"`
 }
 
 type Repository interface {

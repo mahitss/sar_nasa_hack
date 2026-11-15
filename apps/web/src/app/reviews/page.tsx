@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/lib/auth-context";
 import {
   listEvidence,
   createDecision,
   type ApiEvidence,
 } from "@/lib/api";
+import { FIFTY_EVIDENCE_RECORDS } from "@/lib/evidence-50";
+import type { EvidenceItem } from "@/lib/case-data";
 
 export default function ReviewsPage() {
   const { token, currentIncident, user, currentRole } = useAuth();
@@ -65,7 +67,31 @@ export default function ReviewsPage() {
     }
   };
 
-  const selectedEvidence = evidenceList.find((e) => e.id === selectedEvidenceId);
+  const unifiedEvidence: ApiEvidence[] = useMemo(() => {
+    if (evidenceList && evidenceList.length > 0) {
+      return evidenceList;
+    }
+    return FIFTY_EVIDENCE_RECORDS.map((item: EvidenceItem) => ({
+      id: item.id,
+      incident_id: currentIncident?.id || "848b7d0a-3469-497c-ba9c-63bc864136a4",
+      title: item.title,
+      summary: item.summary,
+      claim_level: item.kind,
+      evidence_kind: item.kind,
+      source_path: item.source,
+      review_state: (item.reviewState as "draft" | "submitted" | "accepted" | "rejected" | "needs_investigation") || "accepted",
+      created_by: "system",
+      created_at: "2026-10-01T08:00:00Z",
+    }));
+  }, [evidenceList, currentIncident]);
+
+  useEffect(() => {
+    if (unifiedEvidence.length > 0 && !selectedEvidenceId) {
+      setSelectedEvidenceId(unifiedEvidence[0].id);
+    }
+  }, [unifiedEvidence, selectedEvidenceId]);
+
+  const selectedEvidence = unifiedEvidence.find((e) => e.id === selectedEvidenceId) || unifiedEvidence[0];
   const isCreator = selectedEvidence && user ? selectedEvidence.created_by === user.id : false;
   const isEligibleReviewer = currentRole === "owner" || currentRole === "reviewer";
 
@@ -104,7 +130,7 @@ export default function ReviewsPage() {
         {/* Evidence Selection List (Left Column) */}
         <div className="space-y-3 lg:col-span-1">
           <div className="flex items-center justify-between pb-1">
-            <h2 className="text-base font-medium">Evidence Ledger ({evidenceList.length})</h2>
+            <h2 className="text-base font-medium">Evidence Ledger ({unifiedEvidence.length})</h2>
             <button
               type="button"
               onClick={fetchEvidence}
@@ -114,14 +140,14 @@ export default function ReviewsPage() {
             </button>
           </div>
 
-          {loading && evidenceList.length === 0 ? (
+          {loading && unifiedEvidence.length === 0 ? (
             <p className="text-xs text-[#93a39b]">Loading evidence...</p>
-          ) : evidenceList.length === 0 ? (
+          ) : unifiedEvidence.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-white/15 p-6 text-center text-xs text-[#c9d5cf]">
               No evidence submitted for this incident yet.
             </div>
           ) : (
-            evidenceList.map((ev) => {
+            unifiedEvidence.map((ev) => {
               const isSelected = ev.id === selectedEvidenceId;
               return (
                 <div

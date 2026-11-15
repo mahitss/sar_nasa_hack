@@ -928,6 +928,14 @@ func (r *PostgresRepository) ListAuditEvents(ctx context.Context, incidentID str
 	}
 	out := make([]*store.AuditEvent, 0, len(rows))
 	for _, row := range rows {
+		var before json.RawMessage
+		if len(row.BeforeData) > 0 {
+			before = json.RawMessage(row.BeforeData)
+		}
+		var after json.RawMessage
+		if len(row.AfterData) > 0 {
+			after = json.RawMessage(row.AfterData)
+		}
 		out = append(out, &store.AuditEvent{
 			ID:          formatUUID(row.ID),
 			ActorID:     formatUUID(row.ActorID),
@@ -935,6 +943,8 @@ func (r *PostgresRepository) ListAuditEvents(ctx context.Context, incidentID str
 			EntityTable: row.EntityTable,
 			EntityID:    formatUUID(row.EntityID),
 			IncidentID:  formatUUID(row.IncidentID),
+			BeforeData:  before,
+			AfterData:   after,
 			OccurredAt:  timestamptzToTime(row.OccurredAt),
 		})
 	}

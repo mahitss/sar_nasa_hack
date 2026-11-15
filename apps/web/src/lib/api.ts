@@ -124,6 +124,8 @@ export interface ApiAuditEvent {
   entity_table: string;
   entity_id: string;
   incident_id: string;
+  before_data?: Record<string, unknown> | null;
+  after_data?: Record<string, unknown> | null;
   occurred_at: string;
 }
 
