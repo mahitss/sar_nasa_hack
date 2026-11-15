@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import {
@@ -96,7 +96,7 @@ export default function OverviewPage() {
   const displayJobsCount = jobs.length > 0 ? jobs.length : SCIENTIFIC_JOBS.length;
 
   return (
-    <div className="space-y-16 pb-24 text-[#fcfaf5]">
+    <div className="space-y-20 pb-24 text-[#fcfaf5]">
       {/* Discreet Brand & Sign-In Header for Landing Page */}
       <div className="flex items-center justify-between pb-4 border-b border-white/10">
         <div className="flex items-center gap-3">
@@ -126,111 +126,116 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      {/* 1. HERO SECTION — Google-Style Open Editorial Layout */}
-      <section className="pt-2 sm:pt-4">
-        {/* Subtle Brand & Mission Eyebrow */}
-        <div className="flex flex-wrap items-center gap-3 text-xs font-mono tracking-wider">
-          <span className="text-[#a7f3d0] font-semibold">● NASA NISAR OBSERVATION</span>
-          <span className="text-[#8e9f95]">/</span>
-          <span className="text-[#d7b56d]">HIMALAYAN FLUVIAL INVESTIGATION</span>
-          <span className="text-[#8e9f95]">/</span>
-          <span className="text-[#c4beaf]">UTTARAKHAND, INDIA</span>
-        </div>
+      {/* 1. HERO SECTION — Split Editorial Layout (Water & Lake Image Visible Immediately Above the Fold) */}
+      <section className="grid gap-10 lg:grid-cols-12 lg:items-center">
+        {/* Left Column: Clean Typography & Telemetry */}
+        <div className="space-y-6 lg:col-span-7">
+          <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono tracking-wider">
+            <span className="text-[#a7f3d0] font-semibold">● NASA NISAR OBSERVATION</span>
+            <span className="text-[#8e9f95]">/</span>
+            <span className="text-[#d7b56d]">HIMALAYAN FLUVIAL INVESTIGATION</span>
+            <span className="text-[#8e9f95]">/</span>
+            <span className="text-[#c4beaf]">UTTARAKHAND</span>
+          </div>
 
-        {/* Large, Airy Headline & Subtitle */}
-        <div className="mt-6 max-w-4xl space-y-4">
-          <h1 className="text-4xl font-light tracking-tight text-[#fcfaf5] sm:text-6xl md:text-7xl leading-[1.08]">
+          <h1 className="text-3xl font-light tracking-tight text-[#fcfaf5] sm:text-5xl lg:text-6xl leading-[1.1]">
             Monitoring water, lakes, and mountain river dynamics.
           </h1>
-          <p className="max-w-2xl text-lg sm:text-xl font-normal leading-relaxed text-[#ded8cb]">
+
+          <p className="max-w-xl text-base sm:text-lg font-normal leading-relaxed text-[#ded8cb]">
             An open, evidence-grounded satellite radar investigation of the reported landslide dam
             along the Kuwari River in the high-relief Himalayan gorge of Bageshwar.
           </p>
-        </div>
 
-        {/* Quick Action Navigation Pills */}
-        <div className="mt-8 flex flex-wrap items-center gap-3 text-sm">
-          <Link
-            href="/spatial"
-            className="rounded-full bg-[#fcfaf5] px-6 py-2.5 font-medium text-[#07140e] transition hover:bg-[#eae4d5]"
-          >
-            Open Spatial Map
-          </Link>
-          <Link
-            href="/acquisitions"
-            className="rounded-full border border-white/20 px-5 py-2.5 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
-          >
-            Compare Satellite Radar
-          </Link>
-          <Link
-            href="/evidence"
-            className="rounded-full border border-white/20 px-5 py-2.5 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
-          >
-            50 Evidence Records
-          </Link>
-          {user && (currentRole === "owner" || currentRole === "analyst") ? (
-            <button
-              type="button"
-              onClick={() => setShowCreate(true)}
-              className="rounded-full border border-[#d7b56d]/50 bg-[#d7b56d]/10 px-5 py-2.5 text-xs font-medium text-[#f8ebd0] transition hover:bg-[#d7b56d]/20"
+          {/* Action Pills */}
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm pt-1">
+            <Link
+              href="/spatial"
+              className="rounded-full bg-[#fcfaf5] px-5 py-2 font-medium text-[#07140e] transition hover:bg-[#eae4d5]"
             >
-              + New Workspace
-            </button>
-          ) : null}
+              Open Spatial Map
+            </Link>
+            <Link
+              href="/acquisitions"
+              className="rounded-full border border-white/20 px-4 py-2 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
+            >
+              Compare Satellite Radar
+            </Link>
+            <Link
+              href="/evidence"
+              className="rounded-full border border-white/20 px-4 py-2 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
+            >
+              50 Evidence Records
+            </Link>
+            {user && (currentRole === "owner" || currentRole === "analyst") ? (
+              <button
+                type="button"
+                onClick={() => setShowCreate(true)}
+                className="rounded-full border border-[#d7b56d]/50 bg-[#d7b56d]/10 px-4 py-2 text-xs font-medium text-[#f8ebd0] transition hover:bg-[#d7b56d]/20"
+              >
+                + New Workspace
+              </button>
+            ) : null}
+          </div>
+
+          {/* Evenly Spread Telemetry */}
+          <div className="grid grid-cols-4 gap-4 border-t border-white/10 pt-6">
+            <div>
+              <p className="font-mono text-2xl sm:text-3xl font-light text-[#fcfaf5]">{displayAcqCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">NISAR Passes</p>
+              <p className="text-[10px] text-[#7d9387]">40 MHz Dual-Pol</p>
+            </div>
+            <div>
+              <p className="font-mono text-2xl sm:text-3xl font-light text-[#fcfaf5]">{displayEvidenceCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Evidence Records</p>
+              <p className="text-[10px] text-[#7d9387]">Peer reviewed</p>
+            </div>
+            <div>
+              <p className="font-mono text-2xl sm:text-3xl font-light text-[#fcfaf5]">{displayJobsCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Specialist Roles</p>
+              <p className="text-[10px] text-[#7d9387]">JPL & ISRO</p>
+            </div>
+            <div>
+              <p className="font-mono text-2xl sm:text-3xl font-light text-[#fcfaf5]">2,450 m</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Valley Elev</p>
+              <p className="text-[10px] text-[#7d9387]">WGS 84</p>
+            </div>
+          </div>
         </div>
 
-        {/* Evenly Spread Minimal Key Telemetry (No Boxes) */}
-        <div className="mt-16 grid grid-cols-2 gap-8 border-t border-b border-white/10 py-8 sm:grid-cols-4">
-          <div>
-            <p className="font-mono text-3xl sm:text-4xl font-light text-[#fcfaf5]">{displayAcqCount}</p>
-            <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">NISAR SAR Passes</p>
-            <p className="mt-0.5 text-xs text-[#7d9387]">40 MHz Dual-Pol (HH+HV)</p>
-          </div>
-          <div>
-            <p className="font-mono text-3xl sm:text-4xl font-light text-[#fcfaf5]">{displayEvidenceCount}</p>
-            <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Evidence Artifacts</p>
-            <p className="mt-0.5 text-xs text-[#7d9387]">Peer-reviewed observations</p>
-          </div>
-          <div>
-            <p className="font-mono text-3xl sm:text-4xl font-light text-[#fcfaf5]">{displayJobsCount}</p>
-            <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Scientific Roles</p>
-            <p className="mt-0.5 text-xs text-[#7d9387]">JPL, ISRO & USGS workflows</p>
-          </div>
-          <div>
-            <p className="font-mono text-3xl sm:text-4xl font-light text-[#fcfaf5]">2,450 m</p>
-            <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Valley Elevation</p>
-            <p className="mt-0.5 text-xs text-[#7d9387]">WGS 84 · EPSG:32644</p>
+        {/* Right Column: Hero Alpine Lake & Mountain Water Image (INSTANTLY VISIBLE ON SCREEN) */}
+        <div className="lg:col-span-5">
+          <div className="relative overflow-hidden rounded-3xl bg-[#0a1711] shadow-2xl border border-white/10 group">
+            <img
+              src="/images/lake-2.jpg"
+              alt="Himalayan alpine lake and mountain water"
+              className="h-80 sm:h-[26rem] w-full object-cover object-center filter brightness-[0.92] transition duration-700 group-hover:scale-105"
+            />
+            {/* Subtle floating badge on the image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+            <div className="absolute top-4 right-4">
+              <span className="rounded-full bg-black/60 px-3 py-1 font-mono text-[11px] text-[#a7f3d0] backdrop-blur-md border border-white/10">
+                Live Catchment Context
+              </span>
+            </div>
+            <div className="absolute bottom-5 left-5 right-5 text-xs">
+              <h3 className="text-base font-medium text-white">
+                Himalayan Glacial Catchment & Alpine Waters
+              </h3>
+              <p className="mt-1 text-xs text-[#ded8cb] leading-relaxed">
+                Pristine mountain reservoirs and active drainages monitored via satellite synthetic aperture radar.
+              </p>
+              <div className="mt-2.5 flex items-center justify-between font-mono text-[10px] text-[#d7b56d] border-t border-white/15 pt-2">
+                <span>Elevation: 2,450 m</span>
+                <span>Bageshwar, Uttarakhand</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. FULL-BLEED ALPINE WATER & LAKES PHOTOGRAPHY HERO */}
-      <section className="relative overflow-hidden rounded-3xl bg-[#091811]">
-        <div className="relative h-96 sm:h-[28rem] w-full overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=85"
-            alt="Pristine alpine lake water reflecting high Himalayan green slopes"
-            className="h-full w-full object-cover object-center filter brightness-[0.82] contrast-[1.05]"
-          />
-          {/* Subtle natural gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#06110c] via-transparent to-black/20" />
-          <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 max-w-2xl">
-            <span className="rounded-full bg-black/40 px-3 py-1 font-mono text-xs text-[#a7f3d0] backdrop-blur-md">
-              Himalayan Catchment Hydrology
-            </span>
-            <h2 className="mt-3 text-2xl sm:text-3xl font-light text-white leading-tight">
-              Glacial melt, steep valley gradients, and active river discharge.
-            </h2>
-            <p className="mt-2 text-sm text-[#e2ded4] leading-relaxed">
-              High-relief alpine drainages in Uttarakhand channel massive monsoon runoff. When rockslides
-              impinge on these narrow channels, radar monitoring determines whether backwater lakes form or continuous incision persists.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. EDITORIAL STORY SECTION: THE WATER QUESTION (EVEN SPREAD, NO BOXES) */}
-      <section className="grid gap-12 lg:grid-cols-12 lg:items-center">
+      {/* 2. EDITORIAL STORY SECTION: THE WATER QUESTION WITH RIVER GORGE PHOTO */}
+      <section className="grid gap-12 lg:grid-cols-12 lg:items-center border-t border-white/10 pt-16">
         <div className="space-y-6 lg:col-span-6">
           <p className="font-mono text-xs uppercase tracking-widest text-[#d7b56d]">
             RESEARCH FOCUS · WATER VERIFICATION
@@ -264,23 +269,23 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        {/* Second High-Definition Water Image */}
-        <div className="lg:col-span-6 overflow-hidden rounded-3xl bg-[#091811]">
+        {/* River Gorge Local Image */}
+        <div className="lg:col-span-6 overflow-hidden rounded-3xl bg-[#091811] border border-white/10 shadow-2xl">
           <div className="relative h-80 sm:h-96 w-full">
             <img
-              src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1400&q=85"
-              alt="Misty mountain valley with river running through forested valley"
-              className="h-full w-full object-cover object-center filter brightness-[0.85]"
+              src="/images/river-1.jpg"
+              alt="Himalayan mountain river carving through steep valley"
+              className="h-full w-full object-cover object-center filter brightness-[0.88]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#06110c]/80 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 text-xs font-mono text-[#d7b56d]">
-              Kuwari Fluvial Gorge Corridor · Elevation 2,140 m – 3,680 m
+              Kuwari Fluvial Gorge Corridor · Active Incision & Rapid Discharge
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. THREE EVENLY SPREAD PILLARS (NO BOXES, JUST CLEAN TEXT) */}
+      {/* 3. THREE EVENLY SPREAD PILLARS (NO BOXES, JUST CLEAN TEXT) */}
       <section className="border-t border-white/10 pt-16">
         <div className="max-w-2xl">
           <p className="font-mono text-xs uppercase tracking-widest text-[#d7b56d]">
@@ -322,13 +327,13 @@ export default function OverviewPage() {
         </div>
       </section>
 
-      {/* 5. VISUAL GALLERY: LAKES & RIVER ECOSYSTEMS SPREAD */}
-      <section className="space-y-6">
+      {/* 4. VISUAL GALLERY: LAKES & MOUNTAIN RIVERS GALLERY */}
+      <section className="space-y-6 border-t border-white/10 pt-16">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-[#d7b56d]">IMAGE GALLERY</p>
             <h2 className="mt-1 text-2xl sm:text-3xl font-light text-[#fcfaf5]">
-              Himalayan riverbeds, lakes, and drainage channels.
+              Alpine lakes, river channels, and watershed topography.
             </h2>
           </div>
           <p className="text-xs text-[#a3b8ad] font-mono">High-Relief Fluvial Basins</p>
@@ -337,9 +342,9 @@ export default function OverviewPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {/* Lake 1 */}
           <div className="group space-y-2">
-            <div className="overflow-hidden rounded-2xl bg-[#091811]">
+            <div className="overflow-hidden rounded-2xl bg-[#091811] border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1439853941329-a99ce049f002?auto=format&fit=crop&w=800&q=80"
+                src="/images/water-2.jpg"
                 alt="Turquoise high altitude alpine lake"
                 className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 filter brightness-90"
               />
@@ -352,9 +357,9 @@ export default function OverviewPage() {
 
           {/* Lake 2 */}
           <div className="group space-y-2">
-            <div className="overflow-hidden rounded-2xl bg-[#091811]">
+            <div className="overflow-hidden rounded-2xl bg-[#091811] border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&w=800&q=80"
+                src="/images/lake-3.jpg"
                 alt="River canyon winding through green mountain slopes"
                 className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 filter brightness-90"
               />
@@ -367,9 +372,9 @@ export default function OverviewPage() {
 
           {/* Lake 3 */}
           <div className="group space-y-2">
-            <div className="overflow-hidden rounded-2xl bg-[#091811]">
+            <div className="overflow-hidden rounded-2xl bg-[#091811] border border-white/10">
               <img
-                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"
+                src="/images/lake-1.jpg"
                 alt="Alpine mountain peaks with clear lake and blue skies"
                 className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 filter brightness-90"
               />
@@ -382,7 +387,61 @@ export default function OverviewPage() {
         </div>
       </section>
 
-      {/* 6. CLEAN EDITORIAL NAVIGATION (NO BOXES, JUST SPACIOUS ROWS) */}
+      {/* 5. PRIMARY SATELLITE RADAR SENSING (REAL NISAR RADAR IMAGES) */}
+      <section className="space-y-6 border-t border-white/10 pt-16">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-[#d7b56d]">PRIMARY SATELLITE OBSERVATIONS</p>
+            <h2 className="mt-1 text-2xl sm:text-3xl font-light text-[#fcfaf5]">
+              NISAR Polarimetric SAR Radar Diagnostics (Sept 6 vs Sept 30)
+            </h2>
+          </div>
+          <Link
+            href="/acquisitions"
+            className="text-xs font-mono text-[#d7b56d] hover:underline"
+          >
+            Open Acquisition Comparison →
+          </Link>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div className="space-y-2">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#091811]">
+              <img
+                src="/images/radar-sept06.png"
+                alt="NISAR 6 September 2026 Radar Observation"
+                className="h-72 w-full object-cover filter contrast-125"
+              />
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-mono text-[#fcfaf5]">6 September 2026 Pass</span>
+              <span className="text-[#a7f3d0]">6 Raw Candidate Pixels</span>
+            </div>
+            <p className="text-xs text-[#8fa79b]">
+              Descending track 5, frame 73. Low-dB returns correlated with steep ridge geometric radar shadows.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#091811]">
+              <img
+                src="/images/radar-sept30.png"
+                alt="NISAR 30 September 2026 Radar Observation"
+                className="h-72 w-full object-cover filter contrast-125"
+              />
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-mono text-[#fcfaf5]">30 September 2026 Pass</span>
+              <span className="text-[#a7f3d0]">12 Raw Candidate Pixels</span>
+            </div>
+            <p className="text-xs text-[#8fa79b]">
+              Repeat orbit pass. Temporal cross-filtering eliminated all 12 pixels; 0 stable candidates confirmed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CLEAN EDITORIAL NAVIGATION (DIRECT WORKSPACE ACCESS) */}
       <section className="border-t border-white/10 pt-16 space-y-8">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-[#d7b56d]">EXPLORE WORKSPACES</p>
