@@ -1,0 +1,19 @@
+name: db
+on:
+  push:
+    branches: [rebuild/submission-mvp]
+  pull_request:
+jobs:
+  pgTAP:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: start supabase
+        run: supabase start
+      - name: reset db
+        run: supabase db reset
+      - name: run pgTAP
+        run: supabase test db

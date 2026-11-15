@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: RIVET API
+  version: 0.1.0
+paths:
+  /healthz:
+    get:
+      summary: Liveness
+      responses:
+        "200": { description: OK }
+  /readyz:
+    get:
+      summary: Readiness
+      responses:
+        "200": { description: ready }
+  /api/v1/whoami:
+    get:
+      summary: Verified identity
+      responses:
+        "200": { description: identity }
+  /api/v1/incidents:
+    get: { summary: List incidents, responses: { "200": { description: OK } } }
+    post: { summary: Create incident, responses: { "201": { description: created } } }

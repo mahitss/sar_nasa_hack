@@ -1,0 +1,16 @@
+name: python
+on:
+  push:
+    branches: [rebuild/submission-mvp]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: scientific tests
+        run: uv run --python 3.12 pytest tests/scientific
+      - name: worker tests
+        working-directory: services/worker
+        run: uv sync && uv run pytest
