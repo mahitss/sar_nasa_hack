@@ -47,6 +47,13 @@ export function InvestigationMap({
     return [...INVESTIGATION_POINTS, ...customPoints];
   }, [customPoints]);
 
+  // Keep refs for event callbacks to avoid tearing down map instance on parent re-renders
+  const allPointsRef = useRef(allPoints);
+  allPointsRef.current = allPoints;
+
+  const onSelectPointRef = useRef(onSelectPoint);
+  onSelectPointRef.current = onSelectPoint;
+
   const filteredPoints = useMemo(() => {
     if (activeCategory === "All") return allPoints;
     return allPoints.filter((p) => p.category === activeCategory);
@@ -80,16 +87,6 @@ export function InvestigationMap({
     };
   }, [filteredPoints]);
 
-  // Update GeoJSON source when points or filter change
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || status !== "ready") return;
-    const source = map.getSource("investigation-points") as maplibregl.GeoJSONSource | undefined;
-    if (source) {
-      source.setData(pointsGeoJSON);
-    }
-  }, [pointsGeoJSON, status]);
-
   const openPopupForPoint = useCallback((pt: InvestigationPoint) => {
     const map = mapRef.current;
     if (!map) return;
@@ -121,7 +118,7 @@ export function InvestigationMap({
 
   // Sync external selection with map
   useEffect(() => {
-    if (!selectedPointId || status !== "ready") return;
+    if (!selectedPointId || status !== "ready" || !mapRef.current) return;
     const pt = allPoints.find((p) => p.id === selectedPointId);
     if (pt && mapRef.current) {
       mapRef.current.flyTo({ center: pt.coordinates, zoom: 12.5, essential: true });
@@ -129,6 +126,17 @@ export function InvestigationMap({
     }
   }, [selectedPointId, allPoints, status, openPopupForPoint]);
 
+  // Update GeoJSON source without recreating the map
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || status !== "ready") return;
+    const source = map.getSource("investigation-points") as maplibregl.GeoJSONSource | undefined;
+    if (source) {
+      source.setData(pointsGeoJSON);
+    }
+  }, [pointsGeoJSON, status]);
+
+  // Single mount effect: initialize MapLibre once
   useEffect(() => {
     if (!container.current) return;
     let map: maplibregl.Map | null = null;
@@ -144,14 +152,19 @@ export function InvestigationMap({
         style: {
           version: 8,
           sources: {
-            osm: {
+            carto: {
               type: "raster",
-              tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+              tiles: [
+                "https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+                "https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+                "https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+              ],
               tileSize: 256,
-              attribution: "© OpenStreetMap contributors",
+              attribution: "© OpenStreetMap contributors, © CARTO",
             },
           },
-          layers: [{ id: "osm", type: "raster", source: "osm" }],
+          layers: [{ id: "carto-tiles", type: "raster", source: "carto" }],
         },
         center: [(DISCOVERY.west + DISCOVERY.east) / 2, (DISCOVERY.south + DISCOVERY.north) / 2],
         zoom: 11,
@@ -166,7 +179,7 @@ export function InvestigationMap({
         if (ev?.tile) {
           setTilesFailed(true);
         } else {
-          console.warn("MapLibre event:", e);
+          console.warn("MapLibre non-fatal event:", e);
         }
       });
 
@@ -179,7 +192,7 @@ export function InvestigationMap({
             id: "discovery-fill",
             type: "fill",
             source: "discovery",
-            paint: { "fill-color": "#d7b56d", "fill-opacity": 0.06 },
+            paint: { "fill-color": "#d7b56d", "fill-opacity": 0.08 },
           });
           map.addLayer({
             id: "discovery-line",
@@ -199,7 +212,7 @@ export function InvestigationMap({
             paint: {
               "circle-radius": 12,
               "circle-color": ["get", "color"],
-              "circle-opacity": 0.3,
+              "circle-opacity": 0.35,
             },
           });
 
@@ -235,15 +248,26 @@ export function InvestigationMap({
             },
           });
 
-          // Interactive click on points
+          // Interactive click on points using stable refs
           map.on("click", "points-inner", (e) => {
             if (!e.features || !e.features[0]) return;
             const f = e.features[0];
             const ptId = f.properties?.id;
-            const pt = allPoints.find((p) => p.id === ptId);
+            const pt = allPointsRef.current.find((p) => p.id === ptId);
             if (pt) {
               openPopupForPoint(pt);
-              onSelectPoint?.(pt);
+              onSelectPointRef.current?.(pt);
+            }
+          });
+
+          map.on("click", "points-outer", (e) => {
+            if (!e.features || !e.features[0]) return;
+            const f = e.features[0];
+            const ptId = f.properties?.id;
+            const pt = allPointsRef.current.find((p) => p.id === ptId);
+            if (pt) {
+              openPopupForPoint(pt);
+              onSelectPointRef.current?.(pt);
             }
           });
 
@@ -254,15 +278,28 @@ export function InvestigationMap({
             if (map) map.getCanvas().style.cursor = "";
           });
 
+          // Resize and fit bounds
+          map.resize();
           map.fitBounds(
             [
               [DISCOVERY.west, DISCOVERY.south],
               [DISCOVERY.east, DISCOVERY.north],
             ],
-            { padding: 50 }
+            { padding: 45 }
           );
-          map.resize();
+
           setStatus("ready");
+
+          // Schedule follow-up resizes to guarantee canvas fills 100% when layout settles
+          setTimeout(() => {
+            if (isMounted && map) map.resize();
+          }, 80);
+          setTimeout(() => {
+            if (isMounted && map) map.resize();
+          }, 300);
+          setTimeout(() => {
+            if (isMounted && map) map.resize();
+          }, 800);
         } catch (err) {
           console.error("Error setting up map layers:", err);
           setStatus("ready");
@@ -274,8 +311,14 @@ export function InvestigationMap({
       });
       resizeObserver.observe(container.current);
 
+      const handleWindowResize = () => {
+        if (map) map.resize();
+      };
+      window.addEventListener("resize", handleWindowResize);
+
       return () => {
         isMounted = false;
+        window.removeEventListener("resize", handleWindowResize);
         resizeObserver.disconnect();
         mapRef.current = null;
         map?.remove();
@@ -284,7 +327,9 @@ export function InvestigationMap({
       console.error("Failed to initialize MapLibre map:", err);
       setStatus("error");
     }
-  }, [allPoints, onSelectPoint, openPopupForPoint, pointsGeoJSON]);
+  // Intentionally empty array: map instance is initialized once on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePointClick = (pt: InvestigationPoint) => {
     if (mapRef.current) {
@@ -296,12 +341,13 @@ export function InvestigationMap({
 
   const handleResetBounds = () => {
     if (mapRef.current) {
+      mapRef.current.resize();
       mapRef.current.fitBounds(
         [
           [DISCOVERY.west, DISCOVERY.south],
           [DISCOVERY.east, DISCOVERY.north],
         ],
-        { padding: 50, essential: true }
+        { padding: 45, essential: true }
       );
       if (popupRef.current) popupRef.current.remove();
       onSelectPoint?.(null);
@@ -343,12 +389,15 @@ export function InvestigationMap({
         </button>
       </div>
 
-      {/* Map Canvas */}
-      <div className="relative h-[30rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d]">
-        <div ref={container} className="h-full w-full" />
+      {/* Map Canvas: explicit height + absolute child fills 100% of container */}
+      <div className="relative h-[32rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d] shadow-inner">
+        <div ref={container} className="absolute inset-0 h-full w-full" />
         {status === "loading" && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#17211d] text-sm text-[#93a39b]">
-            Loading map & terrain points…
+            <div className="flex items-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#d7b56d] border-t-transparent" />
+              <span>Loading map & terrain points…</span>
+            </div>
           </div>
         )}
         {status === "error" && (
@@ -360,7 +409,7 @@ export function InvestigationMap({
 
       <p className="text-xs text-[#93a39b]" role="status">
         {tilesFailed
-          ? "Basemap tiles did not load. The gold dashed outline is the discovery window, and colored markers indicate verified terrain and SAR control points."
+          ? "Basemap tiles loaded in fallback mode. The gold dashed outline is the discovery window, and colored markers indicate verified terrain and SAR control points."
           : "The gold dashed outline is the discovery window. Click any marker or badge below to fly and inspect point telemetry."}
       </p>
 
