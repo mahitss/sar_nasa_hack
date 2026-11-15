@@ -96,21 +96,21 @@ export default function OverviewPage() {
   const displayJobsCount = jobs.length > 0 ? jobs.length : SCIENTIFIC_JOBS.length;
 
   return (
-    <div className="w-full space-y-24 pb-28 text-[#fcfaf5]">
+    <div className="w-full space-y-16 pb-20 text-[#fcfaf5]">
       {/* Discreet Brand & Sign-In Header for Landing Page */}
-      <div className="flex items-center justify-between pb-5 border-b border-white/10">
+      <div className="flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-lg font-bold tracking-[0.24em] text-[#d7b56d]">RIVET</span>
+          <span className="font-mono text-base font-bold tracking-[0.24em] text-[#d7b56d]">RIVET</span>
           <span className="hidden text-xs text-[#8fa79b] sm:inline">NASA SAR Fluvial Platform</span>
         </div>
-        <div className="flex items-center gap-4 text-xs">
+        <div className="flex items-center gap-3 text-xs">
           {user ? (
             <div className="flex items-center gap-3">
               <span className="hidden font-mono text-[#a3b8ad] sm:inline">{user.email}</span>
               <button
                 type="button"
                 onClick={signOut}
-                className="rounded-full border border-white/20 px-4 py-1.5 text-xs text-[#c9d5cf] transition hover:text-white"
+                className="rounded-full border border-white/20 px-3.5 py-1 text-xs text-[#c9d5cf] transition hover:text-white"
               >
                 Sign Out
               </button>
@@ -118,7 +118,7 @@ export default function OverviewPage() {
           ) : (
             <Link
               href="/login"
-              className="rounded-full bg-[#fcfaf5] px-5 py-2 font-medium text-[#07140e] transition hover:bg-[#eae4d5]"
+              className="rounded-full bg-[#fcfaf5] px-4 py-1.5 font-medium text-[#07140e] transition hover:bg-[#eae4d5]"
             >
               Sign In
             </Link>
@@ -126,11 +126,11 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      {/* 1. HERO SECTION — Full Panoramic Spread with Big Text & Large Mountain Water Visual */}
-      <section className="grid gap-12 lg:grid-cols-12 lg:items-center">
-        {/* Left Column: Big, Impressive Typography & Telemetry */}
-        <div className="space-y-8 lg:col-span-7">
-          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-mono tracking-wider">
+      {/* 1. HERO SECTION — Shifted Upward to Fit Elegantly Above the Fold */}
+      <section className="grid gap-8 lg:grid-cols-12 lg:items-center pt-1">
+        {/* Left Column: Typography, Narrative & Telemetry */}
+        <div className="space-y-4 sm:space-y-5 lg:col-span-7">
+          <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono tracking-wider">
             <span className="text-[#a7f3d0] font-semibold">● NASA NISAR OBSERVATION</span>
             <span className="text-[#8e9f95]">/</span>
             <span className="text-[#d7b56d]">HIMALAYAN FLUVIAL INVESTIGATION</span>
@@ -138,32 +138,32 @@ export default function OverviewPage() {
             <span className="text-[#c4beaf]">UTTARAKHAND</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-[#fcfaf5] leading-[1.04]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-[#fcfaf5] leading-[1.06]">
             Monitoring water, lakes, and mountain river dynamics.
           </h1>
 
-          <p className="max-w-2xl text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-[#ded8cb]">
+          <p className="max-w-2xl text-base sm:text-lg md:text-xl font-light leading-relaxed text-[#ded8cb]">
             An open, evidence-grounded satellite radar investigation of the reported landslide dam
             along the Kuwari River in the high-relief Himalayan gorge of Bageshwar.
           </p>
 
           {/* Action Pills */}
-          <div className="flex flex-wrap items-center gap-3 text-sm sm:text-base pt-2">
+          <div className="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm pt-1">
             <Link
               href="/spatial"
-              className="rounded-full bg-[#fcfaf5] px-7 py-3 font-medium text-[#07140e] transition hover:bg-[#eae4d5] shadow-lg shadow-white/5"
+              className="rounded-full bg-[#fcfaf5] px-6 py-2.5 font-medium text-[#07140e] transition hover:bg-[#eae4d5] shadow-lg shadow-white/5"
             >
               Open Spatial Map
             </Link>
             <Link
               href="/acquisitions"
-              className="rounded-full border border-white/25 px-6 py-3 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
+              className="rounded-full border border-white/25 px-5 py-2.5 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
             >
               Compare Satellite Radar
             </Link>
             <Link
               href="/evidence"
-              className="rounded-full border border-white/25 px-6 py-3 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
+              className="rounded-full border border-white/25 px-5 py-2.5 text-[#fcfaf5] transition hover:border-[#d7b56d] hover:text-[#d7b56d]"
             >
               50 Evidence Records
             </Link>
@@ -171,61 +171,61 @@ export default function OverviewPage() {
               <button
                 type="button"
                 onClick={() => setShowCreate(true)}
-                className="rounded-full border border-[#d7b56d]/50 bg-[#d7b56d]/15 px-5 py-3 text-xs font-semibold text-[#f8ebd0] transition hover:bg-[#d7b56d]/25"
+                className="rounded-full border border-[#d7b56d]/50 bg-[#d7b56d]/15 px-4 py-2.5 text-xs font-semibold text-[#f8ebd0] transition hover:bg-[#d7b56d]/25"
               >
                 + New Workspace
               </button>
             ) : null}
           </div>
 
-          {/* Evenly Spread Telemetry with Large Numbers */}
-          <div className="grid grid-cols-4 gap-6 border-t border-white/10 pt-8">
+          {/* Evenly Spread Telemetry with Snappy Metrics */}
+          <div className="grid grid-cols-4 gap-4 border-t border-white/10 pt-5">
             <div>
-              <p className="font-mono text-3xl sm:text-4xl lg:text-5xl font-light text-[#fcfaf5]">{displayAcqCount}</p>
-              <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">NISAR Passes</p>
-              <p className="text-[11px] text-[#7d9387]">40 MHz Dual-Pol</p>
+              <p className="font-mono text-2xl sm:text-3xl lg:text-4xl font-light text-[#fcfaf5]">{displayAcqCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">NISAR Passes</p>
+              <p className="text-[10px] text-[#7d9387]">40 MHz Dual-Pol</p>
             </div>
             <div>
-              <p className="font-mono text-3xl sm:text-4xl lg:text-5xl font-light text-[#fcfaf5]">{displayEvidenceCount}</p>
-              <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Evidence Records</p>
-              <p className="text-[11px] text-[#7d9387]">Peer reviewed</p>
+              <p className="font-mono text-2xl sm:text-3xl lg:text-4xl font-light text-[#fcfaf5]">{displayEvidenceCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Evidence Records</p>
+              <p className="text-[10px] text-[#7d9387]">Peer reviewed</p>
             </div>
             <div>
-              <p className="font-mono text-3xl sm:text-4xl lg:text-5xl font-light text-[#fcfaf5]">{displayJobsCount}</p>
-              <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Specialist Roles</p>
-              <p className="text-[11px] text-[#7d9387]">JPL & ISRO</p>
+              <p className="font-mono text-2xl sm:text-3xl lg:text-4xl font-light text-[#fcfaf5]">{displayJobsCount}</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Specialist Roles</p>
+              <p className="text-[10px] text-[#7d9387]">JPL & ISRO</p>
             </div>
             <div>
-              <p className="font-mono text-3xl sm:text-4xl lg:text-5xl font-light text-[#fcfaf5]">2,450 m</p>
-              <p className="mt-1 text-xs text-[#a3b8ad] uppercase tracking-wider">Valley Elev</p>
-              <p className="text-[11px] text-[#7d9387]">WGS 84</p>
+              <p className="font-mono text-2xl sm:text-3xl lg:text-4xl font-light text-[#fcfaf5]">2,450 m</p>
+              <p className="mt-0.5 text-[11px] text-[#a3b8ad] uppercase tracking-wider">Valley Elev</p>
+              <p className="text-[10px] text-[#7d9387]">WGS 84</p>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Hero Alpine Glacial Lake & Mountain Water (LARGE, WIDE & ABOVE THE FOLD) */}
+        {/* Right Column: Hero Alpine Glacial Lake & Mountain Water (ALIGNED WITH TEXT & ABOVE THE FOLD) */}
         <div className="lg:col-span-5">
           <div className="relative overflow-hidden rounded-3xl bg-[#0a1711] shadow-2xl border border-white/10 group">
             <img
               src="/images/water-2.jpg"
               alt="Himalayan alpine lake and mountain water"
-              className="h-96 sm:h-[32rem] lg:h-[38rem] w-full object-cover object-center filter brightness-[0.95] transition duration-700 group-hover:scale-105"
+              className="h-72 sm:h-[26rem] lg:h-[32rem] w-full object-cover object-center filter brightness-[0.95] transition duration-700 group-hover:scale-105"
             />
             {/* Subtle floating badge on the image */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/20" />
-            <div className="absolute top-5 right-5">
-              <span className="rounded-full bg-black/60 px-3.5 py-1.5 font-mono text-xs text-[#a7f3d0] backdrop-blur-md border border-white/10">
+            <div className="absolute top-4 right-4">
+              <span className="rounded-full bg-black/60 px-3 py-1 font-mono text-xs text-[#a7f3d0] backdrop-blur-md border border-white/10">
                 Live Catchment Context
               </span>
             </div>
-            <div className="absolute bottom-6 left-6 right-6 text-sm">
-              <h3 className="text-xl font-medium text-white">
+            <div className="absolute bottom-5 left-5 right-5 text-sm">
+              <h3 className="text-lg font-medium text-white">
                 Himalayan Glacial Catchment & Alpine Waters
               </h3>
-              <p className="mt-1.5 text-xs sm:text-sm text-[#ded8cb] leading-relaxed">
+              <p className="mt-1 text-xs text-[#ded8cb] leading-relaxed">
                 Pristine mountain reservoirs and active drainages monitored via satellite synthetic aperture radar.
               </p>
-              <div className="mt-3 flex items-center justify-between font-mono text-xs text-[#d7b56d] border-t border-white/15 pt-2.5">
+              <div className="mt-2.5 flex items-center justify-between font-mono text-xs text-[#d7b56d] border-t border-white/15 pt-2">
                 <span>Elevation: 2,450 m</span>
                 <span>Bageshwar, Uttarakhand</span>
               </div>

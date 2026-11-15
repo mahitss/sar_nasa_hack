@@ -120,12 +120,12 @@ function ShellInner({ children }: { children: ReactNode }) {
         </header>
       )}
 
-      {/* Landing page expands to use full panoramic width (max-w-[1700px]), normal pages stay max-w-7xl */}
+      {/* Landing page uses full wide display with tight top padding to keep hero above fold */}
       <main
         id="content"
         className={
           isLandingPage
-            ? "mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-14 py-6"
+            ? "w-full px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-3 pb-16"
             : "mx-auto max-w-7xl px-4 py-8"
         }
       >
