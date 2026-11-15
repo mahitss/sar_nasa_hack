@@ -40,8 +40,8 @@ export function InvestigationMap({
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
-  const [tilesFailed, setTilesFailed] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [activeBasemap, setActiveBasemap] = useState<"topo" | "satellite" | "osm">("topo");
 
   const allPoints = useMemo(() => {
     return [...INVESTIGATION_POINTS, ...customPoints];
@@ -136,7 +136,16 @@ export function InvestigationMap({
     }
   }, [pointsGeoJSON, status]);
 
-  // Single mount effect: initialize MapLibre once
+  const switchBasemap = (mode: "topo" | "satellite" | "osm") => {
+    setActiveBasemap(mode);
+    const map = mapRef.current;
+    if (!map) return;
+    if (map.getLayer("base-topo")) map.setLayoutProperty("base-topo", "visibility", mode === "topo" ? "visible" : "none");
+    if (map.getLayer("base-sat")) map.setLayoutProperty("base-sat", "visibility", mode === "satellite" ? "visible" : "none");
+    if (map.getLayer("base-osm")) map.setLayoutProperty("base-osm", "visibility", mode === "osm" ? "visible" : "none");
+  };
+
+  // Single mount effect: initialize MapLibre once with 100% free, reliable ESRI & OSM tiles
   useEffect(() => {
     if (!container.current) return;
     let map: maplibregl.Map | null = null;
@@ -152,19 +161,39 @@ export function InvestigationMap({
         style: {
           version: 8,
           sources: {
-            carto: {
+            // ESRI World Topo: Clean contour lines, mountain relief, elevations, rivers. No API key needed.
+            "esri-topo": {
               type: "raster",
               tiles: [
-                "https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
-                "https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
-                "https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+              ],
+              tileSize: 256,
+              attribution: "© Esri, USGS",
+            },
+            // ESRI World Imagery: High-resolution satellite view of Himalayas & Kuwari Gorge. No API key needed.
+            "esri-sat": {
+              type: "raster",
+              tiles: [
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              ],
+              tileSize: 256,
+              attribution: "© Esri, DigitalGlobe, Earthstar Geographics",
+            },
+            // OpenStreetMap: Street & boundary view
+            osm: {
+              type: "raster",
+              tiles: [
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
               ],
               tileSize: 256,
-              attribution: "© OpenStreetMap contributors, © CARTO",
+              attribution: "© OpenStreetMap contributors",
             },
           },
-          layers: [{ id: "carto-tiles", type: "raster", source: "carto" }],
+          layers: [
+            { id: "base-topo", type: "raster", source: "esri-topo", layout: { visibility: "visible" } },
+            { id: "base-sat", type: "raster", source: "esri-sat", layout: { visibility: "none" } },
+            { id: "base-osm", type: "raster", source: "osm", layout: { visibility: "none" } },
+          ],
         },
         center: [(DISCOVERY.west + DISCOVERY.east) / 2, (DISCOVERY.south + DISCOVERY.north) / 2],
         zoom: 11,
@@ -175,12 +204,7 @@ export function InvestigationMap({
 
       map.on("error", (e) => {
         if (!isMounted) return;
-        const ev = e as unknown as { tile?: unknown };
-        if (ev?.tile) {
-          setTilesFailed(true);
-        } else {
-          console.warn("MapLibre non-fatal event:", e);
-        }
+        console.warn("MapLibre non-fatal event:", e);
       });
 
       map.on("load", () => {
@@ -356,37 +380,76 @@ export function InvestigationMap({
 
   return (
     <div className="space-y-3">
-      {/* Category Filter Pills & Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="font-mono uppercase tracking-wider text-[#93a39b] mr-1">Filter POIs:</span>
-          {categories.map((cat) => {
-            const isSelected = activeCategory === cat;
-            const count = cat === "All" ? allPoints.length : allPoints.filter((p) => p.category === cat).length;
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setActiveCategory(cat)}
-                className={`rounded-full border px-2.5 py-1 text-xs transition ${
-                  isSelected
-                    ? "border-[#d7b56d] bg-[#d7b56d]/15 font-semibold text-white"
-                    : "border-white/10 bg-[#121716] text-[#c9d5cf] hover:border-white/20"
-                }`}
-              >
-                {cat} ({count})
-              </button>
-            );
-          })}
+      {/* Basemap Controls & Category Filter Pills */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {/* Basemap Switcher */}
+        <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-[#121716] p-1">
+          <button
+            type="button"
+            onClick={() => switchBasemap("topo")}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+              activeBasemap === "topo"
+                ? "bg-[#d7b56d] text-[#1a1408] font-semibold shadow"
+                : "text-[#c9d5cf] hover:text-white"
+            }`}
+          >
+            ⛰️ Topo Relief
+          </button>
+          <button
+            type="button"
+            onClick={() => switchBasemap("satellite")}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+              activeBasemap === "satellite"
+                ? "bg-[#d7b56d] text-[#1a1408] font-semibold shadow"
+                : "text-[#c9d5cf] hover:text-white"
+            }`}
+          >
+            🛰️ Satellite (Esri)
+          </button>
+          <button
+            type="button"
+            onClick={() => switchBasemap("osm")}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+              activeBasemap === "osm"
+                ? "bg-[#d7b56d] text-[#1a1408] font-semibold shadow"
+                : "text-[#c9d5cf] hover:text-white"
+            }`}
+          >
+            🗺️ Street (OSM)
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleResetBounds}
-          className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-[#c9d5cf] transition hover:bg-white/10 hover:text-white"
-        >
-          ⟲ Reset View
-        </button>
+        {/* Category Pills & Reset */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1 text-xs">
+            {categories.map((cat) => {
+              const isSelected = activeCategory === cat;
+              const count = cat === "All" ? allPoints.length : allPoints.filter((p) => p.category === cat).length;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={`rounded-full border px-2.5 py-1 text-xs transition ${
+                    isSelected
+                      ? "border-[#d7b56d] bg-[#d7b56d]/15 font-semibold text-white"
+                      : "border-white/10 bg-[#121716] text-[#c9d5cf] hover:border-white/20"
+                  }`}
+                >
+                  {cat} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleResetBounds}
+            className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-[#c9d5cf] transition hover:bg-white/10 hover:text-white"
+          >
+            ⟲ Reset View
+          </button>
+        </div>
       </div>
 
       {/* Map Canvas: explicit height + absolute child fills 100% of container */}
@@ -408,9 +471,8 @@ export function InvestigationMap({
       </div>
 
       <p className="text-xs text-[#93a39b]" role="status">
-        {tilesFailed
-          ? "Basemap tiles loaded in fallback mode. The gold dashed outline is the discovery window, and colored markers indicate verified terrain and SAR control points."
-          : "The gold dashed outline is the discovery window. Click any marker or badge below to fly and inspect point telemetry."}
+        Discovery window (gold dashed outline): W {DISCOVERY.west}°E, S {DISCOVERY.south}°N to E {DISCOVERY.east}°E, N {DISCOVERY.north}°N in Bageshwar district.
+        Toggle basemap between <strong>⛰️ Topo Relief</strong> and <strong>🛰️ Satellite (Esri)</strong>, or click any landmark marker to fly and inspect point telemetry.
       </p>
 
       {/* Interactive Point Navigator Grid */}
