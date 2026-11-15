@@ -18,7 +18,7 @@ RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
 COPY --from=builder /app/server /app/server
 
-ENV RIVET_ENV=production
+ENV RIVET_ENV=staging
 ENV PORT=8080
 EXPOSE 8080
 
