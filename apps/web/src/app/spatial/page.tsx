@@ -17,6 +17,17 @@ export default function SpatialPage() {
     setSelectedPoint(pt);
   };
 
+  const handleAddAllPoints = (points: InvestigationPoint[]) => {
+    setCustomPoints((prev) => {
+      const existingIds = new Set(prev.map((p) => p.id));
+      const newPoints = points.filter((p) => !existingIds.has(p.id));
+      return [...prev, ...newPoints];
+    });
+    if (points.length > 0) {
+      setSelectedPoint(points[0]);
+    }
+  };
+
   const totalPoints = INVESTIGATION_POINTS.length + customPoints.length;
 
   return (
@@ -27,7 +38,7 @@ export default function SpatialPage() {
           <h1 className="mt-2 text-3xl font-semibold">Discovery Zone & Terrain Points</h1>
           <p className="mt-2 max-w-3xl text-sm text-[#c9d5cf]">
             Interactive geospatial map of the Kuwari landslide dam investigation area in Bageshwar district.
-            Inspect verified hydrological and radar landmarks, or use the OpenRouter AI Copilot to synthesize new target coordinates.
+            Inspect verified hydrological and radar landmarks, or synthesize new target coordinates using the NASA Earth Science AI Copilot.
           </p>
         </div>
 
@@ -37,7 +48,7 @@ export default function SpatialPage() {
           </span>
           {customPoints.length > 0 ? (
             <span className="rounded-full border border-[#d7b56d]/30 bg-[#d7b56d]/10 px-3 py-1 text-[#d7b56d]">
-              AI Suggested: {customPoints.length}
+              NASA AI Generated: {customPoints.length}
             </span>
           ) : null}
         </div>
@@ -50,8 +61,13 @@ export default function SpatialPage() {
         onSelectPoint={setSelectedPoint}
       />
 
-      {/* OpenRouter AI Assistant */}
-      <AiAssistant onAddPoint={handleAddPoint} mode="spatial" />
+      {/* NASA AI Assistant with Multi-point Synthesis */}
+      <AiAssistant
+        onAddPoint={handleAddPoint}
+        onAddAllPoints={handleAddAllPoints}
+        onSelectPoint={setSelectedPoint}
+        mode="spatial"
+      />
 
       {/* Coordinate Context and Scientific Metadata */}
       <div className="grid gap-4 md:grid-cols-2">
@@ -78,7 +94,7 @@ export default function SpatialPage() {
           <ul className="mt-3 list-disc space-y-1.5 pl-5 text-xs text-[#93a39b]">
             <li>All spatial coordinates are tied to reproducible DEM crops (Copernicus GLO-30 2023_1).</li>
             <li>No artificial water boundary or simulated inundation polygon is promoted without human review.</li>
-            <li>AI-synthesized points are recorded with their generating model and prompt provenance.</li>
+            <li>NASA AI-synthesized points are recorded with their parameter and prompt provenance.</li>
             <li>Basemap imagery and vector roads © OpenStreetMap contributors.</li>
           </ul>
         </section>
