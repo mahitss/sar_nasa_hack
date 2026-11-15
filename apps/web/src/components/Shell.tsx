@@ -120,7 +120,15 @@ function ShellInner({ children }: { children: ReactNode }) {
         </header>
       )}
 
-      <main id="content" className={`mx-auto max-w-7xl px-4 ${isLandingPage ? "py-6 sm:py-8" : "py-8"}`}>
+      {/* Landing page expands to use full panoramic width (max-w-[1700px]), normal pages stay max-w-7xl */}
+      <main
+        id="content"
+        className={
+          isLandingPage
+            ? "mx-auto w-full max-w-[1720px] px-6 sm:px-10 lg:px-14 py-6"
+            : "mx-auto max-w-7xl px-4 py-8"
+        }
+      >
         {children}
       </main>
     </div>
