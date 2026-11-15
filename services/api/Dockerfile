@@ -11,6 +11,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /app/server main.go
 
 FROM alpine:3.21
