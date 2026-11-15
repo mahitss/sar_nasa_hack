@@ -1,11 +1,16 @@
 {
+<<<<<<< HEAD
   "name": "rivet-web",
+=======
+  "name": "web",
+>>>>>>> 61992b8d90d44ff0e2766cee552c1953f5b0a06a
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+<<<<<<< HEAD
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
@@ -13,11 +18,18 @@
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
     "maplibre-gl": "6.18.0",
+=======
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.18.0",
+>>>>>>> 61992b8d90d44ff0e2766cee552c1953f5b0a06a
     "next": "16.1.4",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@tailwindcss/postcss": "4.3.5",
     "@types/node": "20.19.43",
     "@types/react": "19.3.0",
@@ -27,5 +39,16 @@
     "postcss": "8.5.33",
     "tailwindcss": "4.3.5",
     "typescript": "5.9.3"
+=======
+    "@tailwindcss/postcss": "^4",
+    "@types/maplibre-gl": "^1.13.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+>>>>>>> 61992b8d90d44ff0e2766cee552c1953f5b0a06a
   }
 }
