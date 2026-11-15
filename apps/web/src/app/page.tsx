@@ -19,7 +19,7 @@ import { FIFTY_EVIDENCE_RECORDS } from "@/lib/evidence-50";
 import { SCIENTIFIC_JOBS } from "@/lib/jobs-data";
 
 export default function OverviewPage() {
-  const { user, token, currentIncident, setCurrentIncident, refreshIncidents, currentRole } = useAuth();
+  const { user, token, currentIncident, setCurrentIncident, refreshIncidents, currentRole, signOut } = useAuth();
   const [acquisitions, setAcquisitions] = useState<ApiAcquisition[]>([]);
   const [evidenceList, setEvidenceList] = useState<ApiEvidence[]>([]);
   const [jobs, setJobs] = useState<ApiJob[]>([]);
@@ -96,9 +96,38 @@ export default function OverviewPage() {
   const displayJobsCount = jobs.length > 0 ? jobs.length : SCIENTIFIC_JOBS.length;
 
   return (
-    <div className="space-y-24 pb-24 text-[#fcfaf5]">
+    <div className="space-y-16 pb-24 text-[#fcfaf5]">
+      {/* Discreet Brand & Sign-In Header for Landing Page */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-base font-bold tracking-[0.24em] text-[#d7b56d]">RIVET</span>
+          <span className="hidden text-xs text-[#8fa79b] sm:inline">NASA SAR Investigation</span>
+        </div>
+        <div className="flex items-center gap-3 text-xs">
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden font-mono text-[#a3b8ad] sm:inline">{user.email}</span>
+              <button
+                type="button"
+                onClick={signOut}
+                className="rounded-full border border-white/20 px-3.5 py-1 text-xs text-[#c9d5cf] transition hover:text-white"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-full bg-[#fcfaf5] px-4 py-1.5 font-medium text-[#07140e] transition hover:bg-[#eae4d5]"
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
+      </div>
+
       {/* 1. HERO SECTION — Google-Style Open Editorial Layout */}
-      <section className="pt-6 sm:pt-10">
+      <section className="pt-2 sm:pt-4">
         {/* Subtle Brand & Mission Eyebrow */}
         <div className="flex flex-wrap items-center gap-3 text-xs font-mono tracking-wider">
           <span className="text-[#a7f3d0] font-semibold">● NASA NISAR OBSERVATION</span>
