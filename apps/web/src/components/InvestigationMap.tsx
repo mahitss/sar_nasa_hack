@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { DISCOVERY } from "@/lib/case-data";
+import { DISCOVERY, INVESTIGATION_POINTS, type InvestigationPoint } from "@/lib/case-data";
 
 // Configure MapLibre to use the standalone web worker served from public/
 if (typeof window !== "undefined" && typeof maplibregl.setWorkerUrl === "function") {
@@ -25,10 +25,109 @@ const polygon: GeoJSON.Feature = {
   },
 };
 
-export function InvestigationMap() {
+interface InvestigationMapProps {
+  customPoints?: InvestigationPoint[];
+  selectedPointId?: string | null;
+  onSelectPoint?: (point: InvestigationPoint | null) => void;
+}
+
+export function InvestigationMap({
+  customPoints = [],
+  selectedPointId,
+  onSelectPoint,
+}: InvestigationMapProps) {
   const container = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [tilesFailed, setTilesFailed] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  const allPoints = useMemo(() => {
+    return [...INVESTIGATION_POINTS, ...customPoints];
+  }, [customPoints]);
+
+  const filteredPoints = useMemo(() => {
+    if (activeCategory === "All") return allPoints;
+    return allPoints.filter((p) => p.category === activeCategory);
+  }, [allPoints, activeCategory]);
+
+  const categories = useMemo(() => {
+    const cats = new Set(allPoints.map((p) => p.category));
+    return ["All", ...Array.from(cats)];
+  }, [allPoints]);
+
+  const pointsGeoJSON = useMemo<GeoJSON.FeatureCollection>(() => {
+    return {
+      type: "FeatureCollection",
+      features: filteredPoints.map((pt) => ({
+        type: "Feature",
+        id: pt.id,
+        properties: {
+          id: pt.id,
+          name: pt.name,
+          category: pt.category,
+          color: pt.color,
+          elevation: pt.elevation,
+          description: pt.description,
+          scientificContext: pt.scientificContext,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: pt.coordinates,
+        },
+      })),
+    };
+  }, [filteredPoints]);
+
+  // Update GeoJSON source when points or filter change
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || status !== "ready") return;
+    const source = map.getSource("investigation-points") as maplibregl.GeoJSONSource | undefined;
+    if (source) {
+      source.setData(pointsGeoJSON);
+    }
+  }, [pointsGeoJSON, status]);
+
+  const openPopupForPoint = useCallback((pt: InvestigationPoint) => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (popupRef.current) popupRef.current.remove();
+
+    const popup = new maplibregl.Popup({ offset: 14, closeButton: true, className: "rivet-map-popup" })
+      .setLngLat(pt.coordinates)
+      .setHTML(`
+        <div style="font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; color: #111; max-width: 260px; line-height: 1.4;">
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom: 4px;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${pt.color};"></span>
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #4b5563;">${pt.category}</span>
+          </div>
+          <h4 style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #111827;">${pt.name}</h4>
+          <p style="margin: 0 0 6px; color: #374151; font-size: 11px;">${pt.description}</p>
+          <div style="font-size: 10px; color: #4b5563; font-style: italic; margin-bottom: 6px; background: #f3f4f6; padding: 4px 6px; border-radius: 4px;">
+            ${pt.scientificContext}
+          </div>
+          <div style="font-size: 10px; color: #6b7280; font-family: monospace; border-top: 1px solid #e5e7eb; padding-top: 4px; display:flex; justify-content:space-between;">
+            <span>${pt.coordinates[1].toFixed(4)}°N, ${pt.coordinates[0].toFixed(4)}°E</span>
+            <span>Elev: ${pt.elevation}</span>
+          </div>
+        </div>
+      `)
+      .addTo(map);
+
+    popupRef.current = popup;
+  }, []);
+
+  // Sync external selection with map
+  useEffect(() => {
+    if (!selectedPointId || status !== "ready") return;
+    const pt = allPoints.find((p) => p.id === selectedPointId);
+    if (pt && mapRef.current) {
+      mapRef.current.flyTo({ center: pt.coordinates, zoom: 12.5, essential: true });
+      openPopupForPoint(pt);
+    }
+  }, [selectedPointId, allPoints, status, openPopupForPoint]);
 
   useEffect(() => {
     if (!container.current) return;
@@ -58,11 +157,12 @@ export function InvestigationMap() {
         zoom: 11,
       });
 
+      mapRef.current = map;
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 
       map.on("error", (e) => {
         if (!isMounted) return;
-        const ev = e as unknown as { tile?: unknown; error?: { message?: string } };
+        const ev = e as unknown as { tile?: unknown };
         if (ev?.tile) {
           setTilesFailed(true);
         } else {
@@ -73,60 +173,182 @@ export function InvestigationMap() {
       map.on("load", () => {
         if (!isMounted || !map) return;
         try {
+          // 1. Discovery window polygon layers
           map.addSource("discovery", { type: "geojson", data: polygon });
           map.addLayer({
             id: "discovery-fill",
             type: "fill",
             source: "discovery",
-            paint: { "fill-color": "#d7b56d", "fill-opacity": 0.08 },
+            paint: { "fill-color": "#d7b56d", "fill-opacity": 0.06 },
           });
           map.addLayer({
             id: "discovery-line",
             type: "line",
             source: "discovery",
-            paint: { "line-color": "#f3e2b3", "line-width": 3 },
+            paint: { "line-color": "#f3e2b3", "line-width": 2.5, "line-dasharray": [3, 2] },
           });
+
+          // 2. Points of interest source and layers
+          map.addSource("investigation-points", { type: "geojson", data: pointsGeoJSON });
+
+          // Halo outer pulse ring
+          map.addLayer({
+            id: "points-outer",
+            type: "circle",
+            source: "investigation-points",
+            paint: {
+              "circle-radius": 12,
+              "circle-color": ["get", "color"],
+              "circle-opacity": 0.3,
+            },
+          });
+
+          // Solid inner core circle
+          map.addLayer({
+            id: "points-inner",
+            type: "circle",
+            source: "investigation-points",
+            paint: {
+              "circle-radius": 6.5,
+              "circle-color": ["get", "color"],
+              "circle-stroke-width": 2,
+              "circle-stroke-color": "#ffffff",
+            },
+          });
+
+          // Text label
+          map.addLayer({
+            id: "points-label",
+            type: "symbol",
+            source: "investigation-points",
+            layout: {
+              "text-field": ["get", "name"],
+              "text-size": 11,
+              "text-offset": [0, 1.2],
+              "text-anchor": "top",
+              "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
+            },
+            paint: {
+              "text-color": "#ffffff",
+              "text-halo-color": "#0b0f0e",
+              "text-halo-width": 2,
+            },
+          });
+
+          // Interactive click on points
+          map.on("click", "points-inner", (e) => {
+            if (!e.features || !e.features[0]) return;
+            const f = e.features[0];
+            const ptId = f.properties?.id;
+            const pt = allPoints.find((p) => p.id === ptId);
+            if (pt) {
+              openPopupForPoint(pt);
+              onSelectPoint?.(pt);
+            }
+          });
+
+          map.on("mouseenter", "points-inner", () => {
+            if (map) map.getCanvas().style.cursor = "pointer";
+          });
+          map.on("mouseleave", "points-inner", () => {
+            if (map) map.getCanvas().style.cursor = "";
+          });
+
           map.fitBounds(
             [
               [DISCOVERY.west, DISCOVERY.south],
               [DISCOVERY.east, DISCOVERY.north],
             ],
-            { padding: 40 }
+            { padding: 50 }
           );
           map.resize();
           setStatus("ready");
         } catch (err) {
-          console.error("Error setting up discovery layer:", err);
+          console.error("Error setting up map layers:", err);
           setStatus("ready");
         }
       });
 
-      // Observe container size changes to resize the WebGL canvas smoothly
       const resizeObserver = new ResizeObserver(() => {
-        if (map) {
-          map.resize();
-        }
+        if (map) map.resize();
       });
       resizeObserver.observe(container.current);
 
       return () => {
         isMounted = false;
         resizeObserver.disconnect();
+        mapRef.current = null;
         map?.remove();
       };
     } catch (err) {
       console.error("Failed to initialize MapLibre map:", err);
       setStatus("error");
     }
-  }, []);
+  }, [allPoints, onSelectPoint, openPopupForPoint, pointsGeoJSON]);
+
+  const handlePointClick = (pt: InvestigationPoint) => {
+    if (mapRef.current) {
+      mapRef.current.flyTo({ center: pt.coordinates, zoom: 13, essential: true });
+      openPopupForPoint(pt);
+    }
+    onSelectPoint?.(pt);
+  };
+
+  const handleResetBounds = () => {
+    if (mapRef.current) {
+      mapRef.current.fitBounds(
+        [
+          [DISCOVERY.west, DISCOVERY.south],
+          [DISCOVERY.east, DISCOVERY.north],
+        ],
+        { padding: 50, essential: true }
+      );
+      if (popupRef.current) popupRef.current.remove();
+      onSelectPoint?.(null);
+    }
+  };
 
   return (
-    <div>
-      <div className="relative h-[28rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d]">
+    <div className="space-y-3">
+      {/* Category Filter Pills & Controls */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-1.5 text-xs">
+          <span className="font-mono uppercase tracking-wider text-[#93a39b] mr-1">Filter POIs:</span>
+          {categories.map((cat) => {
+            const isSelected = activeCategory === cat;
+            const count = cat === "All" ? allPoints.length : allPoints.filter((p) => p.category === cat).length;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                className={`rounded-full border px-2.5 py-1 text-xs transition ${
+                  isSelected
+                    ? "border-[#d7b56d] bg-[#d7b56d]/15 font-semibold text-white"
+                    : "border-white/10 bg-[#121716] text-[#c9d5cf] hover:border-white/20"
+                }`}
+              >
+                {cat} ({count})
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleResetBounds}
+          className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-[#c9d5cf] transition hover:bg-white/10 hover:text-white"
+        >
+          ⟲ Reset View
+        </button>
+      </div>
+
+      {/* Map Canvas */}
+      <div className="relative h-[30rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#17211d]">
         <div ref={container} className="h-full w-full" />
         {status === "loading" && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#17211d] text-sm text-[#93a39b]">
-            Loading map…
+            Loading map & terrain points…
           </div>
         )}
         {status === "error" && (
@@ -136,26 +358,47 @@ export function InvestigationMap() {
         )}
       </div>
 
-      <p className="mt-3 text-sm text-[#c9d5cf]" role="status">
+      <p className="text-xs text-[#93a39b]" role="status">
         {tilesFailed
-          ? "Basemap tiles did not load. The gold outline on the dark canvas is still the discovery window, not a lake boundary."
-          : "The gold outline is the discovery window, not a lake boundary."}
+          ? "Basemap tiles did not load. The gold dashed outline is the discovery window, and colored markers indicate verified terrain and SAR control points."
+          : "The gold dashed outline is the discovery window. Click any marker or badge below to fly and inspect point telemetry."}
       </p>
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 p-4 text-sm">
-          <p className="font-medium">Discovery window</p>
-          <p className="mt-1 font-mono text-xs text-[#c9d5cf]">
-            W {DISCOVERY.west}, S {DISCOVERY.south}, E {DISCOVERY.east}, N {DISCOVERY.north}
-          </p>
-          <p className="mt-2 text-[#93a39b]">Place: Kuwari, Bageshwar district, Uttarakhand, India.</p>
-        </div>
-        <div className="rounded-2xl border border-white/10 p-4 text-sm">
-          <p className="font-medium">Map notes</p>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-[#93a39b]">
-            <li>No lake polygon, shoreline, raster, footprint, shadow, or layover mask is fabricated.</li>
-            <li>Basemap © OpenStreetMap contributors.</li>
-          </ul>
-        </div>
+
+      {/* Interactive Point Navigator Grid */}
+      <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredPoints.map((pt) => {
+          const isSelected = selectedPointId === pt.id;
+          return (
+            <button
+              key={pt.id}
+              type="button"
+              onClick={() => handlePointClick(pt)}
+              className={`flex flex-col justify-between rounded-xl border p-3 text-left transition ${
+                isSelected
+                  ? "border-[#d7b56d] bg-[#d7b56d]/10 shadow-lg"
+                  : "border-white/10 bg-[#121716] hover:border-white/20 hover:bg-[#161d1c]"
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2">
+                  <span
+                    className="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                    style={{ backgroundColor: `${pt.color}20`, color: pt.color }}
+                  >
+                    {pt.category}
+                  </span>
+                  <span className="font-mono text-[11px] text-[#93a39b]">{pt.elevation}</span>
+                </div>
+                <h4 className="mt-1.5 font-medium text-sm text-white">{pt.name}</h4>
+                <p className="mt-1 text-xs text-[#93a39b] line-clamp-2">{pt.description}</p>
+              </div>
+              <div className="mt-2.5 flex items-center justify-between border-t border-white/5 pt-2 font-mono text-[10px] text-[#c9d5cf]">
+                <span>{pt.coordinates[1].toFixed(4)}°N, {pt.coordinates[0].toFixed(4)}°E</span>
+                <span className="text-[#d7b56d]">Inspect ➔</span>
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

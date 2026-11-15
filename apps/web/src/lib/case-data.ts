@@ -332,3 +332,87 @@ export const NEXT_STEPS = [
   "Reconcile the EGM2008 versus WGS84-G1150 vertical reference before height conversion.",
   "Keep P05023 provisional; do not mix CRIDs.",
 ] as const;
+
+export interface InvestigationPoint {
+  id: string;
+  name: string;
+  category: "Dam & Hazard" | "Hydrology" | "Settlement" | "SAR Geometry" | "Observation";
+  color: string;
+  coordinates: [number, number]; // [lng, lat]
+  elevation: string;
+  description: string;
+  scientificContext: string;
+}
+
+export const INVESTIGATION_POINTS: InvestigationPoint[] = [
+  {
+    id: "kuwari-dam",
+    name: "Kuwari Landslide Dam Site",
+    category: "Dam & Hazard",
+    color: "#f59e0b",
+    coordinates: [79.812, 30.091],
+    elevation: "2,450 m",
+    description: "Narrow gorge constriction identified as the primary debris damming point across the drainage channel.",
+    scientificContext: "Debris blockage location analyzed in Mission 001/003. Evaluated for breach mechanics and retention capacity.",
+  },
+  {
+    id: "upstream-basin",
+    name: "Upstream Inundation Zone (Candidate Basin)",
+    category: "Hydrology",
+    color: "#06b6d4",
+    coordinates: [79.825, 30.108],
+    elevation: "2,465 m",
+    description: "Low-gradient valley basin where post-dam water accumulation was evaluated by dual-date NISAR GCOV crops.",
+    scientificContext: "Sweep analysis (Mission 006) yielded 0 sustained filtered candidates in both 6-Sept and 30-Sept acquisitions.",
+  },
+  {
+    id: "kuwari-village",
+    name: "Kuwari Village Outskirts",
+    category: "Settlement",
+    color: "#ec4899",
+    coordinates: [79.795, 30.078],
+    elevation: "2,120 m",
+    description: "Downstream terrace settlement closest to the valley drainage outlet.",
+    scientificContext: "Primary downstream vulnerability monitoring point for hydrological assessment.",
+  },
+  {
+    id: "saryu-confluence",
+    name: "Pindar / Saryu River Confluence",
+    category: "Hydrology",
+    color: "#3b82f6",
+    coordinates: [79.772, 30.045],
+    elevation: "1,780 m",
+    description: "Regional hydrological confluence point where mountain runoff enters the primary river network.",
+    scientificContext: "Boundary baseline for downstream surge dissipation and gauge comparison.",
+  },
+  {
+    id: "radar-shadow-ridge",
+    name: "North Ridge Radar Shadow Crest",
+    category: "SAR Geometry",
+    color: "#a855f7",
+    coordinates: [79.782, 30.135],
+    elevation: "3,580 m",
+    description: "High-relief alpine ridge causing radar terrain layover and foreshortening under descending Left-look pass.",
+    scientificContext: "Explains steep incidence angle distortion (~37°) evaluated in Mission 010 terrain geometry feasibility.",
+  },
+  {
+    id: "nisar-ground-track",
+    name: "NISAR Descending Track 5 Ground Reference",
+    category: "SAR Geometry",
+    color: "#8b5cf6",
+    coordinates: [79.855, 30.142],
+    elevation: "2,890 m",
+    description: "Descending orbit line-of-sight reference (Track 5, Frame 73, Frequency A 40 MHz).",
+    scientificContext: "Acquisition geometry anchor for provisional CRID P05023 granule comparisons.",
+  },
+  {
+    id: "bageshwar-gauge",
+    name: "Bageshwar Valley Meteorological Gauge",
+    category: "Observation",
+    color: "#10b981",
+    coordinates: [79.865, 30.038],
+    elevation: "1,650 m",
+    description: "Monsoon precipitation monitoring station recording late-monsoon rainfall events.",
+    scientificContext: "Precipitation timeline correlates with September 2026 satellite acquisition intervals.",
+  },
+];

@@ -4,9 +4,10 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { listAcquisitions, createAcquisition, type ApiAcquisition } from "@/lib/api";
 import { ACQUISITIONS, COMPARISON_FIELDS } from "@/lib/case-data";
+import { AiAssistant } from "@/components/AiAssistant";
 
 export default function AcquisitionsPage() {
-  const { token, currentIncident, currentRole } = useAuth();
+  const { token, currentIncident, currentRole, signIn } = useAuth();
   const [acquisitions, setAcquisitions] = useState<ApiAcquisition[]>([]);
   const [loading, setLoading] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
@@ -71,7 +72,7 @@ export default function AcquisitionsPage() {
           <h1 className="mt-2 text-3xl font-semibold">Acquisition Records</h1>
           <p className="mt-2 max-w-3xl text-sm text-[#c9d5cf]">
             Source catalog records and satellite granules. Comparability groups strictly match track, frame, polarization,
-            and CRID. Do not mix provisional P05023 with P05036.
+            and CRID. Register real granules to PostgreSQL or inspect historical baseline acquisitions below.
           </p>
         </div>
 
@@ -85,6 +86,34 @@ export default function AcquisitionsPage() {
           </button>
         ) : null}
       </div>
+
+      {/* Quick Sign-In Banner if user is currently unauthenticated */}
+      {!token ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#d7b56d]/30 bg-[#121716] p-4 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-[#d7b56d] font-semibold">🔒 Unauthenticated View:</span>
+            <span className="text-[#93a39b]">
+              Currently displaying historical NISAR baseline data. Sign in with a test profile to register live granules to PostgreSQL.
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => signIn("analyst@rivet.local", "password123")}
+              className="rounded-full bg-[#d7b56d] px-3.5 py-1 text-xs font-semibold text-[#1a1408] transition hover:bg-[#c9a65c]"
+            >
+              Sign in as Analyst
+            </button>
+            <button
+              type="button"
+              onClick={() => signIn("lead@rivet.local", "password123")}
+              className="rounded-full border border-white/20 bg-white/5 px-3.5 py-1 text-xs text-white transition hover:bg-white/10"
+            >
+              Sign in as Lead
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {/* Registration Form */}
       {showAdd ? (
@@ -250,6 +279,42 @@ export default function AcquisitionsPage() {
           )}
         </section>
       ) : null}
+
+      {/* OpenRouter AI Acquisition Copilot */}
+      <AiAssistant mode="acquisitions" />
+
+      {/* Scientific Plain-English Explainer */}
+      <section className="grid gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-white/10 bg-[#121716] p-4 text-xs">
+          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[#d7b56d]">
+            Radar Finding
+          </span>
+          <h4 className="mt-1 font-medium text-sm text-white">Why 0 Filtered Water Pixels?</h4>
+          <p className="mt-1.5 text-[#93a39b] leading-relaxed">
+            In Mission 006, 6 raw sweep-stable pixels were observed on 6-Sept and 12 on 30-Sept. After applying slope threshold filtering and valid-samples mask QC, zero pixels sustained open water backscatter, proving no persistent lake formed.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-[#121716] p-4 text-xs">
+          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-cyan-400">
+            Comparability Rule
+          </span>
+          <h4 className="mt-1 font-medium text-sm text-white">Strict CRID Isolation (P05023)</h4>
+          <p className="mt-1.5 text-[#93a39b] leading-relaxed">
+            Per AGENTS.md rules, P05023 represents provisional unvalidated processing and must never be differenced or mixed with P05036. Both 6-Sept and 30-Sept share identical Track 5, Frame 73, Left-looking descending passes.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-[#121716] p-4 text-xs">
+          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-amber-400">
+            Ephemeris Mismatch
+          </span>
+          <h4 className="mt-1 font-medium text-sm text-white">Orbit MOE vs NOE Mismatch</h4>
+          <p className="mt-1.5 text-[#93a39b] leading-relaxed">
+            Granule filename token &apos;N&apos; expects Near Real-Time Orbit Ephemeris (NOE), but the internal HDF5 metadata records Medium Precision Ephemeris (MOE) and Custom attitude. This discrepancy is preserved as an unresolved gap.
+          </p>
+        </div>
+      </section>
 
       {/* Historical Reference Pair Comparison */}
       <section className="space-y-4">
