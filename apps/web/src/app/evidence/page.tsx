@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import {
   listEvidence,
@@ -10,7 +9,8 @@ import {
   type ApiEvidence,
   type ApiAcquisition,
 } from "@/lib/api";
-import { EVIDENCE as STATIC_EVIDENCE } from "@/lib/case-data";
+import { EVIDENCE as STATIC_EVIDENCE, type EvidenceItem } from "@/lib/case-data";
+import { ObservationInspectorModal } from "@/components/ObservationInspectorModal";
 
 const claimLevels = [
   "All",
@@ -24,11 +24,21 @@ const claimLevels = [
 
 const reviewStates = [
   "All",
+  "accepted",
+  "needs_investigation",
   "draft",
   "submitted",
-  "accepted",
   "rejected",
-  "needs_investigation",
+];
+
+const categories = [
+  "All",
+  "SAR",
+  "Optical",
+  "Terrain",
+  "Hydrology",
+  "Review",
+  "Metadata",
 ];
 
 export default function EvidencePage() {
@@ -39,10 +49,14 @@ export default function EvidencePage() {
   const [showAdd, setShowAdd] = useState(false);
   const [viewMode, setViewMode] = useState<"ledger" | "lineage">("ledger");
 
+  // Inspection modal state
+  const [inspectedItem, setInspectedItem] = useState<EvidenceItem | ApiEvidence | null>(null);
+
   // Filter states
   const [query, setQuery] = useState("");
   const [claimFilter, setClaimFilter] = useState("All");
   const [reviewFilter, setReviewFilter] = useState("All");
+  const [categoryFilter, setCategoryFilter] = useState("All");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Form states
@@ -108,6 +122,14 @@ export default function EvidencePage() {
     }
   };
 
+  const clearFilters = () => {
+    setQuery("");
+    setClaimFilter("All");
+    setReviewFilter("All");
+    setCategoryFilter("All");
+  };
+
+  // Filter persisted evidence
   const filteredEvidence = useMemo(() => {
     const q = query.trim().toLowerCase();
     return evidenceList.filter((item) => {
@@ -119,16 +141,36 @@ export default function EvidencePage() {
     });
   }, [evidenceList, query, claimFilter, reviewFilter]);
 
+  // Filter static 50 scientific reference records
+  const filteredStatic = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return STATIC_EVIDENCE.filter((item) => {
+      const haystack = `${item.id} ${item.title} ${item.summary} ${item.source} ${item.mission} ${item.category} ${item.kind}`.toLowerCase();
+      const matchesQ = q === "" || haystack.includes(q);
+      const matchesClaim = claimFilter === "All" || item.kind === claimFilter;
+      const matchesReview = reviewFilter === "All" || item.reviewState === reviewFilter;
+      const matchesCat = categoryFilter === "All" || item.category === categoryFilter;
+      return matchesQ && matchesClaim && matchesReview && matchesCat;
+    });
+  }, [query, claimFilter, reviewFilter, categoryFilter]);
+
+  const hasActiveFilters = query !== "" || claimFilter !== "All" || reviewFilter !== "All" || categoryFilter !== "All";
+
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="font-mono text-xs tracking-[0.18em] text-[#d7b56d]">EVIDENCE MANAGEMENT</p>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs tracking-[0.18em] text-[#d7b56d]">EVIDENCE MANAGEMENT</span>
+            <span className="rounded-full bg-[#d7b56d]/15 px-2.5 py-0.5 font-mono text-[10px] text-[#d7b56d]">
+              50 Benchmark Records Active
+            </span>
+          </div>
           <h1 className="mt-2 text-3xl font-semibold">Evidence Ledger & Scientific Lineage</h1>
           <p className="mt-2 max-w-3xl text-sm text-[#c9d5cf]">
-            Every scientific record maintains explicit claim level, provenance references, and audit history.
-            Human review is strictly enforced; analysts cannot self-approve evidence.
+            Every scientific record maintains explicit claim level, instrument telemetry, provenance references, and audit history.
+            Click any record below to inspect its detailed observation metrics and radar spectrogram.
           </p>
         </div>
 
@@ -141,7 +183,7 @@ export default function EvidencePage() {
                 viewMode === "ledger" ? "bg-[#d7b56d] text-[#1a1408]" : "text-[#c9d5cf]"
               }`}
             >
-              Ledger View
+              Ledger View ({filteredStatic.length})
             </button>
             <button
               type="button"
@@ -300,79 +342,45 @@ export default function EvidencePage() {
         </section>
       ) : null}
 
-      {/* Lineage Graph View */}
-      {viewMode === "lineage" ? (
-        <section className="space-y-4 rounded-3xl border border-white/10 bg-[#121716] p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-white">Scientific Lineage & Traceability Graph</h2>
-            <span className="text-xs text-[#93a39b]">M023 Provenance Architecture</span>
-          </div>
+      {/* Category Pills Filter */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-[#93a39b]">
+          Discipline:
+        </span>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setCategoryFilter(cat)}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+              categoryFilter === cat
+                ? "bg-[#d7b56d] text-[#1a1408] font-semibold"
+                : "border border-white/10 bg-[#121716] text-[#c9d5cf] hover:border-white/20 hover:text-white"
+            }`}
+          >
+            {cat} {cat === "All" ? `(${STATIC_EVIDENCE.length})` : ""}
+          </button>
+        ))}
 
-          <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0c100f] p-6">
-            <div className="min-w-[700px] space-y-6">
-              <div className="grid grid-cols-5 gap-3 text-center text-xs font-semibold uppercase tracking-wider text-[#93a39b]">
-                <div className="rounded-lg bg-white/5 py-2">1. Source Satellite</div>
-                <div className="rounded-lg bg-white/5 py-2">2. Ingest & QA</div>
-                <div className="rounded-lg bg-white/5 py-2">3. Processing Run</div>
-                <div className="rounded-lg bg-white/5 py-2">4. Derived Evidence</div>
-                <div className="rounded-lg bg-white/5 py-2">5. Review Decision</div>
-              </div>
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="ml-auto rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-300 transition hover:bg-rose-500/20"
+          >
+            ✕ Reset All Filters
+          </button>
+        )}
+      </div>
 
-              <div className="space-y-4">
-                {evidenceList.map((item) => (
-                  <div
-                    key={item.id}
-                    className="grid grid-cols-5 items-center gap-3 rounded-xl border border-white/10 bg-[#141b19] p-3 text-xs"
-                  >
-                    <div className="space-y-1">
-                      <p className="font-semibold text-white">NISAR Group D40</p>
-                      <p className="font-mono text-[10px] text-[#d7b56d]">CRID P05023</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <p className="text-[#c9d5cf]">Technical QA</p>
-                      <p className="font-mono text-[10px] text-emerald-400">PASSED (SHA256)</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <p className="text-[#c9d5cf]">Worker Run</p>
-                      <p className="font-mono text-[10px] text-[#93a39b]">v1.0 Manifest</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <p className="font-medium text-white line-clamp-1">{item.title}</p>
-                      <p className="font-mono text-[10px] text-[#d7b56d]">{item.claim_level}</p>
-                    </div>
-
-                    <div className="space-y-1 text-center">
-                      <span
-                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
-                          item.review_state === "accepted"
-                            ? "bg-emerald-500/20 text-emerald-300"
-                            : item.review_state === "rejected"
-                            ? "bg-rose-500/20 text-rose-300"
-                            : "bg-amber-500/20 text-amber-300"
-                        }`}
-                      >
-                        {item.review_state}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {/* Filters */}
+      {/* Filters Bar */}
       <div className="grid gap-3 sm:grid-cols-3">
         <label className="text-xs text-[#93a39b]">
-          Search Records
+          Search 50 Records
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search title, summary, source..."
+            placeholder="Search by mission, title, instrument, parameter..."
             className="mt-1 w-full rounded-xl border border-white/15 bg-[#101816] px-3 py-2 text-sm text-white placeholder-[#556961] focus:border-[#d7b56d] focus:outline-none"
           />
         </label>
@@ -401,149 +409,259 @@ export default function EvidencePage() {
           >
             {reviewStates.map((st) => (
               <option key={st} value={st}>
-                {st}
+                {st.replace("_", " ")}
               </option>
             ))}
           </select>
         </label>
       </div>
 
-      {/* Persisted Records List */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-medium">
-            Persisted Incident Evidence ({filteredEvidence.length})
-          </h2>
-          {currentIncident ? (
-            <span className="font-mono text-xs text-[#93a39b]">
-              Incident: {currentIncident.title}
-            </span>
-          ) : null}
-        </div>
-
-        {loading ? (
-          <p className="text-sm text-[#93a39b]">Loading evidence from PostgreSQL...</p>
-        ) : filteredEvidence.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-white/15 p-6 text-center text-sm text-[#c9d5cf]">
-            No persisted evidence records match the current filters.
+      {/* Lineage Graph View */}
+      {viewMode === "lineage" ? (
+        <section className="space-y-4 rounded-3xl border border-white/10 bg-[#121716] p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-medium text-white">Scientific Lineage & Traceability Graph</h2>
+              <p className="text-xs text-[#93a39b]">
+                Click any row in the pipeline to inspect full instrument observation metrics.
+              </p>
+            </div>
+            <span className="text-xs text-[#d7b56d]">50 Verified Artifacts</span>
           </div>
-        ) : (
-          <div className="space-y-3">
-            {filteredEvidence.map((item) => {
-              const isSelected = item.id === selectedId;
-              return (
-                <article
-                  key={item.id}
-                  className={`rounded-2xl border transition ${
-                    isSelected
-                      ? "border-[#d7b56d] bg-[#141d1a]"
-                      : "border-white/10 bg-[#121716] hover:border-white/20"
-                  }`}
-                >
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setSelectedId(isSelected ? null : item.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        setSelectedId(isSelected ? null : item.id);
-                      }
-                    }}
-                    className="flex w-full cursor-pointer items-start justify-between gap-4 p-5 text-left"
-                  >
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-semibold text-white">{item.title}</span>
-                        <span className="rounded-full border border-[#d7b56d]/30 bg-[#d7b56d]/10 px-2.5 py-0.5 font-mono text-[11px] text-[#f3e2b3]">
-                          {item.claim_level}
-                        </span>
-                        <span className="rounded-full border border-white/15 px-2 py-0.5 text-[11px] text-[#c9d5cf]">
-                          {item.evidence_kind}
-                        </span>
+
+          <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0c100f] p-6">
+            <div className="min-w-[700px] space-y-4">
+              <div className="grid grid-cols-5 gap-3 text-center text-xs font-semibold uppercase tracking-wider text-[#93a39b]">
+                <div className="rounded-lg bg-white/5 py-2">1. Instrument Platform</div>
+                <div className="rounded-lg bg-white/5 py-2">2. QA & Checksum</div>
+                <div className="rounded-lg bg-white/5 py-2">3. Processing Mission</div>
+                <div className="rounded-lg bg-white/5 py-2">4. Derived Record</div>
+                <div className="rounded-lg bg-white/5 py-2">5. Review Decision</div>
+              </div>
+
+              <div className="max-h-[500px] overflow-y-auto space-y-2 pr-1">
+                {(evidenceList.length > 0 ? evidenceList : filteredStatic).map((item) => {
+                  const claim = "claim_level" in item ? item.claim_level : item.kind;
+                  const state = "review_state" in item ? item.review_state : (item.reviewState || "accepted");
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => setInspectedItem(item)}
+                      className="grid grid-cols-5 items-center gap-3 rounded-xl border border-white/10 bg-[#141b19] p-3 text-xs cursor-pointer transition hover:border-[#d7b56d]/50 hover:bg-[#16221f]"
+                    >
+                      <div className="space-y-0.5">
+                        <p className="font-semibold text-white">NISAR / Sentinel / DEM</p>
+                        <p className="font-mono text-[10px] text-[#d7b56d]">P05023 Group D40</p>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="text-[#c9d5cf]">Technical QA</p>
+                        <p className="font-mono text-[10px] text-emerald-400">PASSED (SHA256)</p>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="text-[#c9d5cf]">Mission Pipeline</p>
+                        <p className="font-mono text-[10px] text-[#93a39b]">
+                          {"mission" in item ? `Mission ${item.mission}` : "Mission 003"}
+                        </p>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="font-medium text-white line-clamp-1">{item.title}</p>
+                        <p className="font-mono text-[10px] text-[#d7b56d] uppercase">{claim}</p>
+                      </div>
+
+                      <div className="space-y-0.5 text-center">
                         <span
-                          className={`rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase ${
-                            item.review_state === "accepted"
+                          className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
+                            state === "accepted"
                               ? "bg-emerald-500/20 text-emerald-300"
-                              : item.review_state === "rejected"
+                              : state === "rejected"
                               ? "bg-rose-500/20 text-rose-300"
                               : "bg-amber-500/20 text-amber-300"
                           }`}
                         >
-                          {item.review_state}
+                          {state.replace("_", " ")}
                         </span>
                       </div>
-                      <p className="mt-2 text-sm text-[#c9d5cf]">{item.summary}</p>
                     </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
-                    <span className="shrink-0 font-mono text-xs text-[#93a39b]">
-                      {item.id.slice(0, 8)}
+      {/* Persisted Records List (if authenticated and has records) */}
+      {currentIncident && evidenceList.length > 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-medium">
+              Persisted PostgreSQL Incident Evidence ({filteredEvidence.length})
+            </h2>
+            <span className="font-mono text-xs text-[#93a39b]">
+              Incident: {currentIncident.title}
+            </span>
+          </div>
+
+          {loading ? (
+            <p className="text-sm text-[#93a39b]">Loading evidence from PostgreSQL...</p>
+          ) : filteredEvidence.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-white/15 p-6 text-center text-sm text-[#c9d5cf]">
+              <p>No persisted records match the current filter.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-2 text-xs text-[#d7b56d] underline hover:no-underline"
+              >
+                Clear filters to show all {evidenceList.length} persisted records
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filteredEvidence.map((item) => {
+                const isSelected = item.id === selectedId;
+                return (
+                  <article
+                    key={item.id}
+                    className={`rounded-2xl border transition ${
+                      isSelected
+                        ? "border-[#d7b56d] bg-[#141d1a]"
+                        : "border-white/10 bg-[#121716] hover:border-white/20"
+                    }`}
+                  >
+                    <div className="flex w-full items-start justify-between gap-4 p-5 text-left">
+                      <div
+                        className="cursor-pointer flex-1"
+                        onClick={() => setInspectedItem(item)}
+                      >
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-semibold text-white hover:text-[#d7b56d] transition">
+                            {item.title}
+                          </span>
+                          <span className="rounded-full border border-[#d7b56d]/30 bg-[#d7b56d]/10 px-2.5 py-0.5 font-mono text-[11px] text-[#f3e2b3]">
+                            {item.claim_level}
+                          </span>
+                          <span className="rounded-full border border-white/15 px-2 py-0.5 text-[11px] text-[#c9d5cf]">
+                            {item.evidence_kind}
+                          </span>
+                          <span
+                            className={`rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase ${
+                              item.review_state === "accepted"
+                                ? "bg-emerald-500/20 text-emerald-300"
+                                : item.review_state === "rejected"
+                                ? "bg-rose-500/20 text-rose-300"
+                                : "bg-amber-500/20 text-amber-300"
+                            }`}
+                          >
+                            {item.review_state.replace("_", " ")}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm text-[#c9d5cf]">{item.summary}</p>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => setInspectedItem(item)}
+                          className="rounded-full border border-[#d7b56d]/40 bg-[#d7b56d]/10 px-3 py-1 text-xs font-semibold text-[#d7b56d] transition hover:bg-[#d7b56d]/20"
+                        >
+                          👁️ Inspect Observation
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* 50 Scientific Reference Records Catalog */}
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="text-xl font-medium">
+              Scientific Reference Evidence Catalog ({filteredStatic.length} of {STATIC_EVIDENCE.length} Records)
+            </h2>
+            <p className="text-xs text-[#c9d5cf]">
+              Comprehensive mission record (M001–M012). Click any observation card to open its full instrument telemetry and backscatter data.
+            </p>
+          </div>
+          <span className="font-mono text-xs text-[#d7b56d]">NASA NISAR Baseline</span>
+        </div>
+
+        {filteredStatic.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-white/15 p-8 text-center text-sm text-[#c9d5cf]">
+            <p>No scientific records match your filter criteria.</p>
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="mt-2 text-xs text-[#d7b56d] underline hover:no-underline"
+            >
+              Reset all filters to view all 50 records
+            </button>
+          </div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredStatic.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setInspectedItem(item)}
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#121716] p-4 text-xs cursor-pointer transition-all hover:border-[#d7b56d]/60 hover:bg-[#141b19] hover:shadow-lg"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-medium text-[#d7b56d]">
+                      Mission {item.mission}
                     </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[10px] text-[#93a39b]">
+                        {item.category}
+                      </span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase ${
+                          item.status === "Observation"
+                            ? "bg-emerald-500/20 text-emerald-300"
+                            : item.status === "Gap"
+                            ? "bg-purple-500/20 text-purple-300"
+                            : "bg-amber-500/20 text-amber-300"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </div>
                   </div>
 
-                  {isSelected ? (
-                    <div className="border-t border-white/10 bg-[#0e1413] p-5 text-xs">
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        <div>
-                          <p className="text-[#93a39b]">Source Manifest / File</p>
-                          <p className="mt-0.5 font-mono text-white">{item.source_path}</p>
-                        </div>
-                        <div>
-                          <p className="text-[#93a39b]">Created By (UUID)</p>
-                          <p className="mt-0.5 font-mono text-white">{item.created_by}</p>
-                        </div>
-                        <div>
-                          <p className="text-[#93a39b]">Acquisition ID</p>
-                          <p className="mt-0.5 font-mono text-[#d7b56d]">
-                            {item.acquisition_id || "None attached"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[#93a39b]">Created At</p>
-                          <p className="mt-0.5 text-white">
-                            {new Date(item.created_at).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
+                  <p className="mt-2 font-medium text-white group-hover:text-[#d7b56d] transition text-sm">
+                    {item.title}
+                  </p>
+                  <p className="mt-1 text-[#93a39b] line-clamp-3 leading-relaxed">
+                    {item.summary}
+                  </p>
+                </div>
 
-                      <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3">
-                        <span className="text-[#93a39b]">
-                          Review state transitions require institutional review decision RPC.
-                        </span>
-                        <Link
-                          href="/reviews"
-                          className="rounded-full border border-[#d7b56d] px-3.5 py-1 text-xs font-semibold text-[#f3e2b3] hover:bg-[#d7b56d]/10"
-                        >
-                          Open Review Workspace →
-                        </Link>
-                      </div>
-                    </div>
-                  ) : null}
-                </article>
-              );
-            })}
+                <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-2 font-mono text-[10px]">
+                  <span className="text-[#556961] truncate max-w-[65%]">
+                    {item.source.replace("data/manifests/", "")}
+                  </span>
+                  <span className="text-[#d7b56d] group-hover:underline">
+                    Inspect Observation →
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </section>
 
-      {/* Historical Committed Records Reference */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-medium">Committed Research Evidence Reference (M003–M012)</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {STATIC_EVIDENCE.slice(0, 6).map((item) => (
-            <div key={item.id} className="rounded-2xl border border-white/10 bg-[#121716] p-4 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[#d7b56d]">Mission {item.mission}</span>
-                <span className="rounded-full border border-white/15 px-2 py-0.5 text-[10px]">
-                  {item.status}
-                </span>
-              </div>
-              <p className="mt-2 font-medium text-white">{item.title}</p>
-              <p className="mt-1 text-[#93a39b] line-clamp-2">{item.summary}</p>
-              <p className="mt-2 font-mono text-[10px] text-[#556961]">{item.source}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Observation Inspector Modal */}
+      <ObservationInspectorModal
+        item={inspectedItem}
+        onClose={() => setInspectedItem(null)}
+      />
     </div>
   );
 }
