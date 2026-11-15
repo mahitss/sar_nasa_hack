@@ -96,6 +96,8 @@ export interface ApiJob {
   claimed_by?: string;
   payload?: Record<string, unknown>;
   result?: Record<string, unknown>;
+  started_at?: string;
+  finished_at?: string;
   created_at?: string;
   updated_at?: string;
 }
