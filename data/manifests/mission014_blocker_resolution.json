@@ -1,0 +1,191 @@
+{
+  "mission": "014",
+  "title": "NISAR Radar Geometry Blocker Resolution Audit",
+  "final_decision": "CONDITIONAL GO",
+  "conditions": [
+    "Confirm the exact local DEM release is COP-DEM_GLO-30-DGED/2023_1 (or quantify height difference vs processor DEM)",
+    "Measure radar-grid-to-DEM interpolation error with an explicit error budget before producing 30 m geometry",
+    "Identify a non-candidate real terrain validation target from independent evidence",
+    "Preserve the unresolved orbit/pointing label values; do not infer geolocation error from labels"
+  ],
+  "scientific_measurement": false,
+  "real_data_classification": false,
+  "audit_timestamp_utc": "2026-11-17",
+  "blockers_resolved": {
+    "egm2008_geoid_source": "RESOLVED",
+    "nisar_authentication": "RESOLVED",
+    "dem_identity": "PARTIAL - same family, release 2023_1 not proven locally",
+    "resolution_500m": "REASSESSED - 30 m defensible with error budget; 10 m not justified",
+    "orbit_pointing_labels": "PRESERVED UNRESOLVED - geometry still reconstructable"
+  },
+  "authentication": {
+    "mission012_method": "earthaccess.login(strategy='netrc')",
+    "mission012_netrc_condition": "Earthaccess on Windows defaults to _netrc; existing credential file is .netrc",
+    "resolution": "Set NETRC environment variable to the existing .netrc path before earthaccess.login(strategy='netrc')",
+    "session_type": "earthaccess.auth.SessionWithHeaderRedirection",
+    "mission013_method_that_failed": "raw requests.get() Range headers without Earthdata session",
+    "mission013_failure_status": 401,
+    "mission013_failure_type": "text/html Basic-auth challenge; CloudFront 502 on second granule",
+    "probe_status_after_fix": 206,
+    "probe_content_type": "binary/octet-stream",
+    "probe_redirect": "303 to CloudFront host (header-redirection session handles auth)",
+    "probe_hdf5_signature_valid": true,
+    "both_granules_read": true,
+    "credentials_exposed": false,
+    "netrc_modified": false,
+    "complete_hdf5_downloaded": false
+  },
+  "egm2008": {
+    "official_source": "https://earth-info.nga.mil/?action=wgs84&dir=wgs84",
+    "official_model": "EGM2008, degree 2190 / order 2159, NGA STND.0036_1.0 (2014-07-08)",
+    "official_grid": "2.5-minute worldwide precomputed EGM2008 geoid-height grid",
+    "distribution": "GeographicLib egm2008-2_5.tar.bz2 (NGA binary gridded data)",
+    "distribution_sha256": "d602e13446a4a4a23f39aecfe6a2a0760a1bc6c1b497482c2ebc9f7d513be699",
+    "grid_file": "egm2008-2_5.pgm",
+    "grid_dimensions": [
+      8640,
+      4321
+    ],
+    "posting_arcmin": 2.5,
+    "pgm_format": "P5 16-bit big-endian; height = Offset + Scale * pixel",
+    "offset_m": -108.0,
+    "scale_m": 0.003,
+    "reference_ellipsoid": "WGS84",
+    "vertical_datum": "WGS84 (geoid height above WGS84 ellipsoid)",
+    "sign_convention": "h = H + N (ellipsoidal = orthometric + geoid undulation)",
+    "sign_matches_mission": true,
+    "bilinear_error_max_m": 0.135,
+    "bilinear_error_rms_m": 0.003,
+    "cubic_error_max_m": 0.031,
+    "cubic_error_rms_m": 0.001,
+    "interpolation_method": "bilinear (12-point cubic available via GeographicLib Geoid class)",
+    "bounded_subset_feasible": true,
+    "bounded_subset_note": "PGM supports random pixel access; a 12-point cubic stencil needs only local pixels. Full global model coefficient set was NOT downloaded.",
+    "computed_undulation_m": {
+      "study_point_30.088337N_79.808685E": -34.9258,
+      "window_SW_29.98N_79.70E": -38.4978,
+      "window_NE_30.20N_79.92E": -30.8202,
+      "window_center_30.09N_79.81E": -34.8673
+    },
+    "reproducible_and_verifiable": true
+  },
+  "dem_identity": {
+    "processor_dem_identity": "NISAR DEM version 1.2, Copernicus DEM 30 m release 2023_1, COP-DEM_GLO-30-DGED/2023_1, WGS84 ellipsoid",
+    "local_dem_product": "Copernicus GLO-30 DGED / WorldDEM DSM",
+    "local_dem_cells": [
+      "Copernicus_DSM_COG_10_N29_00_E079_00",
+      "Copernicus_DSM_COG_10_N30_00_E079_00"
+    ],
+    "same_product_family": true,
+    "local_release_explicitly_recorded": false,
+    "local_release_field": "local XML records 'Copernicus GLO-30 DGED' and 'WorldDEM DSM' but no explicit 2023_1 token",
+    "processor_dem_files_present_in_granules": false,
+    "byte_identity_verified": false,
+    "conclusion": "Same product family; exact release identity (2023_1) not proven from local metadata. Family match is not proof of identical release.",
+    "vertical_datum_difference": "local EGM2008 orthometric vs processor WGS84 ellipsoid; conversion now enabled by verified EGM2008 source"
+  },
+  "resolution": {
+    "radar_grid_posting_m": 500,
+    "dem_posting_m_approx": 30,
+    "gcov_image_posting_m": 10,
+    "approach_A": {
+      "name": "Product metadata interpolation",
+      "inputs": [
+        "incidenceAngle [21,699,710]",
+        "slantRange [21,699,710]",
+        "losUnitVectorX/Y [21,699,710]",
+        "elevationAngle"
+      ],
+      "method": "tri-linear interpolation of radar-grid geometry cubes to DEM grid with explicit error budget",
+      "interpolation_error_source": "500 m grid sampled; local terrain curvature at 30 m not represented",
+      "error_budget": "geoid 0.135 m + DEM <4 m LE90 + radar-grid interpolation (must be measured) + MOE orbit geolocation (unmeasured)",
+      "defensible_at_30m": "possible with measured interpolation error; NOT automatically defensible"
+    },
+    "approach_B": {
+      "name": "Geometry reconstruction from orbit and attitude",
+      "inputs": [
+        "orbit position/velocity [45,3] (10 s sampling per ASF)",
+        "attitude quaternions [126,4]",
+        "heightAboveEllipsoid [21]",
+        "WGS84 ellipsoid"
+      ],
+      "method": "reconstruct platform position and LOS at DEM sample locations; compute local incidence from DEM surface normal",
+      "sampling": "orbit 45 states (~10 s), attitude 126 records, radar-grid height 21 levels",
+      "advantage": "independently reconstructs LOS geometry; not tied to coarse incidence cube",
+      "limitation": "depends on MOE/attitude accuracy and orbit interpolation (Hermite); geolocation error unmeasured",
+      "defensible_at_30m": "plausible and independently checkable; requires validation against known terrain"
+    },
+    "conclusion": "A 30 m DEM-grid geometry product can be defensible with an explicit error budget and independent validation. 10 m geometry is NOT justified by 10 m GCOV posting. No production raster generated."
+  },
+  "discrepancies": {
+    "orbit": {
+      "filename_token": "N",
+      "format_doc_1_2_1_mapping": "N -> NOE (near real-time)",
+      "observed_orbitType": "MOE",
+      "asf_authoritative": "NISAR mission uses Medium precision (MOE) data when generating new products (ASF Orbit Ephemeris guide)",
+      "interpretation": "MOE is the operational standard; MOE in HDF5 is expected. Filename N likely reflects delivery/fidelity labeling.",
+      "resolved": false,
+      "values_preserved": true,
+      "geolocation_error_inferred": false
+    },
+    "pointing": {
+      "filename_token_mapping": "N -> NRP (per Mission 012 mapping)",
+      "observed_attitudeType": "Custom",
+      "interpretation": "Custom attitude indicates adaptive/non-nominal pointing; quaternions are recorded and usable.",
+      "resolved": false,
+      "values_preserved": true
+    },
+    "physical_geometry_reconstructable": true,
+    "remaining_uncertainty": "Label semantics and actual geolocation error remain unresolved; derive geometry from recorded state vectors, not labels."
+  },
+  "validation": {
+    "principles": [
+      "Mission 006 candidate rasters are NOT used to fit or validate the geometry model",
+      "Synthetic tests are deterministic and independent of real candidate patches",
+      "At least one non-candidate real terrain target must be identified for eventual validation"
+    ],
+    "synthetic_tests": [
+      {
+        "case": "flat terrain",
+        "expect": "no shadow, no layover; local incidence = ellipsoid incidence"
+      },
+      {
+        "case": "radar-facing slope",
+        "expect": "increased local incidence; layover when slope > incidence"
+      },
+      {
+        "case": "radar-away slope",
+        "expect": "decreased local incidence; no layover"
+      },
+      {
+        "case": "known shadow geometry",
+        "expect": "points behind ridge along look ray are shadowed"
+      },
+      {
+        "case": "known layover geometry",
+        "expect": "feature top maps to closer slant range than base"
+      }
+    ],
+    "non_candidate_target": "A catalogued ridge/valley feature from independent optical imagery or published topography, outside all Mission 006 candidate patches (to be identified in the implementation mission)"
+  },
+  "prohibited_outputs": {
+    "shadow_raster_created": false,
+    "layover_raster_created": false,
+    "water_reclassified": false,
+    "mission005_006_thresholds_changed": false,
+    "water_area_calculated": false,
+    "shoreline_calculated": false,
+    "physical_class_labeled": false,
+    "complete_hdf5_downloaded": false,
+    "validated_geometry_model_claimed": false,
+    "mission013_files_modified": false
+  },
+  "limitations": [
+    "No shadow or layover raster generated.",
+    "No water reclassification or threshold change.",
+    "No complete NISAR HDF5 product downloaded.",
+    "DEM release 2023_1 identity not proven from local metadata.",
+    "Geolocation error from orbit/attitude labels not measured.",
+    "Radar-grid interpolation error at 30 m must be measured in the implementation mission."
+  ]
+}

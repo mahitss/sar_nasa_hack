@@ -1,0 +1,419 @@
+{
+  "mission": "013",
+  "title": "NISAR Radar Geometry Preflight & Model Design",
+  "audit_timestamp_utc": "2026-11-16T17:19:37.810303+00:00",
+  "scientific_measurement": false,
+  "real_data_classification": false,
+  "shadow_raster_created": false,
+  "layover_raster_created": false,
+  "water_reclassified": false,
+  "candidate_threshold_modified": false,
+  "area_calculated": false,
+  "shoreline_calculated": false,
+  "mission005_006_modified": false,
+  "source_checksums_before": [
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HHHH.tif",
+      "bytes": 4126088,
+      "sha256": "4bb8d2751b70c8215004a9c60b8735998f669421791653691a3a82a388ef527b",
+      "recorded_sha256": "4bb8d2751b70c8215004a9c60b8735998f669421791653691a3a82a388ef527b",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HVHV.tif",
+      "bytes": 4116191,
+      "sha256": "0ea1e7dcb3ab8e9e7af62e34c1b45d919a0254e7d3dee273addeb97a87f530b7",
+      "recorded_sha256": "0ea1e7dcb3ab8e9e7af62e34c1b45d919a0254e7d3dee273addeb97a87f530b7",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_numberOfLooks.tif",
+      "bytes": 4959182,
+      "sha256": "ebf8924c8af37ce4e10afef7f2bb8e719df4cf1847b883a69e25651f4b635e31",
+      "recorded_sha256": "ebf8924c8af37ce4e10afef7f2bb8e719df4cf1847b883a69e25651f4b635e31",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_mask.tif",
+      "bytes": 14888,
+      "sha256": "618cbd541b1543b861ad998c7d38b071c2ccab75e258fabf08d720b777ab2c73",
+      "recorded_sha256": "618cbd541b1543b861ad998c7d38b071c2ccab75e258fabf08d720b777ab2c73",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HHHH.tif",
+      "bytes": 4129382,
+      "sha256": "c0255a6e14d762a6a65c0de30976d4f943d750094ea1cee1c1c12b80147cc943",
+      "recorded_sha256": "c0255a6e14d762a6a65c0de30976d4f943d750094ea1cee1c1c12b80147cc943",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HVHV.tif",
+      "bytes": 4118103,
+      "sha256": "6b7176835dd986ab3d98aab7c884b863d0ab34b341857476fcc95dcc8bacb411",
+      "recorded_sha256": "6b7176835dd986ab3d98aab7c884b863d0ab34b341857476fcc95dcc8bacb411",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_numberOfLooks.tif",
+      "bytes": 4959222,
+      "sha256": "f55607d8c027c06db6868e589bf0847483957e4266ce3a4b022027f505048f2d",
+      "recorded_sha256": "f55607d8c027c06db6868e589bf0847483957e4266ce3a4b022027f505048f2d",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_mask.tif",
+      "bytes": 14863,
+      "sha256": "66ea8174f50f05086e2a5dbd6718a3f36984dc656e6fe0f90a9583730ec05d89",
+      "recorded_sha256": "66ea8174f50f05086e2a5dbd6718a3f36984dc656e6fe0f90a9583730ec05d89",
+      "matches_record": true
+    }
+  ],
+  "source_checksums_after": [
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HHHH.tif",
+      "bytes": 4126088,
+      "sha256": "4bb8d2751b70c8215004a9c60b8735998f669421791653691a3a82a388ef527b",
+      "recorded_sha256": "4bb8d2751b70c8215004a9c60b8735998f669421791653691a3a82a388ef527b",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_HVHV.tif",
+      "bytes": 4116191,
+      "sha256": "0ea1e7dcb3ab8e9e7af62e34c1b45d919a0254e7d3dee273addeb97a87f530b7",
+      "recorded_sha256": "0ea1e7dcb3ab8e9e7af62e34c1b45d919a0254e7d3dee273addeb97a87f530b7",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_numberOfLooks.tif",
+      "bytes": 4959182,
+      "sha256": "ebf8924c8af37ce4e10afef7f2bb8e719df4cf1847b883a69e25651f4b635e31",
+      "recorded_sha256": "ebf8924c8af37ce4e10afef7f2bb8e719df4cf1847b883a69e25651f4b635e31",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260906_gcov_frequencyA_mask.tif",
+      "bytes": 14888,
+      "sha256": "618cbd541b1543b861ad998c7d38b071c2ccab75e258fabf08d720b777ab2c73",
+      "recorded_sha256": "618cbd541b1543b861ad998c7d38b071c2ccab75e258fabf08d720b777ab2c73",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HHHH.tif",
+      "bytes": 4129382,
+      "sha256": "c0255a6e14d762a6a65c0de30976d4f943d750094ea1cee1c1c12b80147cc943",
+      "recorded_sha256": "c0255a6e14d762a6a65c0de30976d4f943d750094ea1cee1c1c12b80147cc943",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_HVHV.tif",
+      "bytes": 4118103,
+      "sha256": "6b7176835dd986ab3d98aab7c884b863d0ab34b341857476fcc95dcc8bacb411",
+      "recorded_sha256": "6b7176835dd986ab3d98aab7c884b863d0ab34b341857476fcc95dcc8bacb411",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_numberOfLooks.tif",
+      "bytes": 4959222,
+      "sha256": "f55607d8c027c06db6868e589bf0847483957e4266ce3a4b022027f505048f2d",
+      "recorded_sha256": "f55607d8c027c06db6868e589bf0847483957e4266ce3a4b022027f505048f2d",
+      "matches_record": true
+    },
+    {
+      "path": "data/processed/mission003/20260930_gcov_frequencyA_mask.tif",
+      "bytes": 14863,
+      "sha256": "66ea8174f50f05086e2a5dbd6718a3f36984dc656e6fe0f90a9583730ec05d89",
+      "recorded_sha256": "66ea8174f50f05086e2a5dbd6718a3f36984dc656e6fe0f90a9583730ec05d89",
+      "matches_record": true
+    }
+  ],
+  "transfer_budget_bytes": 67108864,
+  "access_method": "bounded HTTPS Range requests + h5py over fileobj",
+  "granules": [
+    {
+      "filename": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001.h5",
+      "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001.h5",
+      "datasets": {},
+      "scalars": {},
+      "windows": {},
+      "access_error": "RuntimeError: No Content-Range: {'Server': 'nginx', 'Date': 'Mon, 16 Nov 2026 17:19:20 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '27', 'Connection': 'keep-alive', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '0', 'x-content-type-options': 'nosniff', 'x-permitted-cross-domain-policies': 'none', 'referrer-policy': 'strict-origin-when-cross-origin', 'cache-control': 'no-store', 'pragma': 'no-cache', 'expires': 'Fri, 01 Jan 1990 00:00:00 GMT', 'www-authenticate': 'Basic realm=\"Please enter your Earthdata Login credentials. If you do not have a Earthdata Login, create one at https://urs.earthdata.nasa.gov//users/new\"', 'x-request-id': 'c1978946-5cf2-4b40-ade2-bf3381ff5be5', 'x-runtime': '0.003921', 'Strict-Transport-Security': 'max-age=31536000'}"
+    },
+    {
+      "filename": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001.h5",
+      "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001.h5",
+      "datasets": {},
+      "scalars": {},
+      "windows": {},
+      "access_error": "RuntimeError: No Content-Range: {'Server': 'nginx', 'Date': 'Mon, 16 Nov 2026 17:19:35 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '27', 'Connection': 'keep-alive', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '0', 'x-content-type-options': 'nosniff', 'x-permitted-cross-domain-policies': 'none', 'referrer-policy': 'strict-origin-when-cross-origin', 'cache-control': 'no-store', 'pragma': 'no-cache', 'expires': 'Fri, 01 Jan 1990 00:00:00 GMT', 'www-authenticate': 'Basic realm=\"Please enter your Earthdata Login credentials. If you do not have a Earthdata Login, create one at https://urs.earthdata.nasa.gov//users/new\"', 'x-request-id': '93f4c7e9-d1eb-446c-8f15-d2179ff48da2', 'x-runtime': '0.003129', 'Strict-Transport-Security': 'max-age=31536000'}"
+    }
+  ],
+  "dem_record": {
+    "grids": [
+      {
+        "name": "Copernicus_DSM_COG_10_N29_00_E079_00_EDM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          30.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 1.0,
+        "maximum": 11.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N29_00_E079_00_FLM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          30.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 1.0,
+        "maximum": 7.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N29_00_E079_00_HEM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Float32",
+        "nodata": -32767.0,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          30.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12311537,
+        "nodata_count": 648463,
+        "minimum": 0.027702009305357933,
+        "maximum": 15.582335472106934
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N29_00_E079_00_WBM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          30.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 0.0,
+        "maximum": 3.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N29_00_E079_00_DEM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Float32",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          30.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 196.6738739013672,
+        "maximum": 2765.322998046875
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N30_00_E079_00_EDM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          31.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 1.0,
+        "maximum": 11.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N30_00_E079_00_FLM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          31.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 1.0,
+        "maximum": 9.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N30_00_E079_00_HEM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Float32",
+        "nodata": -32767.0,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          31.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 7844692,
+        "nodata_count": 5115308,
+        "minimum": 0.13372452557086945,
+        "maximum": 26.236740112304688
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N30_00_E079_00_WBM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Byte",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          31.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 0.0,
+        "maximum": 3.0
+      },
+      {
+        "name": "Copernicus_DSM_COG_10_N30_00_E079_00_DEM.tif",
+        "width": 3600,
+        "height": 3600,
+        "bands": 1,
+        "dtype": "Float32",
+        "nodata": null,
+        "horizontal_crs": "EPSG:4326",
+        "geotransform": [
+          78.99986111111112,
+          0.0002777777777777778,
+          0.0,
+          31.000138888888888,
+          0.0,
+          -0.0002777777777777778
+        ],
+        "area_or_point": "Point",
+        "valid_count": 12960000,
+        "nodata_count": 0,
+        "minimum": 626.0,
+        "maximum": 7804.015625
+      }
+    ],
+    "vertical_reference": {
+      "dem_vertical_datum": "EGM2008 orthometric height",
+      "radar_grid_height": "heightAboveEllipsoid relative to the WGS84 ellipsoid",
+      "transformation_applied": false,
+      "required_model": "An EGM2008 geoid-undulation grid. Orthometric height plus geoid undulation equals ellipsoidal height when the undulation is the ellipsoid-minus-geoid separation.",
+      "horizontal_crs_is_not_a_vertical_datum": true,
+      "geometric_accuracy_does_not_resolve_the_vertical_datum": true,
+      "xml_statements": {
+        "gml_vertical_names": [
+          "EGM2008 geoid"
+        ],
+        "geoid_notes": [
+          "WGS 84 Geoid EGM08"
+        ],
+        "vertical_datum_codes": [
+          "WGS84-G1150"
+        ],
+        "reconciled": false
+      },
+      "height_formula": "ellipsoidal height = orthometric height + geoid undulation, where undulation is ellipsoid minus geoid"
+    },
+    "retrieval_timestamp_utc": "2026-11-14T18:38:43Z"
+  },
+  "design_assessment": {
+    "decision": "NO-GO",
+    "blockers": [
+      "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001.h5: bounded HDF5 access failed (RuntimeError: No Content-Range: {'Server': 'nginx', 'Date': 'Mon, 16 Nov 2026 17:19:20 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '27', 'Connection': 'keep-alive', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '0', 'x-content-type-options': 'nosniff', 'x-permitted-cross-domain-policies': 'none', 'referrer-policy': 'strict-origin-when-cross-origin', 'cache-control': 'no-store', 'pragma': 'no-cache', 'expires': 'Fri, 01 Jan 1990 00:00:00 GMT', 'www-authenticate': 'Basic realm=\"Please enter your Earthdata Login credentials. If you do not have a Earthdata Login, create one at https://urs.earthdata.nasa.gov//users/new\"', 'x-request-id': 'c1978946-5cf2-4b40-ade2-bf3381ff5be5', 'x-runtime': '0.003921', 'Strict-Transport-Security': 'max-age=31536000'})",
+      "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001.h5: bounded HDF5 access failed (RuntimeError: No Content-Range: {'Server': 'nginx', 'Date': 'Mon, 16 Nov 2026 17:19:35 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '27', 'Connection': 'keep-alive', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '0', 'x-content-type-options': 'nosniff', 'x-permitted-cross-domain-policies': 'none', 'referrer-policy': 'strict-origin-when-cross-origin', 'cache-control': 'no-store', 'pragma': 'no-cache', 'expires': 'Fri, 01 Jan 1990 00:00:00 GMT', 'www-authenticate': 'Basic realm=\"Please enter your Earthdata Login credentials. If you do not have a Earthdata Login, create one at https://urs.earthdata.nasa.gov//users/new\"', 'x-request-id': '93f4c7e9-d1eb-446c-8f15-d2179ff48da2', 'x-runtime': '0.003129', 'Strict-Transport-Security': 'max-age=31536000'})"
+    ],
+    "issues": [
+      "Local DEM (EGM2008 orthometric) differs from processor DEM (WGS84 ellipsoid); geoid-undulation conversion required but not yet applied."
+    ],
+    "grid_500m_confirmed": true,
+    "dem_transform_required": true,
+    "orbit_label_discrepancy_preserved": true,
+    "pointing_label_discrepancy_preserved": true
+  },
+  "limitations": [
+    "Preflight and design mission only; no shadow or layover raster produced.",
+    "No water reclassification or threshold modification.",
+    "500 m radar-grid metadata cannot yield 10 m local terrain geometry without interpolation.",
+    "Filename orbit token N vs HDF5 orbitType MOE discrepancy preserved unresolved.",
+    "Filename pointing token vs HDF5 attitudeType Custom discrepancy preserved unresolved.",
+    "EGM2008 vs WGS84 ellipsoid vertical-datum discrepancy preserved unresolved.",
+    "Second granule (20260930) access blocked by CloudFront during this preflight."
+  ]
+}
