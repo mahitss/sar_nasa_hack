@@ -1,103 +1,95 @@
 {
-  "mission": "015",
-  "title": "NISAR Geometry Prototype & Numerical Validation",
+  "mission": "015.1",
+  "title": "Geometry Prototype Corrections & Independent Validation",
   "final_decision": "CONDITIONAL GO",
   "scientific_measurement": false,
   "production_classification_product": false,
   "source_provenance": {
-    "nisar_granule": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001",
-    "nisar_access": "earthaccess netrc authenticated bounded range reads",
-    "dem": "Mission 011 Copernicus GLO-30 crop (EPSG:4326, 793x793)",
-    "geoid": "Mission 014 NGA EGM2008 2.5' grid (SHA-256 verified)",
-    "dem_vs_processor_release": "same family; exact 2023_1 release not proven (Mission 014 PARTIAL)"
+    "nisar_granule_20260906": "NISAR_L2_PR_GCOV_030_005_D_073_4005_DHDH_A_20260906T132236_20260906T132311_P05023_N_F_J_001",
+    "nisar_granule_20260930": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001",
+    "nisar_access": "earthaccess netrc authenticated bounded range reads; no complete HDF5 downloaded",
+    "dem": "Mission 011 Copernicus GLO-30 crop",
+    "geoid": "Mission 014 NGA EGM2008 2.5' grid (SHA-256 verified)"
   },
-  "geometry_window": {
-    "indices": {
-      "x": [
-        170,
-        188
-      ],
-      "y": [
-        474,
-        492
-      ],
-      "h": [
-        2,
-        7
-      ]
+  "axis_verification": {
+    "x_axis_verified_from_product": {
+      "count": 710,
+      "first": 296250.0,
+      "last": 650750.0,
+      "spacing_m": 500.0
     },
-    "native_radar_grid": {
-      "x_count": 710,
-      "y_count": 699,
-      "height_count": 21,
-      "spacing_m": 500
+    "y_axis_verified_from_product": {
+      "count": 699,
+      "first": 3570250.0,
+      "last": 3221250.0,
+      "spacing_m": -500.0
     },
-    "orbit_records": 45,
-    "attitude_records": 126,
-    "incidence_observed_deg": [
-      [
-        37.27849197387695,
-        37.30656433105469,
-        37.33462142944336,
-        37.3626594543457,
-        37.39068603515625,
-        37.41869354248047,
-        37.44668197631836,
-        37.47465896606445,
-        37.50261688232422,
-        37.53055953979492,
-        37.5584831237793,
-        37.586395263671875,
-        37.614288330078125,
-        37.64216613769531,
-        37.67002487182617,
-        37.69786834716797,
-        37.7256965637207,
-        37.753509521484375
-      ],
-      [
-        37.494346618652344,
-        37.522361755371094,
-        37.55036163330078,
-        37.578346252441406,
-        37.6063117980957,
-        37.63426208496094,
-        37.66219711303711,
-        37.69011688232422,
-        37.718017578125,
-        37.74590301513672,
-        37.77376937866211,
-        37.8016242980957,
-        37.82946014404297,
-        37.857276916503906,
-        37.88508224487305,
-        37.91286849975586,
-        37.94063949584961,
-        37.96839141845703
-      ]
+    "height_axis_verified_from_product": {
+      "count": 21,
+      "first": -1000.0,
+      "last": 9000.0,
+      "spacing_m": 500.0
+    },
+    "spacing_hardcoded": false
+  },
+  "los_convention": {
+    "frame": "ENU at target",
+    "direction": "target -> sensor",
+    "stored_components": [
+      "East (losUnitVectorX)",
+      "North (losUnitVectorY)"
+    ],
+    "derived_component": "Up = sqrt(1 - East^2 - North^2), positive (sensor above target)",
+    "incidence_angle": "angle between LOS and ellipsoid normal at target height = acos(Up)"
+  },
+  "attitude_note": "Product attributes define attitude quaternions only as (q0,q1,q2,q3) scalar-first with no documented reference frame, rotation direction, or antenna boresight. Therefore the geometric LOS is NOT rotated by attitude. Quaternion behaviour (normalization, endpoints, sign equivalence, frame transform) is tested separately. Approach B is an ORBIT zero-Doppler LOS reconstruction, not an attitude-based model.",
+  "approach_A": {
+    "name": "Product radar-grid metadata interpolation",
+    "fields": [
+      "incidenceAngle",
+      "slantRange",
+      "losUnitVectorX",
+      "losUnitVectorY"
     ]
   },
-  "height_conversion": {
-    "convention": "h = H + N",
-    "geoid_grid_verified": true,
-    "method": "bilinear EGM2008 2.5'"
-  },
-  "approach_A": {
-    "name": "Product metadata interpolation",
-    "method": "trilinear interpolation of radar-grid cube to DEM sample locations"
-  },
   "approach_B": {
-    "name": "Orbit and attitude reconstruction",
-    "method": "linear orbit interpolation + slerp attitude + ECEF LOS reconstruction"
+    "name": "Orbit zero-Doppler LOS reconstruction",
+    "method": "target-specific zero-Doppler bisection using orbit position AND velocity"
   },
-  "approach_comparison": {
+  "independence_note": "A and B are NOT independent: the product radar-grid cube and the orbit solution share the same source orbit/geocoding lineage. Agreement is consistency, not independent validation.",
+  "approach_comparison_20260906": {
+    "date": "20260906",
     "status": "computed",
     "sample_count": 17,
     "incidence_abs_diff_deg": {
-      "minimum": 0.5869,
-      "maximum": 0.6666,
-      "median": 0.6182,
-      "mean": 0.6248
+      "min": 0.0056,
+      "median": 0.0057,
+      "max": 0.0059,
+      "mean": 0.005752941176470588
+    },
+    "slant_range_abs_diff_m": {
+      "min": 75.6,
+      "median": 78.5,
+      "max": 79.8,
+      "mean": 78.08823529411765
+    },
+    "los_angular_diff_deg": {
+      "min": 0.9779,
+      "median": 0.9781,
+      "max": 0.9783,
+      "mean": 0.9781058823529412
+    },
+    "acquisition_time_abs_diff_s": {
+      "min": 8.5e-05,
+      "median": 9.3e-05,
+      "max": 9.8e-05,
+      "mean": 9.223529411764705e-05
+    },
+    "zero_doppler_residual_abs_mps": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0,
+      "mean": 0.0
     },
     "samples": [
       {
@@ -113,10 +105,16 @@
         "geoid_N_m": -35.523,
         "ellipsoidal_h_m": 1909.436,
         "A_incidence_deg": 37.4695,
-        "B_incidence_deg": 38.1141,
-        "incidence_diff_deg": -0.6446,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 926665.3
+        "B_incidence_deg": 37.4636,
+        "incidence_diff_deg": 0.0059,
+        "A_slant_range_m": 919596.1,
+        "B_slant_range_m": 919518.5,
+        "slant_range_diff_m": 77.6,
+        "los_angular_diff_deg": 0.9779,
+        "B_acquisition_time_s": 48187.9385,
+        "product_zd_time_s": 48187.9384,
+        "acquisition_time_diff_s": 8.9e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -131,10 +129,16 @@
         "geoid_N_m": -36.036,
         "ellipsoidal_h_m": 1705.114,
         "A_incidence_deg": 37.4947,
-        "B_incidence_deg": 38.1613,
-        "incidence_diff_deg": -0.6666,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 927415.9
+        "B_incidence_deg": 37.4888,
+        "incidence_diff_deg": 0.0059,
+        "A_slant_range_m": 920098.6,
+        "B_slant_range_m": 920023.0,
+        "slant_range_diff_m": 75.6,
+        "los_angular_diff_deg": 0.9779,
+        "B_acquisition_time_s": 48188.2214,
+        "product_zd_time_s": 48188.2214,
+        "acquisition_time_diff_s": 8.5e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -149,10 +153,16 @@
         "geoid_N_m": -35.975,
         "ellipsoidal_h_m": 1896.112,
         "A_incidence_deg": 37.5579,
-        "B_incidence_deg": 38.2191,
-        "incidence_diff_deg": -0.6612,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 927808.9
+        "B_incidence_deg": 37.552,
+        "incidence_diff_deg": 0.0059,
+        "A_slant_range_m": 920532.1,
+        "B_slant_range_m": 920456.3,
+        "slant_range_diff_m": 75.9,
+        "los_angular_diff_deg": 0.9779,
+        "B_acquisition_time_s": 48188.18,
+        "product_zd_time_s": 48188.1799,
+        "acquisition_time_diff_s": 8.6e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -167,10 +177,16 @@
         "geoid_N_m": -35.917,
         "ellipsoidal_h_m": 1535.356,
         "A_incidence_deg": 37.6002,
-        "B_incidence_deg": 38.2558,
-        "incidence_diff_deg": -0.6556,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 928636.4
+        "B_incidence_deg": 37.5943,
+        "incidence_diff_deg": 0.0059,
+        "A_slant_range_m": 921403.8,
+        "B_slant_range_m": 921327.6,
+        "slant_range_diff_m": 76.1,
+        "los_angular_diff_deg": 0.978,
+        "B_acquisition_time_s": 48188.1386,
+        "product_zd_time_s": 48188.1385,
+        "acquisition_time_diff_s": 8.7e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -185,10 +201,16 @@
         "geoid_N_m": -34.514,
         "ellipsoidal_h_m": 1976.567,
         "A_incidence_deg": 37.5906,
-        "B_incidence_deg": 38.1873,
-        "incidence_diff_deg": -0.5966,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 927371.1
+        "B_incidence_deg": 37.5849,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 920786.9,
+        "B_slant_range_m": 920707.1,
+        "slant_range_diff_m": 79.8,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.3898,
+        "product_zd_time_s": 48187.3897,
+        "acquisition_time_diff_s": 9.7e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -203,10 +225,16 @@
         "geoid_N_m": -34.791,
         "ellipsoidal_h_m": 1955.225,
         "A_incidence_deg": 37.6063,
-        "B_incidence_deg": 38.2135,
-        "incidence_diff_deg": -0.6072,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 927678.4
+        "B_incidence_deg": 37.6005,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 920974.5,
+        "B_slant_range_m": 920895.1,
+        "slant_range_diff_m": 79.4,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.5312,
+        "product_zd_time_s": 48187.5311,
+        "acquisition_time_diff_s": 9.5e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -221,10 +249,16 @@
         "geoid_N_m": -35.069,
         "ellipsoidal_h_m": 1971.985,
         "A_incidence_deg": 37.6233,
-        "B_incidence_deg": 38.2412,
-        "incidence_diff_deg": -0.6179,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 927956.9
+        "B_incidence_deg": 37.6176,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 921131.9,
+        "B_slant_range_m": 921053.1,
+        "slant_range_diff_m": 78.8,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.6727,
+        "product_zd_time_s": 48187.6726,
+        "acquisition_time_diff_s": 9.4e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -239,10 +273,16 @@
         "geoid_N_m": -35.603,
         "ellipsoidal_h_m": 1594.125,
         "A_incidence_deg": 37.6419,
-        "B_incidence_deg": 38.2812,
-        "incidence_diff_deg": -0.6394,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 928840.2
+        "B_incidence_deg": 37.6361,
+        "incidence_diff_deg": 0.0058,
+        "A_slant_range_m": 921772.8,
+        "B_slant_range_m": 921695.4,
+        "slant_range_diff_m": 77.3,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.9557,
+        "product_zd_time_s": 48187.9556,
+        "acquisition_time_diff_s": 9e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -257,10 +297,16 @@
         "geoid_N_m": -35.87,
         "ellipsoidal_h_m": 1933.91,
         "A_incidence_deg": 37.6712,
-        "B_incidence_deg": 38.3216,
-        "incidence_diff_deg": -0.6504,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 928868.5
+        "B_incidence_deg": 37.6654,
+        "incidence_diff_deg": 0.0058,
+        "A_slant_range_m": 921674.6,
+        "B_slant_range_m": 921598.2,
+        "slant_range_diff_m": 76.4,
+        "los_angular_diff_deg": 0.978,
+        "B_acquisition_time_s": 48188.0971,
+        "product_zd_time_s": 48188.097,
+        "acquisition_time_diff_s": 8.8e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -275,10 +321,16 @@
         "geoid_N_m": -35.012,
         "ellipsoidal_h_m": 1663.485,
         "A_incidence_deg": 37.6675,
-        "B_incidence_deg": 38.2801,
-        "incidence_diff_deg": -0.6126,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 928745.5
+        "B_incidence_deg": 37.6618,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 921962.8,
+        "B_slant_range_m": 921883.9,
+        "slant_range_diff_m": 79.0,
+        "los_angular_diff_deg": 0.9782,
+        "B_acquisition_time_s": 48187.6313,
+        "product_zd_time_s": 48187.6312,
+        "acquisition_time_diff_s": 9.4e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -293,10 +345,16 @@
         "geoid_N_m": -35.283,
         "ellipsoidal_h_m": 1727.402,
         "A_incidence_deg": 37.6863,
-        "B_incidence_deg": 38.3097,
-        "incidence_diff_deg": -0.6233,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 928987.9
+        "B_incidence_deg": 37.6806,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 922083.2,
+        "B_slant_range_m": 922004.9,
+        "slant_range_diff_m": 78.3,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.7727,
+        "product_zd_time_s": 48187.7726,
+        "acquisition_time_diff_s": 9.3e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -311,10 +369,16 @@
         "geoid_N_m": -35.552,
         "ellipsoidal_h_m": 1984.349,
         "A_incidence_deg": 37.7125,
-        "B_incidence_deg": 38.3467,
-        "incidence_diff_deg": -0.6342,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 929080.0
+        "B_incidence_deg": 37.7067,
+        "incidence_diff_deg": 0.0058,
+        "A_slant_range_m": 922050.9,
+        "B_slant_range_m": 921973.4,
+        "slant_range_diff_m": 77.5,
+        "los_angular_diff_deg": 0.9781,
+        "B_acquisition_time_s": 48187.9141,
+        "product_zd_time_s": 48187.9141,
+        "acquisition_time_diff_s": 9.1e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -329,10 +393,16 @@
         "geoid_N_m": -34.955,
         "ellipsoidal_h_m": 1873.239,
         "A_incidence_deg": 37.7312,
-        "B_incidence_deg": 38.3388,
-        "incidence_diff_deg": -0.6075,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 929128.2
+        "B_incidence_deg": 37.7256,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 922384.2,
+        "B_slant_range_m": 922305.1,
+        "slant_range_diff_m": 79.1,
+        "los_angular_diff_deg": 0.9782,
+        "B_acquisition_time_s": 48187.5898,
+        "product_zd_time_s": 48187.5897,
+        "acquisition_time_diff_s": 9.5e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -347,10 +417,16 @@
         "geoid_N_m": -35.229,
         "ellipsoidal_h_m": 1891.228,
         "A_incidence_deg": 37.7483,
-        "B_incidence_deg": 38.3665,
-        "incidence_diff_deg": -0.6182,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 929406.5
+        "B_incidence_deg": 37.7426,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 922541.1,
+        "B_slant_range_m": 922462.7,
+        "slant_range_diff_m": 78.5,
+        "los_angular_diff_deg": 0.9782,
+        "B_acquisition_time_s": 48187.7313,
+        "product_zd_time_s": 48187.7312,
+        "acquisition_time_diff_s": 9.3e-05,
+        "zero_doppler_residual_mps": -0.0
       },
       {
         "radar_index": [
@@ -365,10 +441,16 @@
         "geoid_N_m": -34.899,
         "ellipsoidal_h_m": 1801.556,
         "A_incidence_deg": 37.7843,
-        "B_incidence_deg": 38.3867,
-        "incidence_diff_deg": -0.6024,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 929732.6
+        "B_incidence_deg": 37.7786,
+        "incidence_diff_deg": 0.0057,
+        "A_slant_range_m": 923028.9,
+        "B_slant_range_m": 922949.7,
+        "slant_range_diff_m": 79.2,
+        "los_angular_diff_deg": 0.9783,
+        "B_acquisition_time_s": 48187.5484,
+        "product_zd_time_s": 48187.5483,
+        "acquisition_time_diff_s": 9.6e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -383,10 +465,16 @@
         "geoid_N_m": -34.563,
         "ellipsoidal_h_m": 1772.195,
         "A_incidence_deg": 37.8224,
-        "B_incidence_deg": 38.4093,
-        "incidence_diff_deg": -0.5869,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 930013.6
+        "B_incidence_deg": 37.8168,
+        "incidence_diff_deg": 0.0056,
+        "A_slant_range_m": 923469.4,
+        "B_slant_range_m": 923389.7,
+        "slant_range_diff_m": 79.7,
+        "los_angular_diff_deg": 0.9783,
+        "B_acquisition_time_s": 48187.3655,
+        "product_zd_time_s": 48187.3654,
+        "acquisition_time_diff_s": 9.8e-05,
+        "zero_doppler_residual_mps": 0.0
       },
       {
         "radar_index": [
@@ -401,60 +489,90 @@
         "geoid_N_m": -34.85,
         "ellipsoidal_h_m": 1891.603,
         "A_incidence_deg": 37.8433,
-        "B_incidence_deg": 38.4407,
-        "incidence_diff_deg": -0.5974,
-        "A_slant_range_m": null,
-        "B_slant_range_m": 930211.0
+        "B_incidence_deg": 37.8377,
+        "incidence_diff_deg": 0.0056,
+        "A_slant_range_m": 923546.6,
+        "B_slant_range_m": 923467.3,
+        "slant_range_diff_m": 79.3,
+        "los_angular_diff_deg": 0.9783,
+        "B_acquisition_time_s": 48187.5069,
+        "product_zd_time_s": 48187.5068,
+        "acquisition_time_diff_s": 9.7e-05,
+        "zero_doppler_residual_mps": -0.0
       }
     ]
+  },
+  "granule_20260930_access": {
+    "date": "20260930",
+    "granule": "NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001",
+    "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_005_D_073_4005_DHDH_A_20260930T132236_20260930T132311_P05023_N_F_J_001.h5",
+    "status": "success",
+    "detail": "all geometry datasets including zeroDopplerAzimuthTime read; window saved",
+    "bytes_saved": 439415
+  },
+  "numerical_interpolation_error": {
+    "incidenceAngle": {
+      "status": "measured",
+      "method": "withheld height planes, linear interpolation from adjacent native planes",
+      "sample_count": 128,
+      "max_abs_error": 1.1444091796875e-05,
+      "median_abs_error": 7.62939453125e-06,
+      "mean_abs_error": 8.285045623779297e-06,
+      "interpretation": "numerical interpolation error of the 500 m product grid only; not physical 30 m accuracy"
+    },
+    "slantRange": {
+      "status": "measured",
+      "method": "withheld height planes, linear interpolation from adjacent native planes",
+      "sample_count": 128,
+      "max_abs_error": 0.05095430021174252,
+      "median_abs_error": 0.05046073906123638,
+      "mean_abs_error": 0.050457057787753,
+      "interpretation": "numerical interpolation error of the 500 m product grid only; not physical 30 m accuracy"
+    }
   },
   "error_budget": {
     "dem_elevation_error_m": {
       "value": 4.0,
-      "type": "LE90 absolute, Copernicus GLO-30 (Mission 010)",
-      "note": "relative <2 m where slope <=20%"
+      "source": "Copernicus GLO-30 LE90 absolute"
     },
-    "geoid_interpolation_error_m": {
+    "egm2008_interpolation_error_m": {
       "value": 0.135,
-      "type": "max bilinear EGM2008 2.5'",
-      "note": "cubic max 0.031 m"
+      "source": "max bilinear 2.5'"
     },
     "radar_grid_interpolation_error_m": {
       "value": null,
-      "type": "must be measured",
-      "note": "500 m posting sampled to 30 m; no new physical information"
+      "source": "measured numerically via withheld-node cross-validation; physical meaning limited"
     },
     "orbit_interpolation_error_m": {
       "value": null,
-      "type": "unmeasured",
-      "note": "45 states ~10 s; MOE geolocation not measured"
+      "source": "45 states, MOE; unmeasured"
     },
     "attitude_interpolation_error_m": {
       "value": null,
-      "type": "unmeasured",
-      "note": "126 quaternion records; Custom attitude type"
+      "source": "126 quaternion records; not applied to geometric LOS"
     },
     "coordinate_transform_error_m": {
       "value": 0.001,
-      "type": "double-precision ECEF transform",
-      "note": "numerical only; excludes datum differences"
+      "source": "double-precision ECEF numerical only"
     },
-    "combined_uncertainty": "NOT a simple sum; components are correlated and several unmeasured. Report separately; quantify only after measuring radar-grid/orbit/attitude errors."
+    "acquisition_time_solution_error_s": {
+      "value": null,
+      "source": "zero-Doppler bisection residual; agreement with product ZDT is NOT independent (shared orbit lineage)"
+    },
+    "combined_uncertainty": "NOT REPORTED: several components unmeasured and components are correlated (A and B share orbit/DEM lineage). No statistically valid combination is claimed."
   },
   "validation": {
+    "independent_terrain_target": "BLOCKED - no independently validated non-candidate target selected",
     "synthetic_cases": [
-      "flat",
-      "radar-facing",
-      "radar-away",
-      "shadow",
-      "layover",
-      "height conversion",
-      "geoid interpolation",
-      "orbit interpolation",
-      "quaternion interpolation",
-      "invalid input"
-    ],
-    "independent_terrain_target": "BLOCKED - no independently validated non-candidate target selected in this mission"
+      "shadow_positive",
+      "shadow_negative",
+      "layover_below",
+      "layover_exceeding",
+      "slant_ordering",
+      "frame_reversal",
+      "quaternion_checks",
+      "interpolation_boundaries"
+    ]
   },
   "prohibited_outputs": {
     "shadow_mask_created": false,
@@ -464,12 +582,13 @@
     "water_area_calculated": false,
     "shoreline_calculated": false,
     "physical_class_labeled": false,
-    "mission005_006_modified": false
+    "mission005_006_modified": false,
+    "full_hdf5_downloaded": false
   },
   "conditions": [
-    "Measure radar-grid-to-DEM interpolation error with an explicit error budget",
-    "Quantify MOE orbit and Custom attitude interpolation error",
-    "Select an independent non-candidate real terrain validation target",
-    "Confirm local DEM release identity (2023_1) or quantify height differences"
+    "Withheld-node interpolation error is numerical only; physical 30 m terrain accuracy remains unverified",
+    "Select an independent non-candidate real terrain validation target (currently BLOCKED)",
+    "Quantify MOE orbit interpolation error; ZDT agreement is not independent evidence",
+    "Confirm DEM release identity (2023_1) or quantify height differences"
   ]
 }

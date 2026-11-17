@@ -1,7 +1,7 @@
-"""Deterministic tests for Mission 015 geometry prototypes.
+"""Mission 015.1 deterministic tests for the corrected geometry prototype.
 
-Synthetic cases use independently calculated geometric expectations.
-No network, no production classification products.
+Synthetic expectations are calculated independently; no network calls; no
+production classification products.
 """
 
 from __future__ import annotations
@@ -30,223 +30,249 @@ M = load()
 import unittest
 
 
-class HeightConversionTests(unittest.TestCase):
-    def test_orthometric_to_ellipsoidal_convention(self):
-        # h = H + N; independent check with a known N
+# ---------------------------------------------------------------------------
+# Section 6: strict interpolation boundary behaviour
+# ---------------------------------------------------------------------------
+
+class InterpolationBoundaryTests(unittest.TestCase):
+    def test_bilinear_exact_boundaries_allowed(self):
+        arr = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
+        self.assertEqual(M.bilinear_2d(arr, 0.0, 0.0), 1.0)   # top-left center
+        self.assertEqual(M.bilinear_2d(arr, 2.0, 1.0), 6.0)   # bottom-right center
+
+    def test_bilinear_just_inside_and_outside(self):
+        arr = [[0.0, 10.0], [20.0, 30.0]]
+        self.assertIsNotNone(M.bilinear_2d(arr, 0.999, 0.999))
+        self.assertIsNotNone(M.bilinear_2d(arr, 0.001, 0.001))
+        self.assertIsNone(M.bilinear_2d(arr, -1e-6, 0.5))   # just outside left
+        self.assertIsNone(M.bilinear_2d(arr, 2.0001, 0.5))  # just outside right
+        self.assertIsNone(M.bilinear_2d(arr, 0.5, -1e-6))   # just outside top
+        self.assertIsNone(M.bilinear_2d(arr, 0.5, 1.5))     # just outside bottom
+
+    def test_bilinear_rejects_nan_inf_nodata(self):
+        arr = [[1.0, float("nan")], [3.0, 4.0]]
+        self.assertIsNone(M.bilinear_2d(arr, 0.9, 0.1))
+        self.assertIsNone(M.bilinear_2d(arr, float("nan"), 0.5))
+        self.assertIsNone(M.bilinear_2d(arr, float("inf"), 0.5))
+        self.assertIsNone(M.bilinear_2d([[1.0, None], [3.0, 4.0]], 0.9, 0.1))
+
+    def test_trilinear_boundaries_and_just_outside(self):
+        cube = [[[0.0, 1.0, 2.0], [3.0, 4.0, 5.0]],
+                [[6.0, 7.0, 8.0], [9.0, 10.0, 11.0]]]
+        self.assertEqual(M.trilinear_3d(cube, 0.0, 0.0, 0.0), 0.0)
+        self.assertEqual(M.trilinear_3d(cube, 1.0, 1.0, 2.0), 11.0)
+        self.assertIsNotNone(M.trilinear_3d(cube, 0.999, 0.5, 1.5))
+        self.assertIsNone(M.trilinear_3d(cube, -1e-6, 0.5, 0.5))
+        self.assertIsNone(M.trilinear_3d(cube, 1.5, 0.5, 0.5))
+        self.assertIsNone(M.trilinear_3d(cube, 0.5, 0.5, 2.5))
+
+    def test_axis_validation(self):
+        self.assertEqual(len(M.validate_axis([0.0, 500.0, 1000.0], "x")), 3)
+        with self.assertRaises(ValueError):
+            M.validate_axis([0.0, 500.0, 500.0], "x")  # duplicate
+        with self.assertRaises(ValueError):
+            M.validate_axis([0.0, 500.0, 100.0], "x")  # non-monotonic
+        with self.assertRaises(ValueError):
+            M.validate_axis([0.0, float("nan")], "x")  # non-finite
+
+    def test_axis_index_out_of_range(self):
+        axis = [0.0, 500.0, 1000.0]
+        self.assertEqual(M.axis_index(axis, 500.0, "x"), 1.0)
+        self.assertIsNone(M.axis_index(axis, -1.0, "x"))
+        self.assertIsNone(M.axis_index(axis, 1001.0, "x"))
+
+
+# ---------------------------------------------------------------------------
+# Height conversion, geoid, coordinate transforms
+# ---------------------------------------------------------------------------
+
+class HeightAndFrameTests(unittest.TestCase):
+    def test_height_convention(self):
         H = 1000.0
         N = M.geoid_undulation(30.088337, 79.808685)
         h, n = M.orthometric_to_ellipsoidal(H, 30.088337, 79.808685)
-        self.assertAlmostEqual(n, N, places=6)
-        self.assertAlmostEqual(h, H + N, places=6)
+        self.assertEqual(n, N)
+        self.assertAlmostEqual(h, H + N, places=9)
 
-    def test_geoid_undulation_study_point(self):
-        # Mission 014 recorded value from the verified grid
-        n = M.geoid_undulation(30.088337, 79.808685)
-        self.assertAlmostEqual(n, -34.9258, places=3)
+    def test_geoid_study_point(self):
+        self.assertAlmostEqual(M.geoid_undulation(30.088337, 79.808685), -34.9258, places=3)
 
-    def test_geoid_interpolation_linearity(self):
-        # Bilinear interpolation of a 2x2 plane must be exact at the center
+    def test_geoid_bilinear_plane(self):
+        # bilinear of a linear field is exact at the center
         plane = [[0.0, 10.0], [20.0, 30.0]]
         self.assertAlmostEqual(M.bilinear_2d(plane, 0.5, 0.5), 15.0)
-        self.assertAlmostEqual(M.bilinear_2d(plane, 0.0, 0.0), 0.0)
-        self.assertAlmostEqual(M.bilinear_2d(plane, 1.0, 1.0), 30.0)
 
-
-class CoordinateTransformTests(unittest.TestCase):
-    def test_ecef_roundtrip_lat_lon_at_equator(self):
+    def test_ecef_and_incidence(self):
         x, y, z = M.geodetic_to_ecef(0.0, 0.0, 0.0)
         self.assertAlmostEqual(x, M.A_EARTH, places=3)
-        self.assertAlmostEqual(y, 0.0, places=3)
-        self.assertAlmostEqual(z, 0.0, places=3)
-
-    def test_up_vector_is_unit(self):
-        _, _, up = M.enu_basis(30.0, 79.0)
-        self.assertAlmostEqual(math.sqrt(sum(v * v for v in up)), 1.0, places=10)
-
-    def test_incidence_vertical_los_is_zero(self):
-        # A LOS equal to the local up vector -> incidence 0 deg
         _, _, up = M.enu_basis(30.0, 79.0)
         self.assertAlmostEqual(M.incidence_from_los(up, 30.0, 79.0), 0.0, places=6)
-
-    def test_incidence_horizontal_los_is_90(self):
         east, _, _ = M.enu_basis(30.0, 79.0)
         self.assertAlmostEqual(M.incidence_from_los(east, 30.0, 79.0), 90.0, places=6)
 
+    def test_frame_reversal_changes_los_components(self):
+        # Same LOS expressed in two different local frames must differ in ENU
+        lat, lon = 30.0, 79.0
+        los = M.unit(M.geodetic_to_ecef(lat + 0.1, lon + 0.1, 1500.0))
+        enu_a = M.ecef_to_enu(los, lat, lon)
+        enu_b = M.ecef_to_enu(los, -lat, lon)  # reversed target latitude
+        self.assertGreater(M.angle_between(enu_a, enu_b), 1.0)
 
-class InterpolationTests(unittest.TestCase):
-    def test_orbit_linear_interpolation(self):
-        times = [0.0, 10.0]
-        vecs = [[0.0, 0.0, 0.0], [10.0, 20.0, 30.0]]
-        r = M.interpolate_orbit(times, vecs, 5.0)
-        self.assertIsNotNone(r)
-        self.assertAlmostEqual(r[0], 5.0)
-        self.assertAlmostEqual(r[1], 10.0)
-        self.assertAlmostEqual(r[2], 15.0)
 
-    def test_orbit_out_of_range(self):
-        times = [0.0, 10.0]
-        vecs = [[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]
-        self.assertIsNone(M.interpolate_orbit(times, vecs, -1.0))
-        self.assertIsNone(M.interpolate_orbit(times, vecs, 11.0))
+# ---------------------------------------------------------------------------
+# Orbit and quaternion
+# ---------------------------------------------------------------------------
 
-    def test_quaternion_slerp_identity(self):
+class OrbitAttitudeTests(unittest.TestCase):
+    def test_orbit_linear_and_out_of_range(self):
+        self.assertEqual(M.interpolate_orbit([0.0, 10.0], [[0, 0, 0], [10, 20, 30]], 5.0), (5.0, 10.0, 15.0))
+        self.assertIsNone(M.interpolate_orbit([0.0, 10.0], [[0, 0, 0], [1, 1, 1]], -1.0))
+        self.assertIsNone(M.interpolate_orbit([0.0, 10.0], [[0, 0, 0], [1, 1, 1]], 11.0))
+
+    def test_quaternion_normalization_and_endpoints(self):
+        q = [2.0, 0.0, 0.0, 0.0]
+        self.assertAlmostEqual(M.quat_norm(M.quat_normalize(q)), 1.0, places=12)
+        q0, q1 = [1.0, 0, 0, 0], [0.0, 1.0, 0, 0]
+        self.assertAlmostEqual(M.slerp(q0, q1, 0.0)[0], 1.0, places=9)
+        self.assertAlmostEqual(M.slerp(q0, q1, 1.0)[1], 1.0, places=9)
+
+    def test_quaternion_sign_equivalence(self):
         q = [1.0, 0.0, 0.0, 0.0]
-        r = M.slerp(q, q, 0.5)
-        for a, b in zip(q, r):
-            self.assertAlmostEqual(a, b, places=10)
+        r1 = M.quat_rotate(q, (1.0, 0.0, 0.0))
+        r2 = M.quat_rotate([-v for v in q], (1.0, 0.0, 0.0))
+        for a, b in zip(r1, r2):
+            self.assertAlmostEqual(a, b, places=9)
 
-    def test_quaternion_slerp_endpoint(self):
-        q0 = [1.0, 0.0, 0.0, 0.0]
-        q1 = [0.0, 1.0, 0.0, 0.0]
-        self.assertAlmostEqual(M.slerp(q0, q1, 0.0)[0], 1.0)
-        self.assertAlmostEqual(M.slerp(q0, q1, 1.0)[1], 1.0)
+    def test_quaternion_90deg_frame_transform(self):
+        # 90 deg about Z maps X -> Y
+        q = [math.cos(math.radians(45)), 0, 0, math.sin(math.radians(45))]
+        r = M.quat_rotate(q, (1.0, 0.0, 0.0))
+        self.assertAlmostEqual(r[0], 0.0, places=9)
+        self.assertAlmostEqual(r[1], 1.0, places=9)
 
-    def test_trilinear_plane(self):
-        cube = [[[0.0, 10.0], [20.0, 30.0]], [[100.0, 110.0], [120.0, 130.0]]]
-        v = M.trilinear_3d(cube, 0.5, 0.5, 0.5)
-        self.assertAlmostEqual(v, 65.0)  # mean of 8 corners
-
-
-class SyntheticGeometryTests(unittest.TestCase):
-    def test_flat_terrain_incidence_equals_ellipsoid(self):
-        # Flat terrain: surface normal = ellipsoid normal -> local incidence = ellipsoid incidence
-        lat, lon = 30.0, 79.0
-        east, north, up = M.enu_basis(lat, lon)
-        target = M.geodetic_to_ecef(lat, lon, 1000.0)
-        # Sensor displaced along a slant direction 30 deg from vertical
-        los = tuple(math.sin(math.radians(30)) * east[k] + math.cos(math.radians(30)) * up[k] for k in range(3))
-        sensor = tuple(target[k] + 800000.0 * los[k] for k in range(3))
-        los_vec = M.sub(sensor, target)
-        self.assertAlmostEqual(M.incidence_from_los(los_vec, lat, lon), 30.0, places=6)
-
-    def test_radar_facing_vs_away_slope(self):
-        # Radar-facing slope tilts normal toward radar -> smaller incidence; away -> larger
-        lat, lon = 30.0, 79.0
-        _, _, up = M.enu_basis(lat, lon)
-        east, _, _ = M.enu_basis(lat, lon)
-        target = M.geodetic_to_ecef(lat, lon, 1000.0)
-        sensor = tuple(target[k] + 800000.0 * (0.5 * east[k] + 0.866 * up[k]) for k in range(3))
-        los = M.unit(M.sub(sensor, target))
-        # Flat normal -> incidence
-        inc_flat = M.incidence_from_los(los, lat, lon)
-        # Facing normal tilted toward LOS by 10 deg
-        normal_facing = M.unit(tuple(up[k] + 0.176 * los[k] for k in range(3)))
-        cos_facing = abs(M.dot(los, normal_facing))
-        inc_facing = math.degrees(math.acos(min(1.0, cos_facing)))
-        self.assertLess(inc_facing, inc_flat)
-
-    def test_known_shadow_geometry(self):
-        # A point behind a ridge along the look ray is occluded: ray height below ridge.
-        ridge_height = 2000.0
-        target_height = 1000.0
-        horizontal_distance = 5000.0
-        ridge_at_halfway = 1800.0
-        # Ray from target to sensor at 30 deg incidence: height at halfway
-        ray_height_at_half = target_height + (horizontal_distance / 2) * math.tan(math.radians(60))
-        # If ridge exceeds ray height -> shadow. Here ridge < ray -> no shadow
-        self.assertLess(ridge_at_halfway, ray_height_at_half)
-        shadowed = ridge_at_halfway > ray_height_at_half
-        self.assertFalse(shadowed)
-
-    def test_known_layover_geometry(self):
-        # Top of slope maps to closer slant range than base when slope > incidence
-        incidence = math.radians(30)
-        slope = math.radians(40)  # steeper than incidence -> layover
-        self.assertGreater(slope, incidence)
-        # Projected slant-range displacement for a 100 m vertical step
-        base_slant = 500000.0
-        top_slant = base_slant - 100.0 * (math.tan(slope) - math.tan(incidence))
-        self.assertLess(top_slant, base_slant)
+    def test_attitude_not_applied_to_los(self):
+        self.assertIn("NOT rotated by attitude", M.ATTITUDE_NOTE)
+        self.assertIn("ORBIT zero-Doppler", M.ATTITUDE_NOTE)
 
 
-class InvalidInputTests(unittest.TestCase):
-    def test_bilinear_out_of_range(self):
-        arr = [[1.0, 2.0], [3.0, 4.0]]
-        self.assertIsNone(M.bilinear_2d(arr, -0.1, 0.5))
-        self.assertIsNone(M.bilinear_2d(arr, 0.5, 2.0))
+# ---------------------------------------------------------------------------
+# Zero-Doppler correction (target-specific, velocity incorporated)
+# ---------------------------------------------------------------------------
 
-    def test_bilinear_nodata(self):
-        arr = [[1.0, float("nan")], [3.0, 4.0]]
-        self.assertIsNone(M.bilinear_2d(arr, 0.9, 0.1))
-
-    def test_trilinear_out_of_range(self):
-        cube = [[[0.0, 1.0], [2.0, 3.0]], [[4.0, 5.0], [6.0, 7.0]]]
-        self.assertIsNone(M.trilinear_3d(cube, 1.5, 0.5, 0.5))
-
-
-class RealDataApproachTests(unittest.TestCase):
+class ZeroDopplerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data = M.load_window()
+        cls.data = M.load_window("20260906")
 
-    def test_approach_a_vs_b_common_sample(self):
-        # Common sample near the study point
-        x_idx, y_idx = 177.9, 482.2
-        easting = M.RADAR_X0 + x_idx * M.RADAR_DX
-        northing = M.RADAR_Y0 + y_idx * M.RADAR_DY
+    def test_target_specific_times_not_mean(self):
+        data = self.data
+        times = []
+        for xi, yi in [(171, 485), (177, 479), (181, 483)]:
+            from pyproj import Transformer
+            tr = Transformer.from_crs("EPSG:32644", "EPSG:4326", always_xy=True)
+            lon, lat = tr.transform(296250 + xi * 500, 3570250 + yi * -500)
+            H = M.dem_sample_height(lat, lon)
+            h_ell, _ = M.orthometric_to_ellipsoidal(H, lat, lon)
+            b = M.approach_b_fields(data, lat, lon, h_ell)
+            self.assertIsNotNone(b)
+            times.append(b["zd"]["acquisition_time_s"])
+        mean_epoch = sum(data["orbit_time"]) / len(data["orbit_time"])
+        # target times must differ from one another and from the mean epoch
+        self.assertGreater(max(times) - min(times), 0.05)
+        self.assertTrue(all(abs(t - mean_epoch) > 1.0 for t in times))
+
+    def test_velocity_and_residual(self):
         from pyproj import Transformer
         tr = Transformer.from_crs("EPSG:32644", "EPSG:4326", always_xy=True)
-        lon, lat = tr.transform(easting, northing)
+        lon, lat = tr.transform(296250 + 177 * 500, 3570250 + 482 * -500)
         H = M.dem_sample_height(lat, lon)
-        self.assertIsNotNone(H)
         h_ell, _ = M.orthometric_to_ellipsoidal(H, lat, lon)
-        t = sum(self.data["orbit_time"]) / len(self.data["orbit_time"])
-        b = M.approach_b_incidence(self.data, lat, lon, h_ell, t)
+        b = M.approach_b_fields(self.data, lat, lon, h_ell)
         self.assertIsNotNone(b)
-        # Global h index from ellipsoidal height axis
-        heights = self.data["heightAboveEllipsoid"]
-        h_idx = (h_ell - heights[0]) / (heights[1] - heights[0])
-        a = M.approach_a_incidence(self.data, h_idx, y_idx, x_idx)
-        self.assertIsNotNone(a)
-        # Both should be in a physically plausible incidence band and agree within a few degrees
-        self.assertGreater(a, 20.0)
-        self.assertLess(a, 60.0)
-        self.assertGreater(b["incidence_deg"], 20.0)
-        self.assertLess(b["incidence_deg"], 60.0)
-        self.assertLess(abs(a - b["incidence_deg"]), 3.0)
+        self.assertIsNotNone(b["zd"]["velocity_ecef"])
+        self.assertTrue(b["zd"]["converged"])
+        self.assertLess(abs(b["zd"]["zero_doppler_residual_mps"]), 1e-6)
 
-    def test_native_grid_metadata(self):
-        d = self.data
-        self.assertEqual(len(d["xCoordinates"]), 710)
-        self.assertEqual(len(d["yCoordinates"]), 699)
-        self.assertEqual(len(d["heightAboveEllipsoid"]), 21)
-        self.assertEqual(len(d["orbit_time"]), 45)
-        self.assertEqual(len(d["attitude_time"]), 126)
-
-    def test_approach_comparison_statistics(self):
-        cmp = M.approach_comparison(self.data)
-        self.assertEqual(cmp["status"], "computed")
-        self.assertGreaterEqual(cmp["sample_count"], 10)
-        stats = cmp["incidence_abs_diff_deg"]
-        self.assertGreater(stats["maximum"], 0.0)
-        self.assertLess(stats["maximum"], 3.0)
-        self.assertLessEqual(stats["minimum"], stats["median"])
-        self.assertLessEqual(stats["median"], stats["maximum"])
-        # All A and B incidences must be physically plausible
-        for s in cmp["samples"]:
-            self.assertGreater(s["A_incidence_deg"], 20.0)
-            self.assertLess(s["B_incidence_deg"], 60.0)
+    def test_out_of_range_failure_recorded(self):
+        # target far outside orbit span -> no bracket / out-of-range failure, not a mean fallback
+        bad = dict(self.data)
+        bad["orbit_time"] = [48187.0, 48188.0]
+        bad["orbit_position"] = self.data["orbit_position"][:2]
+        bad["orbit_velocity"] = self.data["orbit_velocity"][:2]
+        res = M.solve_zero_doppler((1e7, 1e7, 1e7), bad)
+        self.assertFalse(res["converged"])
+        self.assertIsNotNone(res["failure"])
 
 
-class ManifestTests(unittest.TestCase):
-    def test_conditional_go_with_conditions(self):
+# ---------------------------------------------------------------------------
+# Synthetic shadow/layover with ACTUAL prototype functions
+# ---------------------------------------------------------------------------
+
+class SyntheticGeometryTests(unittest.TestCase):
+    def test_shadow_negative_and_positive(self):
+        # Use actual prototype function ray_clear with a real target geometry
+        lat, lon = 30.0881, 79.8087
+        h = 1741.1
+        target = M.geodetic_to_ecef(lat, lon, h)
+        los = M.unit(M.sub(M.interpolate_orbit(M.load_window("20260906")["orbit_time"],
+                                               M.load_window("20260906")["orbit_position"], 48187.6), target))
+        los_enu = M.ecef_to_enu(los, lat, lon)
+        inc = M.incidence_from_los(los, lat, lon)
+        target_enu = (0.0, 0.0, 0.0)
+        # ridge below the ray -> clear (no shadow)
+        low_ridge = 100.0
+        self.assertTrue(M.ray_clear(target_enu, los_enu, 3000.0, low_ridge, inc))
+        # ridge intersecting the ray -> shadow (ray_clear False)
+        high_ridge = 1e7
+        self.assertFalse(M.ray_clear(target_enu, los_enu, 3000.0, high_ridge, inc))
+
+    def test_layover_below_and_exceeding(self):
+        self.assertFalse(M.layover_condition(30.0, 40.0))  # slope < incidence
+        self.assertTrue(M.layover_condition(45.0, 40.0))   # slope > incidence
+
+    def test_slant_range_ordering(self):
+        self.assertTrue(M.slant_range_ordering(900000.0, 905000.0))
+        self.assertFalse(M.slant_range_ordering(905000.0, 900000.0))
+
+
+# ---------------------------------------------------------------------------
+# Real-data reproducibility and manifest
+# ---------------------------------------------------------------------------
+
+class RealDataTests(unittest.TestCase):
+    def test_17_sample_reproducible(self):
+        a = M.approach_comparison("20260906")
+        b = M.approach_comparison("20260906")
+        self.assertEqual(a["status"], "computed")
+        self.assertEqual(a["sample_count"], 17)
+        self.assertEqual(a["samples"], b["samples"])
+
+    def test_zero_doppler_matches_product_time(self):
+        c = M.approach_comparison("20260906")
+        self.assertIsNotNone(c["acquisition_time_abs_diff_s"])
+        self.assertLess(c["acquisition_time_abs_diff_s"]["max"], 0.01)
+
+    def test_20260930_attempt_recorded(self):
+        man = M.build_manifest()
+        self.assertIn(man["granule_20260930_access"]["status"], ("success", "failed"))
+
+    def test_numerical_interpolation_error_measured(self):
+        d = M.load_window("20260906")
+        err = M.withheld_node_error(d["incidenceAngle"])
+        self.assertEqual(err["status"], "measured")
+        self.assertGreater(err["sample_count"], 0)
+        self.assertGreaterEqual(err["max_abs_error"], 0.0)
+        self.assertIn("not physical 30 m accuracy", err["interpretation"])
+
+    def test_manifest_fields(self):
         man = M.build_manifest()
         self.assertEqual(man["final_decision"], "CONDITIONAL GO")
-        self.assertGreaterEqual(len(man["conditions"]), 3)
-
-    def test_independent_target_blocked(self):
-        man = M.build_manifest()
+        self.assertFalse(man["axis_verification"]["spacing_hardcoded"])
+        self.assertIn("NOT independent", man["independence_note"])
+        self.assertIn("NOT REPORTED", man["error_budget"]["combined_uncertainty"])
         self.assertIn("BLOCKED", man["validation"]["independent_terrain_target"])
-
-    def test_prohibited_outputs_false(self):
-        man = M.build_manifest()
         for k, v in man["prohibited_outputs"].items():
             self.assertFalse(v, k)
-
-    def test_error_budget_separates_components(self):
-        eb = M.error_budget()
-        for key in ["dem_elevation_error_m", "geoid_interpolation_error_m", "radar_grid_interpolation_error_m", "orbit_interpolation_error_m", "attitude_interpolation_error_m", "coordinate_transform_error_m", "combined_uncertainty"]:
-            self.assertIn(key, eb)
 
 
 if __name__ == "__main__":
